@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
@@ -60,12 +61,16 @@ public class Runner
 	public static void main(String[] args) throws Exception 
 	{
 		
-		Runner Wwd = new Runner();
+		Runner runner = new Runner();
 
-		Wwd.dropAllTables();
-		Wwd.createAllTables();
+		runner.dropAllTables();   
+		runner.createAllTables(); 
 		
-		//Wwd.runSelectStatements();
+		runner.insertEverythingIntoTables();
+		
+		//use for testing
+		runner.showTables();
+		runner.printAllRows("TEST_BURDETTE");
 
 	}
 	
@@ -73,21 +78,22 @@ public class Runner
 	/*
 	 * Inserts the specified number of rows into TEST_BURDETTE
 	 */
-	private void addToTable(int amountToAdd) throws SQLException, InterruptedException 
+	private void insertEverythingIntoTables() throws SQLException, InterruptedException 
 	{
 
 		String insertData;
 		PreparedStatement stmt;
 		
+		//CHANGE THIS TO CORRECT ONES:
 		insertData = new String("INSERT INTO TEST_BURDETTE (Col1, Col2, Col3, Col4, Col5) VALUES (?,?,?,?,?)");
 	      
 		stmt = m_dbConn.prepareStatement(insertData);
 	    
-//		stmt.setInt(1, arrayOfInts1[i]);
-//		stmt.setInt(2, arrayOfInts2[i]); 
-//		stmt.setString(3, arrayOfTenCharStrings[i]);
-//		stmt.setString(4, arrayOfStrings[i]);
-//		stmt.setDouble(5, arrayOfDoubles[i]); 
+		stmt.setInt(1, 100);
+		stmt.setInt(2, 200); 
+		stmt.setString(3, "string 1");
+		stmt.setString(4, "string 2");
+		stmt.setDouble(5, 100.999); 
 	      	      	      
 		stmt.executeUpdate();
 	}
@@ -103,16 +109,14 @@ public class Runner
         
 		stmt = m_dbConn.createStatement();
 		
-		//UNCOMMENT THIS AND COMMENT OUT THE ONE BELOW IT TO CREATE TABLE WITH PRIMARY KEY:
-        //insertData = new String("CREATE TABLE TEST_BURDETTE (Col1 int, Col2 int, Col3 CHAR (10), Col4 VARCHAR (30), Col5 double, PRIMARY KEY (Col1))");
-        insertData = new String("CREATE TABLE TEST_BURDETTE (Col1 int, Col2 int, Col3 CHAR (10), Col4 VARCHAR (30), Col5 double)");
+        insertData = new String("CREATE TABLE TEST_BURDETTE (Col1 int, Col2 int, Col3 CHAR (10), Col4 VARCHAR (30), Col5 double, PRIMARY KEY (Col1))");
 
         stmt.executeUpdate(insertData);
 
 	}
 	
 	/*
-	 * Drops TEST_BURDETTE table
+	 * Drops the tables
 	 */
 	public void dropAllTables() throws SQLException 
 	{
@@ -127,93 +131,44 @@ public class Runner
 		
 	}
 	
-	/*
-	 * Fills the 5 instance variable arrays with appropriate values so they can be pulled 
-	 * to populate insert statements. This is done so that a new value does not have 
-	 * to be generated to use for the insert statements on each iteration of the loop
-	 */
-//	public void fillRandomArrays() 
-//	{
-//		//fill int arrays with incremented integers 
-//		for (int i = 0; i < AMOUNT_TO_REPEAT; i++) 
-//		{
-//			arrayOfInts1[i] = i; 
-//			arrayOfInts2[i] = i; 
-//		}
-//		
-//		Random r = new Random();
-//		
-//		//fill arrayOfStrings with strings of length 1-30
-//		for (int i = 0; i < AMOUNT_TO_REPEAT; i++) 
-//		{
-//			arrayOfStrings[i] = generateRandomString(Math.abs(r.nextInt() % 29) + 1);
-//		}
-//		
-//		//fill arrayOfTenCharStrings with strings of length 10
-//		for (int i = 0; i < AMOUNT_TO_REPEAT; i++) 
-//		{
-//			arrayOfTenCharStrings[i] = generateRandomString(10);
-//		}
-//		
-//		//fill arrayOfDoubles with doubles
-//		for (int i = 0; i < AMOUNT_TO_REPEAT; i++) 
-//		{
-//			arrayOfDoubles[i] = r.nextDouble();
-//		}
-//		
-//	}
 	
 	/*
-	 * Returns a randomized string of the specified length 
+	 * runs show tables command
 	 */
-//	public String generateRandomString(int stringLength) 
-//	{
-//	    int leftLimit = 97; // letter 'a'
-//	    int rightLimit = 122; // letter 'z'
-//	    
-//	    Random random = new Random();
-//	    
-//	    StringBuilder buffer = new StringBuilder(stringLength);
-//	    for (int i = 0; i < stringLength; i++) 
-//	    {
-//	        int randomLimitedInt = leftLimit + (int) 
-//	          (random.nextFloat() * (rightLimit - leftLimit + 1));
-//	        buffer.append((char) randomLimitedInt);
-//	    }
-//	    String generatedString = buffer.toString();
-//	    return generatedString;
-//	 }
+	private void showTables() throws SQLException 
+	{
+        String s = new String("show tables");
+        PreparedStatement stmt = m_dbConn.prepareStatement(s);
+        ResultSet rs = stmt.executeQuery(s);
+        
+        while (rs.next())
+        {
+            System.out.print(rs.getString(1));
+            System.out.println();       	
+        }		
+        
+        System.out.println("\n");       	
+	}
 	
+
 	/*
-	 * Runs 100 select statements starting at the specified row
+	 * runs SELECT * FROM table_name 
 	 */
-//	public void runSelectStatements(int indexByHundred) throws SQLException 
-//	{
-//        String selectData; 
-//        PreparedStatement stmt; 
-//        ResultSet rs; 
-//                
-//        for (int i = 0; i < 100; i++) 
-//        {
-//        	//UNCOMMENT THIS LINE AND COMMENT OUT THE ONE BELOW IT TO SELECT FORM number2 INSTEAD OF number1
-//            //selectData = new String("SELECT number1 FROM HW4_DATA WHERE number1 =" + indexByHundred + i);
-//            selectData = new String("SELECT number2 FROM HW4_DATA WHERE number2 =" + indexByHundred + i);
-//
-//            stmt = m_dbConn.prepareStatement(selectData);
-//            
-//            rs = stmt.executeQuery(selectData);
-//        }
-//        
-//	}
+	private void printAllRows(String tableName) throws SQLException {
+        String selectData = new String("SELECT * FROM " + tableName);
+        PreparedStatement stmt = m_dbConn.prepareStatement(selectData);
+        ResultSet rs = stmt.executeQuery(selectData);
+        
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+
+        while (rs.next()) {
+            for(int i = 1; i < columnsNumber; i++)
+                System.out.print(rs.getString(i) + " ");
+            System.out.println();
+        }
+
+	}
+
 }
 
-
-//public class Runner {
-//
-//	public static void main(String[] args) {
-//		// populate the database appropriately
-//		System.out.println("hopefully this works");
-//
-//	}
-//
-//}
