@@ -61,25 +61,40 @@ public class Runner {
   }
 
   /**
-   * Inserts the initial rows of data into all the tables
+   * Drops the tables
    */
-  private void insertEverythingIntoTables() throws SQLException {
+  public void dropAllTables() throws SQLException {
 
     Statement stmt;
     String insertData;
 
     stmt = m_dbConn.createStatement();
 
-    String[] insert_statements =
-            {"INSERT INTO PERSON VALUES ('DefaultLogin', 'password123', 'imbasic@gmail.com')",
-                    "INSERT INTO PERSON VALUES ('ManLogin', 'helloMadeline', 'imalsobasic@gmail.com')",
-                    "INSERT INTO PERSON VALUES ('ModLogin', 'hiAdamWeissinger', 'morebasic@gmail.com')"
+    String[] table_statements =
+            {"DROP TABLE IF EXISTS PERSON",
+                    "DROP TABLE IF EXISTS MANAGER",
+                    "DROP TABLE IF EXISTS MODERATOR",
+                    "DROP TABLE IF EXISTS PLAYER",
+                    "DROP TABLE IF EXISTS LOCATION",
+                    "DROP TABLE IF EXISTS P_CHARACTER",
+                    "DROP TABLE IF EXISTS LOCATION_EXITS_TO_LOCATION",
+                    "DROP TABLE IF EXISTS CREATURE",
+                    "DROP TABLE IF EXISTS ABILITY",
+                    "DROP TABLE IF EXISTS CREATURE_HAS_POSSIBLE_AREAS",
+                    "DROP TABLE IF EXISTS CREATURE_LIKES_HATES_PLAYER",
+                    "DROP TABLE IF EXISTS CREATURE_LIKES_HATES_CREATURE",
+                    "DROP TABLE IF EXISTS ITEM",
+                    "DROP TABLE IF EXISTS CONTAINER",
+                    "ALTER TABLE ITEM DROP FOREIGN KEY ITEM_ibfk_4",
+                    "DROP TABLE IF EXISTS ARMOR",
+                    "DROP TABLE IF EXISTS WEAPON",
+                    "DROP TABLE IF EXISTS GENERIC_ITEM"
             };
 
-    for (int i = 0; i < insert_statements.length; i++) {
-      insertData = new String(insert_statements[i]);
+    for (int i = table_statements.length - 1; i >= 0; i--) {
+      insertData = new String(table_statements[i]);
       stmt.executeUpdate(insertData);
-      System.out.println("inserted stuff " + i);
+      System.out.println("yee");
     }
 
   }
@@ -125,43 +140,68 @@ public class Runner {
   }
 
   /**
-   * Drops the tables
+   * Inserts the initial rows of data into all the tables
    */
-  public void dropAllTables() throws SQLException {
+  private void insertEverythingIntoTables() throws SQLException {
 
     Statement stmt;
     String insertData;
 
     stmt = m_dbConn.createStatement();
 
-    String[] table_statements =
-            {"DROP TABLE IF EXISTS PERSON",
-                    "DROP TABLE IF EXISTS MANAGER",
-                    "DROP TABLE IF EXISTS MODERATOR",
-                    "DROP TABLE IF EXISTS PLAYER",
-                    "DROP TABLE IF EXISTS LOCATION",
-                    "DROP TABLE IF EXISTS P_CHARACTER",
-                    "DROP TABLE IF EXISTS LOCATION_EXITS_TO_LOCATION",
-                    "DROP TABLE IF EXISTS CREATURE",
-                    "DROP TABLE IF EXISTS ABILITY",
-                    "DROP TABLE IF EXISTS CREATURE_HAS_POSSIBLE_AREAS",
-                    "DROP TABLE IF EXISTS CREATURE_LIKES_HATES_PLAYER",
-                    "DROP TABLE IF EXISTS CREATURE_LIKES_HATES_CREATURE",
-                    "DROP TABLE IF EXISTS ITEM",
-                    "DROP TABLE IF EXISTS CONTAINER",
-                    "DROP TABLE IF EXISTS ARMOR",
-                    "DROP TABLE IF EXISTS WEAPON",
-                    "DROP TABLE IF EXISTS GENERIC_ITEM"
+    String[] insert_statements =
+            {
+                    // PERSON
+                    "INSERT INTO PERSON VALUES ('ManLogin', 'helloMadeline', 'imalsobasic@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ManLogin2', 'helloMadelin', 'imalsobasic2@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ManLogin3', 'helloMadeli', 'imalsobasic3@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ManLogin4', 'helloMadel', 'imalsobasic4@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ManLogin5', 'helloMade', 'imalsobasic5@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ModLogin', 'hiAdamWeissinger', 'morebasic@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ModLogin2', 'hiAdamWeissinge', 'morebasic2@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ModLogin3', 'hiAdamWeissing', 'morebasic3@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ModLogin4', 'hiAdamWeissin', 'morebasic4@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('ModLogin5', 'hiAdamWeissi', 'morebasic5@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('DefaultLogin', 'password123', 'imbasic@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('DefaultLogin2', 'password456', 'imbasic2@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('DefaultLogin3', 'password789', 'imbasic3@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('DefaultLogin4', 'password321', 'imbasic4@gmail.com')",
+                    "INSERT INTO PERSON VALUES ('DefaultLogin5', 'password654', 'imbasic5@gmail.com')",
+                    // MANAGER
+                    "INSERT INTO MANAGER VALUES ('MrManager', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin'))",
+                    "INSERT INTO MANAGER VALUES ('MrManager2', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin2'))",
+                    "INSERT INTO MANAGER VALUES ('MrManager3', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin3'))",
+                    "INSERT INTO MANAGER VALUES ('MrManage4r', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin4'))",
+                    "INSERT INTO MANAGER VALUES ('MrManager5', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin5'))",
+                    // MODERATOR
+                    "INSERT INTO MODERATOR VALUES ('MrModerator', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin'))",
+                    "INSERT INTO MODERATOR VALUES ('MrModerator2', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin2'))",
+                    "INSERT INTO MODERATOR VALUES ('MrModerator3', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin3'))",
+                    "INSERT INTO MODERATOR VALUES ('MrModerator4', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin4'))",
+                    "INSERT INTO MODERATOR VALUES ('MrModerator5', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin5'))",
+                    // PLAYER
+                    // LOCATION
+                    // P_CHARACTER
+                    // LOCATION_EXITS_TO_LOCATION
+                    // CREATURE
+                    // ABILITY
+                    // CREATURE_HAS_POSSIBLE_AREAS
+                    // CREATURE_LIKES_HATES_PLAYER
+                    // CREATURE_LIKES_HATES_CREATURE
+                    // ITEM
+                    // CONTAINER
+                    // ARMOR
+                    // WEAPON
+                    // GENERIC_ITEM
             };
 
-    for (int i = table_statements.length - 1; i >= 0; i--) {
-      insertData = new String(table_statements[i]);
+    for (int i = 0; i < insert_statements.length; i++) {
+      insertData = new String(insert_statements[i]);
       stmt.executeUpdate(insertData);
-      System.out.println("yee");
+      System.out.println("inserted stuff " + i);
     }
 
   }
-
 
   /**
    * runs show tables command
