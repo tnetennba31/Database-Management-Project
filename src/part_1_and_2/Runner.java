@@ -22,7 +22,7 @@ public class Runner {
 
     //use for testing
 //    runner.showTables();
-//    runner.printAllRows("TEST_BURDETTE");
+//    runner.printAllRows("PERSON");
 
   }
 
@@ -171,7 +171,7 @@ public class Runner {
                     "INSERT INTO MANAGER VALUES ('MrManager', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin'))",
                     "INSERT INTO MANAGER VALUES ('MrManager2', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin2'))",
                     "INSERT INTO MANAGER VALUES ('MrManager3', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin3'))",
-                    "INSERT INTO MANAGER VALUES ('MrManage4r', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin4'))",
+                    "INSERT INTO MANAGER VALUES ('MrManager4', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin4'))",
                     "INSERT INTO MANAGER VALUES ('MrManager5', (SELECT P.Login FROM PERSON P WHERE P.Login = 'ManLogin5'))",
                     // MODERATOR
                     "INSERT INTO MODERATOR VALUES ('MrModerator', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin'))",
@@ -180,25 +180,125 @@ public class Runner {
                     "INSERT INTO MODERATOR VALUES ('MrModerator4', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin4'))",
                     "INSERT INTO MODERATOR VALUES ('MrModerator5', NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'ModLogin5'))",
                     // PLAYER
+                    "INSERT INTO PLAYER VALUES ('Noobmaster', NULL, NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'DefaultLogin'))",
+                    "INSERT INTO PLAYER VALUES ('Noobmaster2', NULL, NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'DefaultLogin2'))",
+                    "INSERT INTO PLAYER VALUES ('Noobmaster3', NULL, NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'DefaultLogin3'))",
+                    "INSERT INTO PLAYER VALUES ('Noobmaster4', NULL, NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'DefaultLogin4'))",
+                    "INSERT INTO PLAYER VALUES ('Noobmaster5', NULL, NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'DefaultLogin5'))",
                     // LOCATION
+                    "INSERT INTO LOCATION VALUES (1,0,200)",
+                    "INSERT INTO LOCATION VALUES (2,1,350)",
+                    "INSERT INTO LOCATION VALUES (3,2,201)",
+                    "INSERT INTO LOCATION VALUES (4,0,351)",
+                    "INSERT INTO LOCATION VALUES (5,1,202)",
+                    "INSERT INTO LOCATION VALUES (6,2,352)",
+                    "INSERT INTO LOCATION VALUES (7,0,203)",
+                    "INSERT INTO LOCATION VALUES (8,1,353)",
+                    "INSERT INTO LOCATION VALUES (9,2,204)",
+                    "INSERT INTO LOCATION VALUES (10,0,354)",
                     // P_CHARACTER
+                    "INSERT INTO P_CHARACTER VALUES ('Leeroy Jenkins', 10, 20, 20, 10, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Roy', 11, 21, 21, 11, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster2'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Moss', 12, 22, 22, 12, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster3'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Jen', 13, 23, 23, 13, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster4'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Douglas', 14, 24, 24, 14, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'))",
                     // LOCATION_EXITS_TO_LOCATION
+                    "INSERT INTO LOCATION_EXITS_TO_LOCATION VALUES ((SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1), (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO LOCATION_EXITS_TO_LOCATION VALUES ((SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3), (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO LOCATION_EXITS_TO_LOCATION VALUES ((SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5), (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 6))",
+                    "INSERT INTO LOCATION_EXITS_TO_LOCATION VALUES ((SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 7), (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 8))",
+                    "INSERT INTO LOCATION_EXITS_TO_LOCATION VALUES ((SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 9), (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 10))",
                     // CREATURE
+                    "INSERT INTO CREATURE VALUES (1,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (2,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (3,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (4,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (5,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
+                    "INSERT INTO CREATURE VALUES (6,177,25,44,27,39, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 6))",
+                    "INSERT INTO CREATURE VALUES (7,153,7,11,18,19, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 7))",
+                    "INSERT INTO CREATURE VALUES (8,178,26,45,28,40, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 8))",
+                    "INSERT INTO CREATURE VALUES (9,154,8,12,19,20, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 9))",
+                    "INSERT INTO CREATURE VALUES (10,179,27,46,29,41, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 10))",
                     // ABILITY
+                    "INSERT INTO ABILITY VALUES (1, 5, 10, 0, 0, 0, 0, (SELECT C.ID FROM CREATURE C WHERE C.ID = 1))",
+                    "INSERT INTO ABILITY VALUES (2, 10, 20, 1, 1, 5, 10, (SELECT C.ID FROM CREATURE C WHERE C.ID = 2))",
+                    "INSERT INTO ABILITY VALUES (3, 15, 30, 0, 2, 30, 3, (SELECT C.ID FROM CREATURE C WHERE C.ID = 3))",
+                    "INSERT INTO ABILITY VALUES (4, 20, 40, 1, 0, 40, 3, (SELECT C.ID FROM CREATURE C WHERE C.ID = 4))",
+                    "INSERT INTO ABILITY VALUES (5, 25, 50, 0, 1, 0, 0, (SELECT C.ID FROM CREATURE C WHERE C.ID = 5))",
                     // CREATURE_HAS_POSSIBLE_AREAS
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 1), 0)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 2), 1)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 3), 2)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 4), 0)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 5), 1)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 6), 2)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 7), 0)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 8), 1)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 9), 2)",
+                    "INSERT INTO CREATURE_HAS_POSSIBLE_AREAS VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 10), 0)",
                     // CREATURE_LIKES_HATES_PLAYER
+                    "INSERT INTO CREATURE_LIKES_HATES_PLAYER VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 1), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster'), 0)",
+                    "INSERT INTO CREATURE_LIKES_HATES_PLAYER VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 2), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster2'), 1)",
+                    "INSERT INTO CREATURE_LIKES_HATES_PLAYER VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 3), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster3'), 0)",
+                    "INSERT INTO CREATURE_LIKES_HATES_PLAYER VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 4), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster4'), 1)",
+                    "INSERT INTO CREATURE_LIKES_HATES_PLAYER VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 5), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'), 0)",
                     // CREATURE_LIKES_HATES_CREATURE
+                    "INSERT INTO CREATURE_LIKES_HATES_CREATURE VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 1), (SELECT C.ID FROM CREATURE C WHERE C.ID = 2), 1)",
+                    "INSERT INTO CREATURE_LIKES_HATES_CREATURE VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 3), (SELECT C.ID FROM CREATURE C WHERE C.ID = 4), 0)",
+                    "INSERT INTO CREATURE_LIKES_HATES_CREATURE VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 5), (SELECT C.ID FROM CREATURE C WHERE C.ID = 6), 1)",
+                    "INSERT INTO CREATURE_LIKES_HATES_CREATURE VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 7), (SELECT C.ID FROM CREATURE C WHERE C.ID = 8), 0)",
+                    "INSERT INTO CREATURE_LIKES_HATES_CREATURE VALUES ((SELECT C.ID FROM CREATURE C WHERE C.ID = 9), (SELECT C.ID FROM CREATURE C WHERE C.ID = 10), 1)",
                     // ITEM
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1, 1000, 500, 1, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (501, 7, 10, 2, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1001, 14, 15, 3, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1501, 20, 25, 4, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (2, 999, 499, 1, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (502, 8, 11, 2, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1002, 15, 16, 3, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1502, 21, 26, 4, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (3, 998, 498, 5, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (503, 9, 12, 6, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1003, 16, 17, 7, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1503, 22, 27, 8, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (4, 997, 497, 9, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (504, 10, 13, 10, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1004, 23, 28, NULL, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1504, 17, 18, NULL, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (5, 996, 496, NULL, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (505, 11, 14, NULL, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1005, 18, 19, NULL, NULL, NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1505, 24, 29, NULL, NULL, NULL)",
                     // CONTAINER
+                    "INSERT INTO CONTAINER VALUES (1, 1000, 500, (SELECT I.ID FROM ITEM I WHERE I.ID = 1))",
+                    "INSERT INTO CONTAINER VALUES (2, 999, 499, (SELECT I.ID FROM ITEM I WHERE I.ID = 2))",
+                    "INSERT INTO CONTAINER VALUES (3, 998, 498, (SELECT I.ID FROM ITEM I WHERE I.ID = 3))",
+                    "INSERT INTO CONTAINER VALUES (4, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 4))",
+                    "INSERT INTO CONTAINER VALUES (5, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 5))",
                     // ARMOR
+                    "INSERT INTO ARMOR VALUES (1, 0, 50, (SELECT I.ID FROM ITEM I WHERE I.ID = 501))",
+                    "INSERT INTO ARMOR VALUES (2, 1, 25, (SELECT I.ID FROM ITEM I WHERE I.ID = 502))",
+                    "INSERT INTO ARMOR VALUES (3, 2, 74, (SELECT I.ID FROM ITEM I WHERE I.ID = 503))",
+                    "INSERT INTO ARMOR VALUES (4, 3, 75, (SELECT I.ID FROM ITEM I WHERE I.ID = 504))",
+                    "INSERT INTO ARMOR VALUES (5, 2, 100, (SELECT I.ID FROM ITEM I WHERE I.ID = 505))",
                     // WEAPON
+                    "INSERT INTO WEAPON VALUES (1, (SELECT A.ID FROM ABILITY A WHERE A.ID = 1), (SELECT I.ID FROM ITEM I WHERE I.ID = 1001))",
+                    "INSERT INTO WEAPON VALUES (2, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1002))",
+                    "INSERT INTO WEAPON VALUES (3, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1003))",
+                    "INSERT INTO WEAPON VALUES (4, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1004))",
+                    "INSERT INTO WEAPON VALUES (5, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1005))",
                     // GENERIC_ITEM
+                    "INSERT INTO GENERIC_ITEM VALUES (1, (SELECT I.ID FROM ITEM I WHERE I.ID = 1501))",
+                    "INSERT INTO GENERIC_ITEM VALUES (2, (SELECT I.ID FROM ITEM I WHERE I.ID = 1502))",
+                    "INSERT INTO GENERIC_ITEM VALUES (3, (SELECT I.ID FROM ITEM I WHERE I.ID = 1503))",
+                    "INSERT INTO GENERIC_ITEM VALUES (4, (SELECT I.ID FROM ITEM I WHERE I.ID = 1504))",
+                    "INSERT INTO GENERIC_ITEM VALUES (5, (SELECT I.ID FROM ITEM I WHERE I.ID = 1505))"
             };
 
     for (int i = 0; i < insert_statements.length; i++) {
       insertData = new String(insert_statements[i]);
       stmt.executeUpdate(insertData);
-      System.out.println("inserted stuff " + i);
+      System.out.println("yeet "+ insert_statements[i]);
     }
 
   }
