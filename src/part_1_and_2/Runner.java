@@ -2,6 +2,9 @@ package part_1_and_2;
 
 import java.sql.*;
 
+import part_3.DisplayThree;
+import part_3.Display_4;
+
 
 /**
  * Contains all methods for accessing the databases, creating tables,
@@ -13,12 +16,14 @@ public class Runner {
    */
   public static void main(String[] args) throws Exception {
 
-    Runner runner = new Runner();
-
-    runner.dropAllTables();
-    runner.createAllTables();
-
-    runner.insertEverythingIntoTables();
+//    Runner runner = new Runner();
+//    runner.dropAllTables();
+//    runner.createAllTables();
+//
+//    runner.insertEverythingIntoTables();
+    
+    DisplayThree display3 = DisplayThree.getInstance();
+    Display_4 display4 = new Display_4();
 
     //use for testing
 //    runner.showTables();
