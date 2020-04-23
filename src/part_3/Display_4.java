@@ -2,17 +2,17 @@ package part_3;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Display_4 extends JFrame implements ActionListener
 {
   JPanel leftPanel, centerPanel, rightPanel;  // the three central panels
 
   JPanel L_login, C_items, R_items; // the three panel headings
-  JScrollPane L_list, C_list, R_list; // the lists for each panel
+  JScrollPane L_list; JPanel C_list, R_list; // the lists for each panel
   JButton selectCharacter, addItemsToCharacter, removeItemsFromCharacter; // the three main buttons
 
   String[] c = {"Roy", "Moss", "Richmond", "Jen", "Douglas"};
@@ -20,9 +20,11 @@ public class Display_4 extends JFrame implements ActionListener
 
   String[] i_o = {"Weapon", "Armor", "Generic Item", "Sword", "Container", "Beefy Sword"};
   JList items_center = new JList(i_o);
+  ArrayList<JButton> items_owned_info = new ArrayList<JButton>(i_o.length);
 
   String[] i_w = {"Armor", "Weapon", "Another Weapon", "Better Armor"};
   JList items_right = new JList(i_w);
+  ArrayList<JButton> items_worn_info = new ArrayList<JButton>(i_w.length);
 
   Color dark_pink = new Color(213 , 166 , 189);
   Color light_pink = new Color(234 , 209 , 220);
@@ -98,12 +100,12 @@ public class Display_4 extends JFrame implements ActionListener
     L_list.setBorder(blackBorder);
     leftPanel.add(L_list, BorderLayout.CENTER);
 
-    C_list = new JScrollPane(items_center);
+    C_list = new JPanel(new BorderLayout());
     C_list.setBackground(Color.white);
     C_list.setBorder(blackBorder);
     centerPanel.add(C_list, BorderLayout.CENTER);
 
-    R_list = new JScrollPane(items_right);
+    R_list = new JPanel(new BorderLayout());
     R_list.setBackground(Color.white);
     R_list.setBorder(blackBorder);
     rightPanel.add(R_list, BorderLayout.CENTER);
@@ -214,8 +216,43 @@ public class Display_4 extends JFrame implements ActionListener
 
   public void addPanelLists()
   {
-    //left panel
+    // left panel
 
+    // center panel list
+    JScrollPane center_list = new JScrollPane(items_center);
+    C_list.add(center_list, BorderLayout.CENTER);
+
+    // center panel info
+    JPanel info_middle = new JPanel();
+    info_middle.setBackground(Color.white);
+    BoxLayout info_layout = new BoxLayout(info_middle, BoxLayout.Y_AXIS);
+    info_middle.setLayout(info_layout);
+    for (int i = 0; i < i_o.length; i++) {
+      JButton info = new JButton("   . . .   ");
+      items_owned_info.add(i, info);
+      info.addActionListener(this);
+      info.setBackground(Color.white);
+      info.setBorder(blackBorder);
+      info_middle.add(info);
+    }
+    C_list.add(info_middle, BorderLayout.EAST);
+    // right panel
+    JScrollPane right_list = new JScrollPane(items_right);
+    R_list.add(right_list, BorderLayout.CENTER);
+
+    JPanel info_right = new JPanel();
+    info_right.setBackground(Color.white);
+    BoxLayout info_layout2 = new BoxLayout(info_right, BoxLayout.Y_AXIS);
+    info_right.setLayout(info_layout2);
+    for (int i = 0; i < i_w.length; i++) {
+      JButton info = new JButton("   . . .   ");
+      items_worn_info.add(i, info);
+      info.addActionListener(this);
+      info.setBackground(Color.white);
+      info.setBorder(blackBorder);
+      info_right.add(info);
+    }
+    R_list.add(info_right, BorderLayout.EAST);
   }
 
   public void addPanelButtons()
@@ -240,6 +277,12 @@ public class Display_4 extends JFrame implements ActionListener
     {
       removeItemsFromCharacter.setText("Items Removed");
       removeItemsFromCharacter.setBackground(light_pink);
+    } else if (event.getSource() == items_owned_info.get(0))
+    {
+      items_owned_info.get(0).setBackground(dark_pink);
+    } else if (event.getSource() == items_owned_info.get(1))
+    {
+      items_owned_info.get(1).setBackground(light_pink);
     }
   }
 }
