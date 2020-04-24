@@ -66,8 +66,9 @@ class Selector extends JPanel implements ActionListener {
 
 	private void addUpArrow() {
 		
-		Image upArrow = new ImageIcon(this.getClass().getResource("/UpArrow.PNG")).getImage()
+		Image upArrow = new ImageIcon("img/UpArrow.PNG").getImage()
 				.getScaledInstance((int)(WIDTH), HEIGHT / 7, Image.SCALE_SMOOTH);
+		
 		upArrowButton = new JButton("");
 		upArrowButton.setSize(WIDTH, HEIGHT / 8);
 		upArrowButton.setBorder(new LineBorder(Color.BLACK));
@@ -83,19 +84,19 @@ class Selector extends JPanel implements ActionListener {
 
 	private void addDownArrow() {
 		
-		Image downArrow = new ImageIcon(this.getClass().getResource("/downArrow.PNG")).getImage()
-				.getScaledInstance((int)(WIDTH), HEIGHT / 7, Image.SCALE_SMOOTH);
-		
-		downArrowButton = new JButton("");
-		downArrowButton.setSize(WIDTH, HEIGHT / 8);
-		downArrowButton.setBorder(new LineBorder(Color.BLACK));
-		downArrowButton.setIcon(new ImageIcon(downArrow));
-		
-		downArrowButton.setLocation(0, HEIGHT - downArrowButton.getHeight());
-		
-		downArrowButton.addActionListener(this);
-
-		this.add(downArrowButton);
+//		Image downArrow = new ImageIcon(this.getClass().getResource("img/downArrow.PNG")).getImage()
+//				.getScaledInstance((int)(WIDTH), HEIGHT / 7, Image.SCALE_SMOOTH);
+//		
+//		downArrowButton = new JButton("");
+//		downArrowButton.setSize(WIDTH, HEIGHT / 8);
+//		downArrowButton.setBorder(new LineBorder(Color.BLACK));
+//		downArrowButton.setIcon(new ImageIcon(downArrow));
+//		
+//		downArrowButton.setLocation(0, HEIGHT - downArrowButton.getHeight());
+//		
+//		downArrowButton.addActionListener(this);
+//
+//		this.add(downArrowButton);
 		
 	}
 
