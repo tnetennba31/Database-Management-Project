@@ -65,11 +65,11 @@ class Selector extends JPanel implements ActionListener {
 	
 
 	private void addUpArrow() {
-		
+
 		Image upArrow = new ImageIcon("img/UpArrow.PNG").getImage()
 				.getScaledInstance((int)(WIDTH), HEIGHT / 7, Image.SCALE_SMOOTH);
-		
-		upArrowButton = new JButton("");
+
+		upArrowButton = new JButton();
 		upArrowButton.setSize(WIDTH, HEIGHT / 8);
 		upArrowButton.setBorder(new LineBorder(Color.BLACK));
 		upArrowButton.setIcon(new ImageIcon(upArrow));
@@ -83,7 +83,7 @@ class Selector extends JPanel implements ActionListener {
 	}
 
 	private void addDownArrow() {
-		
+
 		Image downArrow = new ImageIcon("img/downArrow.PNG").getImage()
 				.getScaledInstance((int)(WIDTH), HEIGHT / 7, Image.SCALE_SMOOTH);
 		

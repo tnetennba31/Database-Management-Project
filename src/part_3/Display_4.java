@@ -20,11 +20,13 @@ public class Display_4 extends JFrame implements ActionListener
 
   String[] i_o = {"Weapon", "Armor", "Generic Item", "Sword", "Container", "Beefy Sword"};
   JList items_center = new JList(i_o);
-  ArrayList<JButton> items_owned_info = new ArrayList<JButton>(i_o.length);
+  ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(i_o.length);
+  ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(i_o.length);
 
   String[] i_w = {"Armor", "Weapon", "Another Weapon", "Better Armor"};
   JList items_right = new JList(i_w);
-  ArrayList<JButton> items_worn_info = new ArrayList<JButton>(i_w.length);
+  ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(i_w.length);
+  ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(i_w.length);
 
   Color dark_pink = new Color(213 , 166 , 189);
   Color light_pink = new Color(234 , 209 , 220);
@@ -46,6 +48,8 @@ public class Display_4 extends JFrame implements ActionListener
     formatButtons(); // format the button portion of each panel
     addPanelTitles(); // add the title content
     addPanelLists();  // add the list content
+    addCenterInfo();  // add the info buttons to the center panel
+    addRightInfo(); // add the info buttons to the right panel
     addPanelButtons();  // add the button content
 
     /**
@@ -222,31 +226,46 @@ public class Display_4 extends JFrame implements ActionListener
     JScrollPane center_list = new JScrollPane(items_center);
     C_list.add(center_list, BorderLayout.CENTER);
 
-    // center panel info
+    // right panel
+    JScrollPane right_list = new JScrollPane(items_right);
+    R_list.add(right_list, BorderLayout.CENTER);
+  }
+
+  public void addCenterInfo()
+  {
     JPanel info_middle = new JPanel();
     info_middle.setBackground(Color.white);
     BoxLayout info_layout = new BoxLayout(info_middle, BoxLayout.Y_AXIS);
     info_middle.setLayout(info_layout);
     for (int i = 0; i < i_o.length; i++) {
       JButton info = new JButton("   . . .   ");
-      items_owned_info.add(i, info);
       info.addActionListener(this);
       info.setBackground(Color.white);
       info.setBorder(blackBorder);
       info_middle.add(info);
+      items_owned_info_buttons.add(i, info);
+
+      JFrame window = new JFrame();
+      window.setDefaultCloseOperation(HIDE_ON_CLOSE);
+      window.setLayout(new GridLayout());
+      window.setLocationRelativeTo(items_owned_info_buttons.get(i));
+      JLabel stuff = new JLabel(i_o[i]);
+      stuff.setBackground(light_pink);
+      window.add(stuff);
+      items_owned_info_windows.add(i, window);
     }
     C_list.add(info_middle, BorderLayout.EAST);
-    // right panel
-    JScrollPane right_list = new JScrollPane(items_right);
-    R_list.add(right_list, BorderLayout.CENTER);
+  }
 
+  public void addRightInfo()
+  {
     JPanel info_right = new JPanel();
     info_right.setBackground(Color.white);
     BoxLayout info_layout2 = new BoxLayout(info_right, BoxLayout.Y_AXIS);
     info_right.setLayout(info_layout2);
     for (int i = 0; i < i_w.length; i++) {
       JButton info = new JButton("   . . .   ");
-      items_worn_info.add(i, info);
+      items_worn_info_buttons.add(i, info);
       info.addActionListener(this);
       info.setBackground(Color.white);
       info.setBorder(blackBorder);
@@ -277,12 +296,24 @@ public class Display_4 extends JFrame implements ActionListener
     {
       removeItemsFromCharacter.setText("Items Removed");
       removeItemsFromCharacter.setBackground(light_pink);
-    } else if (event.getSource() == items_owned_info.get(0))
-    {
-      items_owned_info.get(0).setBackground(dark_pink);
-    } else if (event.getSource() == items_owned_info.get(1))
-    {
-      items_owned_info.get(1).setBackground(light_pink);
+    } else {
+      for (int i = 0; i < i_o.length; i++) {
+        if (event.getSource() == items_owned_info_buttons.get(i))
+        {
+          items_owned_info_buttons.get(i).setBackground(dark_pink);
+          items_owned_info_windows.get(i).setVisible(true);
+        }
+      }
+      for (int i = 0; i < i_w.length; i++) {
+        if (event.getSource() == items_worn_info_buttons.get(i))
+        {
+          items_worn_info_buttons.get(i).setBackground(dark_pink);
+          items_worn_info_windows.get(i).setVisible(true);
+        }
+      }
+//      if(items_owned_info_windows.get(0).isVisible() == false) {
+//        items_worn_info_buttons.get(0).setBackground(Color.white);
+//      }
     }
   }
 }
