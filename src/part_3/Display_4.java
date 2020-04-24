@@ -5,6 +5,10 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Display_4 extends JFrame implements ActionListener
@@ -17,6 +21,11 @@ public class Display_4 extends JFrame implements ActionListener
 
   String[] c = {"Roy", "Moss", "Richmond", "Jen", "Douglas"};
   JList characters = new JList(c);
+
+  String[] container_stats = {"Container ID", "Item ID", "Volume Limit", "Weight Limit"};
+  String[] armor_stats = {"Armor ID", "Item ID", "Place", "Protection Amount"};
+  String[] weapon_stats = {"Weapon ID", "Item ID", "Ability ID"};
+  String[] generic_stats = {"Generic Item ID", "Item ID"};
 
   String[] i_o = {"Weapon", "Armor", "Generic Item", "Sword", "Container", "Beefy Sword"};
   JList items_center = new JList(i_o);
@@ -246,13 +255,24 @@ public class Display_4 extends JFrame implements ActionListener
       items_owned_info_buttons.add(i, info);
 
       JFrame window = new JFrame();
+      window.pack();
       window.setDefaultCloseOperation(HIDE_ON_CLOSE);
       window.setLayout(new GridLayout());
       window.setLocationRelativeTo(items_owned_info_buttons.get(i));
-      JLabel stuff = new JLabel(i_o[i]);
-      stuff.setBackground(light_pink);
-      window.add(stuff);
       items_owned_info_windows.add(i, window);
+
+      JPanel information = new JPanel(new GridLayout(4, 2));
+      information.setBackground(light_pink);
+      information.setBorder(blackBorder);
+      for (int x = 0; x < 4; x++) {
+        JLabel idk = new JLabel("   stuff"  + x);
+        idk.setBorder(blackBorder);
+        information.add(idk);
+        JLabel yeet = new JLabel("   stuff" + x + "hello");
+        yeet.setBorder(blackBorder);
+        information.add(yeet);
+      }
+      window.add(information);
     }
     C_list.add(info_middle, BorderLayout.EAST);
   }
@@ -272,6 +292,21 @@ public class Display_4 extends JFrame implements ActionListener
       info_right.add(info);
     }
     R_list.add(info_right, BorderLayout.EAST);
+  }
+
+  public ArrayList<String> storedProcedureGetInfo(String var) throws SQLException {
+    String sql = "CALL get_item_info(?)";
+    Connection m_dbConn = null;
+    CallableStatement stmt = m_dbConn.prepareCall(sql);
+    stmt.setString(1, var);
+    stmt.execute();
+    ResultSet set = stmt.getResultSet();
+    ArrayList<String> results = new ArrayList<>();
+    while (set.next()) {
+      String data = set.getString("Job");
+      results.add(data);
+    }
+    return results;
   }
 
   public void addPanelButtons()
