@@ -1,5 +1,6 @@
 package part_3;
 
+import javax.print.DocFlavor;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -67,6 +68,38 @@ public class Display_4 extends JFrame implements ActionListener
     pack();
     setVisible(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  }
+
+  public ArrayList<Integer> getItemsOwnedWithStoredProcedure(String character_name) throws SQLException {
+    String sql = "CALL get_items_owned(?)";
+    Connection m_dbConn = null;
+    CallableStatement stmt = m_dbConn.prepareCall(sql);
+    stmt.setString(1, character_name);
+    stmt.execute();
+    ResultSet setOwned = stmt.getResultSet();
+
+    ArrayList<Integer> items_owned = new ArrayList<>();
+    while (setOwned.next()) {
+      int data = setOwned.getInt("ID");
+      items_owned.add(data);
+    }
+    return items_owned;
+  }
+
+  public ArrayList<Integer> getItemsWornWithStoredProcedure(String character_name) throws SQLException {
+    String sql = "CALL get_items_worn(?)";
+    Connection m_dbConn = null;
+    CallableStatement stmt = m_dbConn.prepareCall(sql);
+    stmt.setString(1, character_name);
+    stmt.execute();
+    ResultSet setWorn = stmt.getResultSet();
+
+    ArrayList<Integer> items_worn = new ArrayList<>();
+    while(setWorn.next()) {
+      int data = setWorn.getInt("ID");
+      items_worn.add(data);
+    }
+    return items_worn;
   }
 
   private void createPanels()
@@ -292,21 +325,6 @@ public class Display_4 extends JFrame implements ActionListener
       info_right.add(info);
     }
     R_list.add(info_right, BorderLayout.EAST);
-  }
-
-  public ArrayList<String> storedProcedureGetInfo(String var) throws SQLException {
-    String sql = "CALL get_item_info(?)";
-    Connection m_dbConn = null;
-    CallableStatement stmt = m_dbConn.prepareCall(sql);
-    stmt.setString(1, var);
-    stmt.execute();
-    ResultSet set = stmt.getResultSet();
-    ArrayList<String> results = new ArrayList<>();
-    while (set.next()) {
-      String data = set.getString("Job");
-      results.add(data);
-    }
-    return results;
   }
 
   public void addPanelButtons()
