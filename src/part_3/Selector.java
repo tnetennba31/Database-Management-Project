@@ -87,7 +87,7 @@ class Selector extends JPanel implements ActionListener {
 		Image downArrow = new ImageIcon("img/downArrow.PNG").getImage()
 				.getScaledInstance((int)(WIDTH), HEIGHT / 7, Image.SCALE_SMOOTH);
 		
-		downArrowButton = new JButton("");
+		downArrowButton = new JButton();
 		downArrowButton.setSize(WIDTH, HEIGHT / 8);
 		downArrowButton.setBorder(new LineBorder(Color.BLACK));
 		downArrowButton.setIcon(new ImageIcon(downArrow));

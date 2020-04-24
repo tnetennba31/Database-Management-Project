@@ -71,6 +71,8 @@ public class DisplayThree extends JFrame implements ActionListener {
 	JTextPane usageInstructions;
 	JButton textButton, imageButton;
 	JLabel textLabel, imageLabel;
+	
+	JPanel roomSelector, creatureSelector, itemSelector;
 
 	public static DisplayThree getInstance() { 
         if (display == null) 
@@ -103,16 +105,16 @@ public class DisplayThree extends JFrame implements ActionListener {
 		//put rooms in vector
 		
 		
-		JPanel roomSelector = new Selector(this, rooms);
+		roomSelector = new Selector(this, rooms);
 		roomSelector.setBounds(ROOM_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(roomSelector);
 
 		
-		JPanel creatureSelector = new Selector(this, rooms);
+		creatureSelector = new CreatureSelector(this, rooms);
 		creatureSelector.setBounds(C_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(creatureSelector);
 		
-		JPanel itemSelector = new Selector(this, rooms);
+		itemSelector = new ItemSelector(this, rooms);
 		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(itemSelector);
 		
