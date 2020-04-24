@@ -21,7 +21,7 @@ public class Runner {
 //    runner.createAllTables();
 //
 //    runner.insertEverythingIntoTables();
-    
+    Runner.createStoredProcedure4();
     DisplayThree display3 = DisplayThree.getInstance();
     Display_4 display4 = new Display_4();
 
@@ -29,6 +29,12 @@ public class Runner {
 //    runner.showTables();
 //    runner.printAllRows("PERSON");
 
+  }
+
+  public static void createStoredProcedure4() throws SQLException {
+    Statement stmt = m_dbConn.createStatement();
+    String storedProcedure = new String("CREATE"); //TODO
+    stmt.executeUpdate(storedProcedure);
   }
 
   /**
@@ -43,7 +49,7 @@ public class Runner {
   /**
    * Connection variable that will be initialized in constructor
    */
-  protected Connection m_dbConn;
+  protected static Connection m_dbConn;
 
   /*
    * Constructor that initializes the connection to the database
