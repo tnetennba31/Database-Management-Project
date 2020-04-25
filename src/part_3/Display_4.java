@@ -5,14 +5,21 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
+@SuppressWarnings("ALL")
 public class Display_4 extends JFrame implements ActionListener
 {
+  ArrayList<String> characterList = new ArrayList<>();
+  JList characters;
+
+  ArrayList<Integer> itemsOwnedList = new ArrayList<>();
+  JList itemsOwned;
+
+  ArrayList<Integer> itemsWornList = new ArrayList<>();
+  JList itemsWorn;
+
   String[] container_stats = {"Container ID", "Item ID", "Volume Limit", "Weight Limit"};
   String[] armor_stats = {"Armor ID", "Item ID", "Place", "Protection Amount"};
   String[] weapon_stats = {"Weapon ID", "Item ID", "Ability ID"};
@@ -28,21 +35,29 @@ public class Display_4 extends JFrame implements ActionListener
   }
   public Display_4()
   {
+    // assign lists for SQL query results
+    characters = new JList((ListModel) characterList);
+    itemsOwned = new JList((ListModel) itemsOwnedList);
+    itemsWorn = new JList((ListModel) itemsWornList);
+
     // format window
     setLayout(new GridLayout(1, 3));
     setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 
+    // run left panel creation methods
     L_CreatePanel();
     L_CreateHeading();
     L_CreateCharacterList();
     L_CreateButton();
 
+    // run center panel creation methods
     C_CreatePanel();
     C_CreateHeading();
     C_CreateItemsOwnedList();
     C_CreateItemInfo();
     C_CreateButton();
 
+    // run right panel creation methods
     R_CreatePanel();
     R_CreateHeading();
     R_CreateItemsWornList();
@@ -54,45 +69,13 @@ public class Display_4 extends JFrame implements ActionListener
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  public ArrayList<Integer> getItemsOwnedWithStoredProcedure(String character_name) throws SQLException {
-    String sql = "CALL get_items_owned(?)";
-    Connection m_dbConn = null;
-    CallableStatement stmt = m_dbConn.prepareCall(sql);
-    stmt.setString(1, character_name);
-    stmt.execute();
-    ResultSet setOwned = stmt.getResultSet();
 
-    ArrayList<Integer> items_owned = new ArrayList<>();
-    while (setOwned.next()) {
-      int data = setOwned.getInt("ID");
-      items_owned.add(data);
-    }
-    return items_owned;
-  }
-
-  public ArrayList<Integer> getItemsWornWithStoredProcedure(String character_name) throws SQLException {
-    String sql = "CALL get_items_worn(?)";
-    Connection m_dbConn = null;
-    CallableStatement stmt = m_dbConn.prepareCall(sql);
-    stmt.setString(1, character_name);
-    stmt.execute();
-    ResultSet setWorn = stmt.getResultSet();
-
-    ArrayList<Integer> items_worn = new ArrayList<>();
-    while(setWorn.next()) {
-      int data = setWorn.getInt("ID");
-      items_worn.add(data);
-    }
-    return items_worn;
-  }
+  //----------------- LEFT PANEL ------------------------------------------//
 
   JPanel leftPanel, L_Heading;
   JTextField L_Login;
   JScrollPane L_ListScrollPane;
   JButton selectCharacterButton;
-
-  String[] c = {"Roy", "Moss", "Richmond", "Jen", "Douglas"};
-  JList characters = new JList(c);
 
   public void L_CreatePanel()
   {
@@ -135,6 +118,7 @@ public class Display_4 extends JFrame implements ActionListener
     south.setBackground(dark_pink);
     background.add(south, BorderLayout.SOUTH);
     L_Login = new JTextField();
+    L_Login.addActionListener(this);
     background.add(L_Login, BorderLayout.CENTER);
     L_Heading.add(background);
 
@@ -164,14 +148,14 @@ public class Display_4 extends JFrame implements ActionListener
   }
 
 
+  //----------------- CENTER PANEL ------------------------------------------//
+
   JPanel centerPanel, C_Heading, C_ListPanel, C_InformationPanel;
   JScrollPane C_ListScrollPane;
   JButton addItemsToCharacterButton;
 
-  String[] i_o = {"Weapon", "Armor", "Generic Item", "Sword", "Container", "Beefy Sword"};
-  JList items_center = new JList(i_o);
-  ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(i_o.length);
-  ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(i_o.length);
+  ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(itemsOwnedList.size());
+  ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(itemsOwnedList.size());
 
   public void C_CreatePanel()
   {
@@ -226,8 +210,8 @@ public class Display_4 extends JFrame implements ActionListener
     centerPanel.add(C_ListPanel, BorderLayout.CENTER);
 
     // scroll pane list
-    C_ListScrollPane = new JScrollPane(items_center);
-    items_center.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    C_ListScrollPane = new JScrollPane(itemsOwned);
+    itemsOwned.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     C_ListPanel.add(C_ListScrollPane, BorderLayout.CENTER);
   }
 
@@ -240,7 +224,7 @@ public class Display_4 extends JFrame implements ActionListener
     infoPanel.setLayout(info_layout);
 
     // make an info button for each item in the list
-    for (int i = 0; i < i_o.length; i++) {
+    for (int i = 0; i < itemsOwnedList.size(); i++) {
       // fill the panel with buttons
       JButton infoButton = new JButton("    .  .  .     ");
       infoButton.addActionListener(this);
@@ -289,14 +273,14 @@ public class Display_4 extends JFrame implements ActionListener
   }
 
 
+  //----------------- RIGHT PANEL ------------------------------------------//
+
   JPanel rightPanel, R_Heading, R_ListPanel, R_InformationPanel;
   JScrollPane R_ListScrollPane;
   JButton removeItemsFromCharacterButton;
 
-  String[] i_w = {"Armor", "Weapon", "Another Weapon", "Better Armor"};
-  JList items_right = new JList(i_w);
-  ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(i_w.length);
-  ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(i_w.length);
+  ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(itemsWornList.size());
+  ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(itemsWornList.size());
 
   public void R_CreatePanel()
   {
@@ -351,8 +335,8 @@ public class Display_4 extends JFrame implements ActionListener
     rightPanel.add(R_ListPanel, BorderLayout.CENTER);
 
     // scroll pane list
-    R_ListScrollPane = new JScrollPane(items_right);
-    items_right.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    R_ListScrollPane = new JScrollPane(itemsWorn);
+    itemsWorn.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     R_ListPanel.add(R_ListScrollPane, BorderLayout.CENTER);
   }
 
@@ -365,7 +349,7 @@ public class Display_4 extends JFrame implements ActionListener
     infoPanel.setLayout(info_layout);
 
     // make info button for each item in the list
-    for (int i = 0; i < i_w.length; i++) {
+    for (int i = 0; i < itemsWornList.size(); i++) {
       // fill the panel with buttons
       JButton infoButton = new JButton("    .  .  .     ");
       items_worn_info_buttons.add(i, infoButton);
@@ -412,21 +396,41 @@ public class Display_4 extends JFrame implements ActionListener
     rightPanel.add(removeItemsFromCharacterButton, BorderLayout.SOUTH);
   }
 
+
+  //----------------- ACTION LISTENER ------------------------------------------//
+
   @Override
   public void actionPerformed(ActionEvent event) {
-    if (event.getSource() == selectCharacterButton) {
+    if (event.getSource() == L_Login) {
+      String player_login = L_Login.getText();
+      try {
+        getCharactersWithStoredProcedure(player_login);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
+      }
+    } else if (event.getSource() == selectCharacterButton) {
       String character = (String) characters.getSelectedValue();
       selectCharacterButton.setText("Character Selected: " + character);
       selectCharacterButton.setBackground(light_pink);
+      try {
+        getItemsOwnedWithStoredProcedure(character);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
+      }
+      try {
+        getItemsWornWithStoredProcedure(character);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
+      }
     } else if (event.getSource() == addItemsToCharacterButton) {
-      int[] stuff = items_center.getSelectedIndices();
-      switch_item_to_worn((String) items_center.getSelectedValue());
+      int[] stuff = itemsOwned.getSelectedIndices();
+      switch_item_to_worn((String) itemsOwned.getSelectedValue());
       //TODO
     } else if (event.getSource() == removeItemsFromCharacterButton) {
-      switch_item_to_owned((String) items_right.getSelectedValue());
+      switch_item_to_owned((String) itemsWorn.getSelectedValue());
       //TODO
     } else {
-      for (int i = 0; i < i_o.length; i++) {
+      for (int i = 0; i < itemsOwnedList.size(); i++) {
         if (event.getSource() == items_owned_info_buttons.get(i)) {
           items_owned_info_buttons.get(i).setBackground(dark_pink);
           items_owned_info_windows.get(i).setVisible(true);
@@ -435,7 +439,7 @@ public class Display_4 extends JFrame implements ActionListener
           }
         }
       }
-      for (int i = 0; i < i_w.length; i++) {
+      for (int i = 0; i < itemsWornList.size(); i++) {
         if (event.getSource() == items_worn_info_buttons.get(i)) {
           items_worn_info_buttons.get(i).setBackground(dark_pink);
           items_worn_info_windows.get(i).setVisible(true);
@@ -444,6 +448,54 @@ public class Display_4 extends JFrame implements ActionListener
           }
         }
       }
+    }
+  }
+
+
+  //----------------- SQL STUFF ------------------------------------------//
+
+  private void getCharactersWithStoredProcedure(String player_login) throws SQLException {
+    String sql = "CALL get_characters(?)";
+    Connection m_dbConn = null;
+    assert false;
+    CallableStatement stmt = m_dbConn.prepareCall(sql);
+    stmt.setString(1, player_login);
+    stmt.execute();
+    ResultSet characterSet = stmt.getResultSet();
+
+    while (characterSet.next()) {
+      String name = characterSet.getString("C_Name");
+      characterList.add(name);
+    }
+  }
+
+  public void getItemsOwnedWithStoredProcedure(String character_name) throws SQLException {
+    String sql = "CALL get_items_owned(?)";
+    Connection m_dbConn = null;
+    assert false;
+    CallableStatement stmt = m_dbConn.prepareCall(sql);
+    stmt.setString(1, character_name);
+    stmt.execute();
+    ResultSet setOwned = stmt.getResultSet();
+
+    while (setOwned.next()) {
+      int data = setOwned.getInt("ID");
+      itemsOwnedList.add(data);
+    }
+  }
+
+  public void getItemsWornWithStoredProcedure(String character_name) throws SQLException {
+    String sql = "CALL get_items_worn(?)";
+    Connection m_dbConn = null;
+    assert false;
+    CallableStatement stmt = m_dbConn.prepareCall(sql);
+    stmt.setString(1, character_name);
+    stmt.execute();
+    ResultSet setWorn = stmt.getResultSet();
+
+    while(setWorn.next()) {
+      int data = setWorn.getInt("ID");
+      itemsWornList.add(data);
     }
   }
 

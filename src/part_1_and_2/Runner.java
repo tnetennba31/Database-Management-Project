@@ -35,10 +35,12 @@ public class Runner {
     Statement stmt = m_dbConn.createStatement();
     String changeDelimiter = new String("DELIMITER //");
     stmt.executeUpdate(changeDelimiter);
-    String storedProcedure1 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE  O_Name = cname AND W_Name = NULL; END//");
+    String storedProcedure1 = new String("CREATE PROCEDURE get_characters (IN player_login VARCHAR(16)) BEGIN SELECT C_Name FROM P_CHARACTER WHERE P_Login = player_login; END//");
     stmt.executeUpdate(storedProcedure1);
-    String storedProcedure2 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END//");
+    String storedProcedure2 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE O_Name = cname AND W_Name = NULL; END//");
     stmt.executeUpdate(storedProcedure2);
+    String storedProcedure3 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END//");
+    stmt.executeUpdate(storedProcedure3);
     String changeDelimiterAgain = new String("DELIMITER ;");
     stmt.executeUpdate(changeDelimiterAgain);
   }
