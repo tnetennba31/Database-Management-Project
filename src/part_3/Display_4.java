@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -24,10 +25,6 @@ public class Display_4 extends JFrame implements ActionListener
   ArrayList<Integer> itemsWornList = new ArrayList<>();
   JList itemsWorn;
 
-  String[] container_stats = {"Container ID", "Item ID", "Volume Limit", "Weight Limit"};
-  String[] armor_stats = {"Armor ID", "Item ID", "Place", "Protection Amount"};
-  String[] weapon_stats = {"Weapon ID", "Item ID", "Ability ID"};
-  String[] generic_stats = {"Generic Item ID", "Item ID"};
   ArrayList<Integer> itemsOwnedIDs = new ArrayList<>();
   ArrayList<Integer> itemsWornIDs = new ArrayList<>();
 
@@ -248,18 +245,21 @@ public class Display_4 extends JFrame implements ActionListener
       items_owned_info_windows.add(i, window);  // add window to list to keep track
 
       // add information to each window
-      C_InformationPanel = new JPanel(new GridLayout(4, 2));
+      // TODO
+      ArrayList<String> itemAttributes = getItemType(itemsOwnedIDs.get(i));
+      C_InformationPanel = new JPanel(new GridLayout(itemAttributes.size(), 2));
       C_InformationPanel.setBackground(light_pink);
       C_InformationPanel.setBorder(blackBorder);
       for (int x = 0; x < 4; x++)
       {
         // attribute title in left block
-        JLabel idk = new JLabel("   stuff"  + x);
+        JLabel idk = new JLabel("   "  + itemAttributes.get(x));
         idk.setBorder(blackBorder);
         C_InformationPanel.add(idk);
 
         // attribute value in right block
-        JLabel yeet = new JLabel("   stuff" + x + "hello");
+        int value = getAttributeValue(itemsOwnedIDs.get(i), itemAttributes.get(x));
+        JLabel yeet = new JLabel("   " + value);
         yeet.setBorder(blackBorder);
         C_InformationPanel.add(yeet);
       }
@@ -473,6 +473,30 @@ public class Display_4 extends JFrame implements ActionListener
   }
 
 
+  //----------------- MISCELLANEOUS ------------------------------------------//
+
+  public ArrayList<String> getItemType(int item_id)
+  {
+    String[] container_atts = {"Container ID", "Item ID", "Volume Limit", "Weight Limit"};
+    String[] armor_atts = {"Armor ID", "Item ID", "Place", "Protection Amount"};
+    String[] weapon_atts = {"Weapon ID", "Item ID", "Ability ID"};
+    String[] generic_atts = {"Generic Item ID", "Item ID"};
+    ArrayList<String> type_attributes = null;
+
+    if (1 <= item_id && item_id <= 500) {
+      type_attributes = new ArrayList<>(Arrays.asList(container_atts));
+    } else if (501 <= item_id && item_id <= 1000) {
+      type_attributes = new ArrayList<>(Arrays.asList(armor_atts));
+    } else if (1001 <= item_id && item_id <= 1500) {
+      type_attributes = new ArrayList<>(Arrays.asList(weapon_atts));
+    } else if (1501 <= item_id && item_id <= 2000) {
+      type_attributes = new ArrayList<>(Arrays.asList(generic_atts));
+    }
+
+    return type_attributes;
+  }
+
+
   //----------------- SQL STUFF ------------------------------------------//
 
   private void getCharactersWithStoredProcedure(String player_login) throws SQLException {
@@ -540,5 +564,10 @@ public class Display_4 extends JFrame implements ActionListener
       stmt.setInt(1, item_IDs.get(i));
       stmt.execute();
     }
+  }
+
+  public int getAttributeValue(int itemID, String attributeName)
+  {
+    //TODO
   }
 }
