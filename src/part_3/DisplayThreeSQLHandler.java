@@ -32,7 +32,7 @@ public class DisplayThreeSQLHandler {
 			
 			while (rs.next()) {
 				
-				String data = rs.getNString("Creature");
+				String data = rs.getString("ID");//getNString(1);
 				result.add(data);
 			}
 
@@ -67,19 +67,29 @@ public class DisplayThreeSQLHandler {
 
 	public static void setStoredProcedures() {
 		
-	    Statement stmt;
+	    //Statement stmt;
 		try {
-			stmt = connection.createStatement();
-		    String changeDelimiter = new String("DELIMITER //");
-		    stmt.executeUpdate(changeDelimiter);
-		    String storedProcedure1 = new String("CREATE PROCEDURE get_creatures (IN n int)"
-		    		+ " BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END//");
-		    stmt.executeUpdate(storedProcedure1);
-//		    String storedProcedure2 = new String("CREATE PROCEDURE get_items (IN n int)"
-//		    		+ " BEGIN SELECT * FROM ITEM WHERE L_ID = n; END//");
-//		    stmt.executeUpdate(storedProcedure2);
-		    String changeDelimiterBack = new String("DELIMITER ;");
-		    stmt.executeUpdate(changeDelimiterBack);
+			//stmt = connection.createStatement();
+            String selectData = "DROP PROCEDURE IF EXISTS get_creatures";
+            PreparedStatement stmt = connection.prepareStatement(selectData);
+			stmt.execute();
+			
+            selectData = "CREATE PROCEDURE get_creatures(IN n INT) BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END";
+            stmt = connection.prepareStatement(selectData);
+			stmt.execute();
+			
+////			String statement = "DELIMITER // CREATE PROCEDURE get_creatures(IN n INT) BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END//";
+////			stmt.executeUpdate(statement);
+//		    String changeDelimiter = new String("DELIMITER //");
+//		    stmt.executeUpdate(changeDelimiter);
+//		    String storedProcedure1 = new String("CREATE PROCEDURE get_creatures(IN n INT)"
+//		    		+ " BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END//");
+//		    stmt.executeUpdate(storedProcedure1);
+////		    String storedProcedure2 = new String("CREATE PROCEDURE get_items (IN n int)"
+////		    		+ " BEGIN SELECT * FROM ITEM WHERE L_ID = n; END//");
+////		    stmt.executeUpdate(storedProcedure2);
+//		    String changeDelimiterBack = new String("DELIMITER ;");
+//		    stmt.executeUpdate(changeDelimiterBack);
 		    
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

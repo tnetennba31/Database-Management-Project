@@ -133,6 +133,8 @@ class Selector extends JPanel implements ActionListener {
 		
 		if (e.getSource() == upArrowButton) {
 			
+			Vector<String> s = DisplayThreeSQLHandler.getCreaturesInRoom(1);
+			for (String str : s) {System.out.println(str);}
 			scrollUp();
 						
 
