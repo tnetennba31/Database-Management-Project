@@ -21,7 +21,7 @@ public class Runner {
 //    runner.createAllTables();
 //
 //    runner.insertEverythingIntoTables();
-    Runner.createStoredProcedure4();
+    Runner.createStoredProcedures4();
     DisplayThree display3 = DisplayThree.getInstance();
     Display_4 display4 = new Display_4();
 
@@ -31,10 +31,16 @@ public class Runner {
 
   }
 
-  public static void createStoredProcedure4() throws SQLException {
+  public static void createStoredProcedures4() throws SQLException {
     Statement stmt = m_dbConn.createStatement();
-    String storedProcedure = new String("CREATE"); //TODO
-    stmt.executeUpdate(storedProcedure);
+    String changeDelimiter = new String("DELIMITER //");
+    stmt.executeUpdate(changeDelimiter);
+    String storedProcedure1 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE  O_Name = cname AND W_Name = NULL; END//");
+    stmt.executeUpdate(storedProcedure1);
+    String storedProcedure2 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END//");
+    stmt.executeUpdate(storedProcedure2);
+    String changeDelimiterAgain = new String("DELIMITER ;");
+    stmt.executeUpdate(changeDelimiterAgain);
   }
 
   /**
