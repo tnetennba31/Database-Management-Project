@@ -59,20 +59,35 @@ public class DisplayThree extends JFrame implements ActionListener {
 	C_LABEL_X = C_SELECTOR_X,	
 	I_LABEL_X = I_SELECTOR_X,
 	ADD_LABEL_X = ADDING_BOX_X,
-	DELETE_BUTTON_Y = OFFSET * 6,
-	DELETE_BUTTON_WIDTH = OFFSET * 3,
-	DELETE_BUTTON_HEIGHT = OFFSET * 6,
-	C_DELETE_BUTTON_X = C_SELECTOR_X,
-	I_DELETE_BUTTON_X = I_SELECTOR_X,
+	DELETE_BUTTON_Y = (OFFSET * 6) + (OFFSET / 4),
+	DELETE_BUTTON_WIDTH = OFFSET * 2,
+	DELETE_BUTTON_HEIGHT = OFFSET / 2,
+	C_DELETE_BUTTON_X = C_SELECTOR_X + (OFFSET / 2),
+	I_DELETE_BUTTON_X = I_SELECTOR_X + (OFFSET / 2),
 	ADD_BUTTON_DIAMETER = ADDING_BOX_X,
 	ADD_BUTTON_X = ADDING_BOX_X,
 	ADD_BUTTON_Y = OFFSET * 7;		                			                
 			                			              			              
 	JTextPane usageInstructions;
-	JButton textButton, imageButton;
-	JLabel textLabel, imageLabel;
+//	JButton textButton, imageButton;
+//	JLabel textLabel, imageLabel;
 	
-	JPanel roomSelector, creatureSelector, itemSelector;
+	JButton deleteCreatureButton;
+	JButton deleteItemButton;
+	
+	Selector roomSelector;
+	CreatureSelector creatureSelector;
+	ItemSelector itemSelector;
+	
+	public int selectedRoomID;
+	Vector<String> rooms = new Vector<String>();
+	Vector<String> creaturesInRoom = new Vector<String>();
+	Vector<String> itemsInRoom = new Vector<String>();
+	
+	Vector<String> testV1 = new Vector<String>();
+	Vector<String> testV2 = new Vector<String>();
+
+
 
 	public static DisplayThree getInstance() { 
         if (display == null) 
@@ -93,13 +108,41 @@ public class DisplayThree extends JFrame implements ActionListener {
 		usageInstructions.setBorder(new LineBorder(Color.BLACK));
 		add(usageInstructions);
 		
-		Vector<String> rooms = new Vector<String>();
+		
 		rooms.add("one");
 		rooms.add("two");
 		rooms.add("three");
 		rooms.add("four");
 		rooms.add("five");
 		rooms.add("six");
+		
+		
+		testV1.add("creature 1");
+		testV1.add("creature 2");
+		testV1.add("creature 3");
+		testV1.add("creature 4");
+		testV1.add("creature 5");
+		testV1.add("creature 6");
+		
+		
+		testV2.add("item 1");
+		testV2.add("item 2");
+		testV2.add("item 3");
+		testV2.add("item 4");
+		testV2.add("item 5");
+		testV2.add("item 6");
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		//put rooms in vector
@@ -110,15 +153,26 @@ public class DisplayThree extends JFrame implements ActionListener {
 		add(roomSelector);
 
 		
-		creatureSelector = new CreatureSelector(this, rooms);
+		creatureSelector = new CreatureSelector(this, testV1);
 		creatureSelector.setBounds(C_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(creatureSelector);
+		
 		
 		itemSelector = new ItemSelector(this, rooms);
 		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(itemSelector);
 		
+		
+		deleteCreatureButton = new JButton("Del"); //TODO: make it an image instead
+		deleteCreatureButton.setBounds(C_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
+		deleteCreatureButton.addActionListener(this);
+		add(deleteCreatureButton);
+		
 
+		deleteItemButton = new JButton("Del"); //TODO: make it an image instead
+		deleteItemButton.setBounds(I_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
+		deleteItemButton.addActionListener(this);
+		add(deleteItemButton);
 		
 		
 		setSize((int) WINDOW_WIDTH, (int) WINDOW_HEIGHT);
@@ -129,23 +183,18 @@ public class DisplayThree extends JFrame implements ActionListener {
 	
 	
 
-	public ImageIcon createImage() {
-		
-		BufferedImage exampleImage = new BufferedImage(50,50,BufferedImage.TYPE_3BYTE_BGR);
-		
-		Graphics drawer = exampleImage.getGraphics();   
-	
-		
-		drawer.setColor(new Color(200,200,200));   
-		drawer.fillRect(0, 0, 50, 50);        
-		drawer.setColor(new Color(0,255,0));        
-		drawer.fillOval(20, 20, 10, 10);
-		
-		return new ImageIcon(exampleImage);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		if (event.getSource() == deleteCreatureButton) {
+
+			creatureSelector.deleteSelectedAndRefresh();
+									
+		} else if (event.getSource() == deleteItemButton) {
+
+			itemSelector.deleteSelectedAndRefresh();
+									
+		}
+		//if delete button is pressed, 
 //		if (event.getSource()) {
 //			textButton.setText("Pushed");    
 //			
@@ -155,11 +204,20 @@ public class DisplayThree extends JFrame implements ActionListener {
 //		}
 	}
 	
-	
+	public void changeSelectedRoom(int selectedRoom) {
+		this.selectedRoomID = selectedRoom;
+		
+		//creaturesInRoom = DisplayThreeSQLHandler.getVectorOfCreaturesInRoom(selectedRoomID);
+		creaturesInRoom = testV2; //also for item
+		creatureSelector.changeContentsToNewRoom(creaturesInRoom);
+		
+	}
 	
 	private String getInstructionString() {
 		return "[instructions]";
 	}
+
+
 
 }
 
@@ -237,6 +295,23 @@ setVisible(true);
 
 
 
+
+
+
+	public ImageIcon createImage() {
+		
+		BufferedImage exampleImage = new BufferedImage(50,50,BufferedImage.TYPE_3BYTE_BGR);
+		
+		Graphics drawer = exampleImage.getGraphics();   
+	
+		
+		drawer.setColor(new Color(200,200,200));   
+		drawer.fillRect(0, 0, 50, 50);        
+		drawer.setColor(new Color(0,255,0));        
+		drawer.fillOval(20, 20, 10, 10);
+		
+		return new ImageIcon(exampleImage);
+	}
 
 
 

@@ -29,12 +29,13 @@ class Selector extends JPanel implements ActionListener {
 	public static final int WIDTH = DisplayThree.SELECTOR_WIDTH;
 	public static final int HEIGHT = DisplayThree.SELECTOR_HEIGHT;
 	
-	private JButton[] middleButtons = new JButton[4];
-	private int[] itemsVisible = {0, 1, 2, 3};
+	protected JButton[] middleButtons = new JButton[4];
+	protected int[] itemsVisible = {0, 1, 2, 3};
 	
 	JButton upArrowButton, downArrowButton;
 	
-	private Vector<String> thingsInColumn;
+	protected static int selectedRoom;
+	protected Vector<String> thingsInColumn;
 	
 	public Selector(JFrame frame, Vector<String> thingsInColumn) {
 		
@@ -100,7 +101,7 @@ class Selector extends JPanel implements ActionListener {
 		
 	}
 
-	private void assignColumnItemsToButton() {
+	protected void assignColumnItemsToButton() {
 		
 //		for (JButton j : middleButtons) {
 //			j.
@@ -138,12 +139,29 @@ class Selector extends JPanel implements ActionListener {
 		} else if (e.getSource() == downArrowButton) {
 
 			scrollDown();
+			
+		} else if (e.getSource() == middleButtons[0]) {
+			//DisplayThree.getInstance().changeCreatureSelector(thingsInColumn.get(itemsVisible[0]));
+			
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+			//DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+			
+
+		} else if (e.getSource() == middleButtons[1]) {
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+
+		} else if (e.getSource() == middleButtons[2]) {
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+
+		} else if (e.getSource() == middleButtons[3]) {
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+
 		}
 	}
 
 
 
-	private void scrollUp() {
+	protected void scrollUp() {
 		
 		if (itemsVisible[0] != 0) {
 			
@@ -159,7 +177,7 @@ class Selector extends JPanel implements ActionListener {
 	}
 	
 
-	private void scrollDown() {
+	protected void scrollDown() {
 		
 		if (itemsVisible[3] != thingsInColumn.size() - 1) {
 			
@@ -169,6 +187,7 @@ class Selector extends JPanel implements ActionListener {
 			
 			
 			for (int i = 0; i <=3; i++) {
+				//TODO: if (itemsVisible.length >= 3) {}      //add ability to display less than 4 items correctly
 				middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
 			}
 		}
