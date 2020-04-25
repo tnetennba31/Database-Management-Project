@@ -22,11 +22,11 @@ public class Runner {
     runner.createAllTables();
 
     runner.insertEverythingIntoTables();
-	Runner.createStoredProcedures4();
-	DisplayThreeSQLHandler.setConnection(m_dbConn);
-	DisplayThreeSQLHandler.setStoredProcedures();
-	DisplayThree display3 = DisplayThree.getInstance();
-	Display_4 display4 = new Display_4();
+	  Runner.createStoredProcedures4();
+//	  DisplayThreeSQLHandler.setConnection(m_dbConn);
+//	  DisplayThreeSQLHandler.setStoredProcedures();
+//	  DisplayThree display3 = DisplayThree.getInstance();
+	  Display_4 display4 = new Display_4();
 	  
 
 
@@ -38,15 +38,15 @@ public class Runner {
 
   public static void createStoredProcedures4() throws SQLException {
     Statement stmt = m_dbConn.createStatement();
-    String storedProcedure1 = new String("CREATE PROCEDURE get_characters (IN player_login VARCHAR(16)) BEGIN SELECT C_Name FROM P_CHARACTER WHERE P_Login = player_login; END//");
+    String storedProcedure1 = new String("CREATE PROCEDURE get_characters (IN player_login VARCHAR(16)) BEGIN SELECT C_Name FROM P_CHARACTER WHERE P_Login = player_login; END");
     stmt.executeUpdate(storedProcedure1);
-    String storedProcedure2 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE O_Name = cname AND W_Name = NULL; END//");
+    String storedProcedure2 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE O_Name = cname AND W_Name = NULL; END");
     stmt.executeUpdate(storedProcedure2);
-    String storedProcedure3 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END//");
+    String storedProcedure3 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END");
     stmt.executeUpdate(storedProcedure3);
-    String storedProcedure4 = new String("CREATE PROCEDURE switch_item_to_worn (IN id INT) BEGIN UPDATE ITEM SET W_Name = O_Name WHERE ID = id; END//");
+    String storedProcedure4 = new String("CREATE PROCEDURE switch_item_to_worn (IN id INT) BEGIN UPDATE ITEM SET W_Name = O_Name WHERE ID = id; END");
     stmt.executeUpdate(storedProcedure4);
-    String storedProcedure5 = new String("CREATE PROCEDURE switch_item_to_used (IN id INT) BEGIN UPDATE ITEM SET W_Name = NULL WHERE ID = id; END//");
+    String storedProcedure5 = new String("CREATE PROCEDURE switch_item_to_used (IN id INT) BEGIN UPDATE ITEM SET W_Name = NULL WHERE ID = id; END");
     stmt.executeUpdate(storedProcedure5);
   }
 

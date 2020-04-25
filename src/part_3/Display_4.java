@@ -35,9 +35,9 @@ public class Display_4 extends JFrame implements ActionListener
   }
   public Display_4() throws SQLException {
     // assign lists for SQL query results
-    characters = new JList((ListModel) characterList);
-    itemsOwned = new JList((ListModel) itemsOwnedList);
-    itemsWorn = new JList((ListModel) itemsWornList);
+    characters = new JList(characterList.toArray());
+    itemsOwned = new JList(itemsOwnedList.toArray());
+    itemsWorn = new JList(itemsWornList.toArray());
 
     // format window
     setLayout(new GridLayout(1, 3));
