@@ -1,5 +1,7 @@
 package part_3;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -7,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 @SuppressWarnings("ALL")
 public class Display_4 extends JFrame implements ActionListener
@@ -24,6 +28,8 @@ public class Display_4 extends JFrame implements ActionListener
   String[] armor_stats = {"Armor ID", "Item ID", "Place", "Protection Amount"};
   String[] weapon_stats = {"Weapon ID", "Item ID", "Ability ID"};
   String[] generic_stats = {"Generic Item ID", "Item ID"};
+  ArrayList<Integer> itemsOwnedIDs = new ArrayList<>();
+  ArrayList<Integer> itemsWornIDs = new ArrayList<>();
 
   Color dark_pink = new Color(213 , 166 , 189);
   Color light_pink = new Color(234 , 209 , 220);
@@ -424,11 +430,26 @@ public class Display_4 extends JFrame implements ActionListener
       }
     } else if (event.getSource() == addItemsToCharacterButton) {
       int[] stuff = itemsOwned.getSelectedIndices();
-      switch_item_to_worn((String) itemsOwned.getSelectedValue());
-      //TODO
+      ArrayList<Integer> itemsToSwitch = new ArrayList<>();
+      for (int i = 0; i < stuff.length; i++) {
+        itemsToSwitch.add(itemsOwnedIDs.get(stuff[i]));
+      }
+      try {
+        switchItemToWornWithStoredProcedure(itemsToSwitch);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
+      }
     } else if (event.getSource() == removeItemsFromCharacterButton) {
-      switch_item_to_owned((String) itemsWorn.getSelectedValue());
-      //TODO
+      int[] stuff = itemsWorn.getSelectedIndices();
+      ArrayList<Integer> itemsToSwitch = new ArrayList<>();
+      for (int i = 0; i < stuff.length; i++) {
+        itemsToSwitch.add(itemsWornIDs.get(stuff[i]));
+      }
+      try {
+        switchItemToOwnedWithStoredProcedure(itemsToSwitch);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
+      }
     } else {
       for (int i = 0; i < itemsOwnedList.size(); i++) {
         if (event.getSource() == items_owned_info_buttons.get(i)) {
@@ -499,13 +520,25 @@ public class Display_4 extends JFrame implements ActionListener
     }
   }
 
-  public void switch_item_to_worn(String selectedValue)
-  {
-    //TODO
+  public void switchItemToWornWithStoredProcedure(@NotNull ArrayList<Integer> item_IDs) throws SQLException {
+    String sql = "CALL switch_item_to_worn(?)";
+    Connection m_dbConn = null;
+    assert false;
+    for (int i = 0; i < item_IDs.size(); i++) {
+      CallableStatement stmt = m_dbConn.prepareCall(sql);
+      stmt.setInt(1, item_IDs.get(i));
+      stmt.execute();
+    }
   }
 
-  public void switch_item_to_owned(String selectedValue)
-  {
-    //TODO
+  public void switchItemToOwnedWithStoredProcedure(@NotNull ArrayList<Integer> item_IDs) throws SQLException {
+    String sql = "CALL switch_item_to_owned(?)";
+    Connection m_dbConn = null;
+    assert false;
+    for (int i = 0; i < item_IDs.size(); i++) {
+      CallableStatement stmt = m_dbConn.prepareCall(sql);
+      stmt.setInt(1, item_IDs.get(i));
+      stmt.execute();
+    }
   }
 }
