@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class Display_4 extends JFrame implements ActionListener
 {
-
   String[] container_stats = {"Container ID", "Item ID", "Volume Limit", "Weight Limit"};
   String[] armor_stats = {"Armor ID", "Item ID", "Place", "Protection Amount"};
   String[] weapon_stats = {"Weapon ID", "Item ID", "Ability ID"};
@@ -23,25 +22,32 @@ public class Display_4 extends JFrame implements ActionListener
   Color light_pink = new Color(234 , 209 , 220);
   Border blackBorder = BorderFactory.createLineBorder(Color.black);  // the standard border for components
 
-
   public static void main(String[] args)
   {
-    Display_4 gui = new Display_4();
+    new Display_4();
   }
   public Display_4()
   {
-    // set layout to grid for three panels
+    // format window
     setLayout(new GridLayout(1, 3));
     setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 
-    createPanels(); // create left, center, and right panels
-    formatTitles(); // format the title portion of each panel
-    formatLists();  // format the list portion of each panel
-    formatButtons(); // format the button portion of each panel
-    addPanelTitles(); // add the title content
-    addPanelLists();  // add the list content
-    addRightInfo(); // add the info buttons to the right panel
-    addPanelButtons();  // add the button content
+    L_CreatePanel();
+    L_CreateHeading();
+    L_CreateCharacterList();
+    L_CreateButton();
+
+    C_CreatePanel();
+    C_CreateHeading();
+    C_CreateItemsOwnedList();
+    C_CreateItemInfo();
+    C_CreateButton();
+
+    R_CreatePanel();
+    R_CreateHeading();
+    R_CreateItemsWornList();
+    R_CreateItemInfo();
+    R_CreateButton();
 
     pack();
     setVisible(true);
@@ -80,62 +86,374 @@ public class Display_4 extends JFrame implements ActionListener
     return items_worn;
   }
 
+  JPanel leftPanel, L_Heading;
+  JTextField L_Login;
+  JScrollPane L_ListScrollPane;
+  JButton selectCharacterButton;
 
+  String[] c = {"Roy", "Moss", "Richmond", "Jen", "Douglas"};
+  JList characters = new JList(c);
 
-
-
-  public void formatButtons()
+  public void L_CreatePanel()
   {
+    // add the left panel to the UI
+    leftPanel = new JPanel(new BorderLayout());
+    add("Left", leftPanel);
+
+    // format it
+    leftPanel.setBackground(Color.white);
+    leftPanel.setBorder(blackBorder);
+  }
+
+  public void L_CreateHeading()
+  {
+    // entire heading
+    L_Heading = new JPanel(new GridLayout(3,1));
+    L_Heading.setBackground(light_pink);
+    L_Heading.setBorder(blackBorder);
+    leftPanel.add(L_Heading, BorderLayout.NORTH);
+
+    // instruction bar
+    JPanel idk = new JPanel(new BorderLayout());
+    idk.setBackground(dark_pink);
+    JLabel instruction = new JLabel("Enter Player Login:");
+    idk.add(instruction);
+    L_Heading.add(idk);
+
+    // login bar
+    JPanel background = new JPanel(new BorderLayout());
+    JPanel west = new JPanel();
+    west.setBackground(dark_pink);
+    background.add(west, BorderLayout.WEST);
+    JPanel east = new JPanel();
+    east.setBackground(dark_pink);
+    background.add(east, BorderLayout.EAST);
+    JPanel north = new JPanel();
+    north.setBackground(dark_pink);
+    background.add(north, BorderLayout.NORTH);
+    JPanel south = new JPanel();
+    south.setBackground(dark_pink);
+    background.add(south, BorderLayout.SOUTH);
+    L_Login = new JTextField();
+    background.add(L_Login, BorderLayout.CENTER);
+    L_Heading.add(background);
+
+    // list title bar
+    JLabel characters = new JLabel("Characters");
+    characters.setBackground(light_pink);
+    characters.setBorder(blackBorder);
+    characters.setHorizontalAlignment(SwingConstants.CENTER);
+    L_Heading.add(characters);
+  }
+
+  public void L_CreateCharacterList()
+  {
+    L_ListScrollPane = new JScrollPane(characters);
+    L_ListScrollPane.setBackground(Color.white);
+    L_ListScrollPane.setBorder(blackBorder);
+    leftPanel.add(L_ListScrollPane, BorderLayout.CENTER);
+  }
+
+  public void L_CreateButton()
+  {
+    selectCharacterButton = new JButton("Select Character");
+    selectCharacterButton.setBackground(dark_pink);
+    selectCharacterButton.setBorder(blackBorder);
+    selectCharacterButton.addActionListener(this);
+    leftPanel.add(selectCharacterButton, BorderLayout.SOUTH);
+  }
 
 
+  JPanel centerPanel, C_Heading, C_ListPanel, C_InformationPanel;
+  JScrollPane C_ListScrollPane;
+  JButton addItemsToCharacterButton;
+
+  String[] i_o = {"Weapon", "Armor", "Generic Item", "Sword", "Container", "Beefy Sword"};
+  JList items_center = new JList(i_o);
+  ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(i_o.length);
+  ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(i_o.length);
+
+  public void C_CreatePanel()
+  {
+    // add the center panel to the UI
+    centerPanel = new JPanel(new BorderLayout());
+    add("Center", centerPanel);
+
+    // format it
+    centerPanel.setBackground(Color.white);
+    centerPanel.setBorder(blackBorder);
+  }
+
+  public void C_CreateHeading()
+  {
+    // entire heading
+    C_Heading = new JPanel(new BorderLayout());
+    C_Heading.setBackground(light_pink);
+    C_Heading.setBorder(blackBorder);
+    centerPanel.add(C_Heading, BorderLayout.NORTH);
+
+    // list title bar
+    JPanel c_major = new JPanel(new GridLayout(3, 1));
+    c_major.setBackground(light_pink);
+    c_major.setBorder(blackBorder);
+    C_Heading.add(c_major, BorderLayout.CENTER);
+    JPanel c_top_major = new JPanel();
+    c_top_major.setBackground(light_pink);
+    c_major.add(c_top_major);
+    JLabel items_owned = new JLabel("Items Owned By Character");
+    items_owned.setHorizontalAlignment(SwingConstants.CENTER);
+    c_major.add(items_owned);
+
+    // info title bar
+    JPanel c_minor = new JPanel(new GridLayout(3, 1));
+    c_minor.setBackground(dark_pink);
+    c_minor.setBorder(blackBorder);
+    C_Heading.add(c_minor, BorderLayout.EAST);
+    JPanel c_top_minor = new JPanel();
+    c_top_minor.setBackground(dark_pink);
+    c_minor.add(c_top_minor);
+    JLabel info_middle = new JLabel("     Info     ");
+    info_middle.setHorizontalAlignment(SwingConstants.CENTER);
+    c_minor.add(info_middle);
+  }
+
+  public void C_CreateItemsOwnedList()
+  {
+    // list panel
+    C_ListPanel = new JPanel(new BorderLayout());
+    C_ListPanel.setBackground(Color.white);
+    C_ListPanel.setBorder(blackBorder);
+    centerPanel.add(C_ListPanel, BorderLayout.CENTER);
+
+    // scroll pane list
+    C_ListScrollPane = new JScrollPane(items_center);
+    items_center.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    C_ListPanel.add(C_ListScrollPane, BorderLayout.CENTER);
+  }
+
+  public void C_CreateItemInfo()
+  {
+    // entire panel
+    JPanel infoPanel = new JPanel();
+    infoPanel.setBackground(Color.white);
+    BoxLayout info_layout = new BoxLayout(infoPanel, BoxLayout.Y_AXIS);
+    infoPanel.setLayout(info_layout);
+
+    // make an info button for each item in the list
+    for (int i = 0; i < i_o.length; i++) {
+      // fill the panel with buttons
+      JButton infoButton = new JButton("    .  .  .     ");
+      infoButton.addActionListener(this);
+      infoButton.setBackground(Color.white);
+      infoButton.setBorder(blackBorder);
+      infoPanel.add(infoButton);
+      items_owned_info_buttons.add(i, infoButton);  // add button to list to keep track
+
+      // link each button to a new pop-up window
+      JFrame window = new JFrame();
+      window.pack();
+      window.setDefaultCloseOperation(HIDE_ON_CLOSE);
+      window.setLayout(new GridLayout());
+      window.setLocationRelativeTo(items_owned_info_buttons.get(i));
+      items_owned_info_windows.add(i, window);  // add window to list to keep track
+
+      // add information to each window
+      C_InformationPanel = new JPanel(new GridLayout(4, 2));
+      C_InformationPanel.setBackground(light_pink);
+      C_InformationPanel.setBorder(blackBorder);
+      for (int x = 0; x < 4; x++)
+      {
+        // attribute title in left block
+        JLabel idk = new JLabel("   stuff"  + x);
+        idk.setBorder(blackBorder);
+        C_InformationPanel.add(idk);
+
+        // attribute value in right block
+        JLabel yeet = new JLabel("   stuff" + x + "hello");
+        yeet.setBorder(blackBorder);
+        C_InformationPanel.add(yeet);
+      }
+      window.add(C_InformationPanel);
+    }
+
+    C_ListPanel.add(infoPanel, BorderLayout.EAST);
+  }
+
+  public void C_CreateButton()
+  {
+    addItemsToCharacterButton = new JButton("Add Items to Character");
+    addItemsToCharacterButton.setBackground(dark_pink);
+    addItemsToCharacterButton.setBorder(blackBorder);
+    addItemsToCharacterButton.addActionListener(this);
+    centerPanel.add(addItemsToCharacterButton, BorderLayout.SOUTH);
+  }
 
 
+  JPanel rightPanel, R_Heading, R_ListPanel, R_InformationPanel;
+  JScrollPane R_ListScrollPane;
+  JButton removeItemsFromCharacterButton;
+
+  String[] i_w = {"Armor", "Weapon", "Another Weapon", "Better Armor"};
+  JList items_right = new JList(i_w);
+  ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(i_w.length);
+  ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(i_w.length);
+
+  public void R_CreatePanel()
+  {
+    // add the right panel to the UI
+    rightPanel = new JPanel(new BorderLayout());
+    add("Right", rightPanel);
+
+    // format it
+    rightPanel.setBackground(Color.white);
+    rightPanel.setBorder(blackBorder);
+  }
+
+  public void R_CreateHeading()
+  {
+    // entire heading
+    R_Heading = new JPanel(new BorderLayout());
+    R_Heading.setBackground(light_pink);
+    R_Heading.setBorder(blackBorder);
+    rightPanel.add(R_Heading, BorderLayout.NORTH);
+
+    // list title bar
+    JPanel r_major = new JPanel(new GridLayout(3, 1));
+    r_major.setBackground(light_pink);
+    r_major.setBorder(blackBorder);
+    R_Heading.add(r_major, BorderLayout.CENTER);
+    JPanel r_top_major = new JPanel();
+    r_top_major.setBackground(light_pink);
+    r_major.add(r_top_major);
+    JLabel items_worn = new JLabel("Items On Character");
+    items_worn.setHorizontalAlignment(SwingConstants.CENTER);
+    r_major.add(items_worn);
+
+    // info title bar
+    JPanel r_minor = new JPanel(new GridLayout(3, 1));
+    r_minor.setBackground(dark_pink);
+    r_minor.setBorder(blackBorder);
+    R_Heading.add(r_minor, BorderLayout.EAST);
+    JPanel r_top_minor = new JPanel();
+    r_top_minor.setBackground(dark_pink);
+    r_minor.add(r_top_minor);
+    JLabel info_right = new JLabel("     Info     ");
+    info_right.setHorizontalAlignment(SwingConstants.CENTER);
+    r_minor.add(info_right);
+  }
+
+  public void R_CreateItemsWornList()
+  {
+    // list panel
+    R_ListPanel = new JPanel(new BorderLayout());
+    R_ListPanel.setBackground(Color.white);
+    R_ListPanel.setBorder(blackBorder);
+    rightPanel.add(R_ListPanel, BorderLayout.CENTER);
+
+    // scroll pane list
+    R_ListScrollPane = new JScrollPane(items_right);
+    items_right.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    R_ListPanel.add(R_ListScrollPane, BorderLayout.CENTER);
+  }
+
+  public void R_CreateItemInfo()
+  {
+    // entire panel
+    JPanel infoPanel = new JPanel();
+    infoPanel.setBackground(Color.white);
+    BoxLayout info_layout = new BoxLayout(infoPanel, BoxLayout.Y_AXIS);
+    infoPanel.setLayout(info_layout);
+
+    // make info button for each item in the list
+    for (int i = 0; i < i_w.length; i++) {
+      // fill the panel with buttons
+      JButton infoButton = new JButton("    .  .  .     ");
+      items_worn_info_buttons.add(i, infoButton);
+      infoButton.addActionListener(this);
+      infoButton.setBackground(Color.white);
+      infoButton.setBorder(blackBorder);
+      infoPanel.add(infoButton);  // add button to list to keep track
+
+      // link each button to a new pop-up window
+      JFrame window = new JFrame();
+      window.pack();
+      window.setDefaultCloseOperation(HIDE_ON_CLOSE);
+      window.setLayout(new GridLayout());
+      window.setLocationRelativeTo(items_worn_info_buttons.get(i));
+      items_worn_info_windows.add(i, window);  // add window to list to keep track
+
+      // add information to each window
+      R_InformationPanel = new JPanel(new GridLayout(4, 2));
+      R_InformationPanel.setBackground(light_pink);
+      R_InformationPanel.setBorder(blackBorder);
+      for (int x = 0; x < 4; x++)
+      {
+        // attribute title in left block
+        JLabel idk = new JLabel("   stuff"  + x);
+        idk.setBorder(blackBorder);
+        R_InformationPanel.add(idk);
+
+        // attribute value in right block
+        JLabel yeet = new JLabel("   stuff" + x + "hello");
+        yeet.setBorder(blackBorder);
+        R_InformationPanel.add(yeet);
+      }
+      window.add(R_InformationPanel);
+    }
+    R_ListPanel.add(infoPanel, BorderLayout.EAST);
+  }
+
+  public void R_CreateButton()
+  {
     removeItemsFromCharacterButton = new JButton("Remove Items From Character");
     removeItemsFromCharacterButton.setBackground(dark_pink);
     removeItemsFromCharacterButton.setBorder(blackBorder);
+    removeItemsFromCharacterButton.addActionListener(this);
     rightPanel.add(removeItemsFromCharacterButton, BorderLayout.SOUTH);
   }
 
-
-
-
-
-
-
-  public void addPanelButtons()
-  {
-
-
-    removeItemsFromCharacterButton.addActionListener(this);
-  }
-
   @Override
-  public void actionPerformed(ActionEvent event)
-  {
-    if (event.getSource() == removeItemsFromCharacterButton)
-    {
+  public void actionPerformed(ActionEvent event) {
+    if (event.getSource() == selectCharacterButton) {
+      String character = (String) characters.getSelectedValue();
+      selectCharacterButton.setText("Character Selected: " + character);
+      selectCharacterButton.setBackground(light_pink);
+    } else if (event.getSource() == addItemsToCharacterButton) {
+      int[] stuff = items_center.getSelectedIndices();
+      switch_item_to_worn((String) items_center.getSelectedValue());
+      //TODO
+    } else if (event.getSource() == removeItemsFromCharacterButton) {
       switch_item_to_owned((String) items_right.getSelectedValue());
-      removeItemsFromCharacterButton.setText("Items Removed");
-      removeItemsFromCharacterButton.setBackground(light_pink);
+      //TODO
     } else {
-      for (int i = 0; i < i_w.length; i++) {
-        if (event.getSource() == items_worn_info_buttons.get(i))
-        {
-          items_worn_info_buttons.get(i).setBackground(dark_pink);
-          items_worn_info_windows.get(i).setVisible(true);
+      for (int i = 0; i < i_o.length; i++) {
+        if (event.getSource() == items_owned_info_buttons.get(i)) {
+          items_owned_info_buttons.get(i).setBackground(dark_pink);
+          items_owned_info_windows.get(i).setVisible(true);
+          if (!items_owned_info_windows.get(i).isVisible()) {
+            items_owned_info_buttons.get(i).setBackground(Color.white);
+          }
         }
       }
-//      if(items_owned_info_windows.get(0).isVisible() == false) {
-//        items_worn_info_buttons.get(0).setBackground(Color.white);
-//      }
+      for (int i = 0; i < i_w.length; i++) {
+        if (event.getSource() == items_worn_info_buttons.get(i)) {
+          items_worn_info_buttons.get(i).setBackground(dark_pink);
+          items_worn_info_windows.get(i).setVisible(true);
+          if (!items_worn_info_windows.get(i).isVisible()) {
+            items_worn_info_buttons.get(i).setBackground(Color.white);
+          }
+        }
+      }
     }
   }
 
-  public void switch_item_to_worn(String item) {
+  public void switch_item_to_worn(String selectedValue)
+  {
     //TODO
   }
 
-  public void switch_item_to_owned(String item) {
+  public void switch_item_to_owned(String selectedValue)
+  {
     //TODO
   }
 }
