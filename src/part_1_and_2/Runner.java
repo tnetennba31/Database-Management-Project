@@ -3,6 +3,7 @@ package part_1_and_2;
 import java.sql.*;
 
 import part_3.DisplayThree;
+import part_3.DisplayThreeSQLHandler;
 import part_3.Display_4;
 
 
@@ -16,14 +17,18 @@ public class Runner {
    */
   public static void main(String[] args) throws Exception {
 
-//    Runner runner = new Runner();
-//    runner.dropAllTables();
-//    runner.createAllTables();
-//
-//    runner.insertEverythingIntoTables();
-    Runner.createStoredProcedures4();
-    DisplayThree display3 = DisplayThree.getInstance();
-    Display_4 display4 = new Display_4();
+    Runner runner = new Runner();
+    runner.dropAllTables();
+    runner.createAllTables();
+
+    runner.insertEverythingIntoTables();
+	Runner.createStoredProcedures4();
+	DisplayThreeSQLHandler.setConnection(m_dbConn);
+	DisplayThreeSQLHandler.setStoredProcedures();
+	DisplayThree display3 = DisplayThree.getInstance();
+	Display_4 display4 = new Display_4();
+	  
+
 
     //use for testing
 //    runner.showTables();
@@ -242,6 +247,42 @@ public class Runner {
                     "INSERT INTO CREATURE VALUES (8,178,26,45,28,40, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 8))",
                     "INSERT INTO CREATURE VALUES (9,154,8,12,19,20, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 9))",
                     "INSERT INTO CREATURE VALUES (10,179,27,46,29,41, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 10))",
+                    
+                    "INSERT INTO CREATURE VALUES (11,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (12,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (13,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (14,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (15,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
+                    
+                    "INSERT INTO CREATURE VALUES (16,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (17,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (18,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (19,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (20,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
+                    
+                    "INSERT INTO CREATURE VALUES (21,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (22,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (23,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (24,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (25,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
+                    
+                    "INSERT INTO CREATURE VALUES (26,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (27,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (28,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (29,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (30,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
+                    
+                    "INSERT INTO CREATURE VALUES (31,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (32,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (33,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (34,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (35,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
+                    
+                    "INSERT INTO CREATURE VALUES (36,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (37,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (38,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (39,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (40,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
                     // ABILITY
                     "INSERT INTO ABILITY VALUES (1, 5, 10, 0, 0, 0, 0, (SELECT C.ID FROM CREATURE C WHERE C.ID = 1))",
                     "INSERT INTO ABILITY VALUES (2, 10, 20, 1, 1, 5, 10, (SELECT C.ID FROM CREATURE C WHERE C.ID = 2))",
