@@ -10,10 +10,8 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Callable;
 
-@SuppressWarnings("ALL")
+
 public class Display_4 extends JFrame implements ActionListener
 {
   ArrayList<String> characterList = new ArrayList<>();
@@ -32,12 +30,10 @@ public class Display_4 extends JFrame implements ActionListener
   Color light_pink = new Color(234 , 209 , 220);
   Border blackBorder = BorderFactory.createLineBorder(Color.black);  // the standard border for components
 
-  public static void main(String[] args)
-  {
+  public static void main(String[] args) throws SQLException {
     new Display_4();
   }
-  public Display_4()
-  {
+  public Display_4() throws SQLException {
     // assign lists for SQL query results
     characters = new JList((ListModel) characterList);
     itemsOwned = new JList((ListModel) itemsOwnedList);
@@ -218,8 +214,7 @@ public class Display_4 extends JFrame implements ActionListener
     C_ListPanel.add(C_ListScrollPane, BorderLayout.CENTER);
   }
 
-  public void C_CreateItemInfo()
-  {
+  public void C_CreateItemInfo() throws SQLException {
     // entire panel
     JPanel infoPanel = new JPanel();
     infoPanel.setBackground(Color.white);
@@ -245,12 +240,12 @@ public class Display_4 extends JFrame implements ActionListener
       items_owned_info_windows.add(i, window);  // add window to list to keep track
 
       // add information to each window
-      // TODO
       ArrayList<String> itemAttributes = getItemType(itemsOwnedIDs.get(i));
+      ArrayList<Integer> attributeValues = getAttributeValues(itemsOwnedIDs.get(i), itemAttributes);
       C_InformationPanel = new JPanel(new GridLayout(itemAttributes.size(), 2));
       C_InformationPanel.setBackground(light_pink);
       C_InformationPanel.setBorder(blackBorder);
-      for (int x = 0; x < 4; x++)
+      for (int x = 0; x < itemAttributes.size(); x++)
       {
         // attribute title in left block
         JLabel idk = new JLabel("   "  + itemAttributes.get(x));
@@ -258,8 +253,7 @@ public class Display_4 extends JFrame implements ActionListener
         C_InformationPanel.add(idk);
 
         // attribute value in right block
-        int value = getAttributeValue(itemsOwnedIDs.get(i), itemAttributes.get(x));
-        JLabel yeet = new JLabel("   " + value);
+        JLabel yeet = new JLabel("   " + attributeValues.get(x));
         yeet.setBorder(blackBorder);
         C_InformationPanel.add(yeet);
       }
@@ -346,8 +340,7 @@ public class Display_4 extends JFrame implements ActionListener
     R_ListPanel.add(R_ListScrollPane, BorderLayout.CENTER);
   }
 
-  public void R_CreateItemInfo()
-  {
+  public void R_CreateItemInfo() throws SQLException {
     // entire panel
     JPanel infoPanel = new JPanel();
     infoPanel.setBackground(Color.white);
@@ -373,18 +366,20 @@ public class Display_4 extends JFrame implements ActionListener
       items_worn_info_windows.add(i, window);  // add window to list to keep track
 
       // add information to each window
-      R_InformationPanel = new JPanel(new GridLayout(4, 2));
+      ArrayList<String> itemAttributes = getItemType(itemsWornIDs.get(i));
+      ArrayList<Integer> attributeValues = getAttributeValues(itemsWornIDs.get(i), itemAttributes);
+      R_InformationPanel = new JPanel(new GridLayout(itemAttributes.size(), 2));
       R_InformationPanel.setBackground(light_pink);
       R_InformationPanel.setBorder(blackBorder);
-      for (int x = 0; x < 4; x++)
+      for (int x = 0; x < itemAttributes.size(); x++)
       {
         // attribute title in left block
-        JLabel idk = new JLabel("   stuff"  + x);
+        JLabel idk = new JLabel("   "  + itemAttributes.get(x));
         idk.setBorder(blackBorder);
         R_InformationPanel.add(idk);
 
         // attribute value in right block
-        JLabel yeet = new JLabel("   stuff" + x + "hello");
+        JLabel yeet = new JLabel("   " + attributeValues.get(x));
         yeet.setBorder(blackBorder);
         R_InformationPanel.add(yeet);
       }
@@ -566,8 +561,51 @@ public class Display_4 extends JFrame implements ActionListener
     }
   }
 
-  public int getAttributeValue(int itemID, String attributeName)
-  {
-    //TODO
+  public ArrayList<Integer> getAttributeValues(int itemID, ArrayList<String> attributeNames) throws SQLException {
+    ArrayList<Integer> values = new ArrayList<>(attributeNames.size());
+    String select;
+    Connection m_dbConn = null;
+    assert false;
+
+    if (attributeNames.get(0) == "Container ID") {
+      select = new String("SELECT * FROM CONTAINER WHERE I_ID = (?)");
+      CallableStatement stmt = m_dbConn.prepareCall(select);
+      stmt.setInt(1, itemID);
+      stmt.execute();
+      ResultSet results = stmt.getResultSet();
+      values.add(0, results.getInt("Con_ID"));
+      values.add(1, results.getInt("I_ID"));
+      values.add(2, results.getInt("Volume_Limit"));
+      values.add(3, results.getInt("Weight_Limit"));
+    } else if (attributeNames.get(0) == "Armor ID") {
+      select = new String("SELECT * FROM ARMOR WHERE I_ID = (?)");
+      CallableStatement stmt = m_dbConn.prepareCall(select);
+      stmt.setInt(1, itemID);
+      stmt.execute();
+      ResultSet results = stmt.getResultSet();
+      values.add(0, results.getInt("A_ID"));
+      values.add(1, results.getInt("I_ID"));
+      values.add(2, results.getInt("Place"));
+      values.add(3, results.getInt("Protection_Amount"));
+    } else if (attributeNames.get(0) == "Weapon ID") {
+      select = new String("SELECT * FROM WEAPON WHERE I_ID = (?)");
+      CallableStatement stmt = m_dbConn.prepareCall(select);
+      stmt.setInt(1, itemID);
+      stmt.execute();
+      ResultSet results = stmt.getResultSet();
+      values.add(0, results.getInt("W_ID"));
+      values.add(1, results.getInt("I_ID"));
+      values.add(2, results.getInt("Ability_ID"));
+    } else if (attributeNames.get(0) == "Generic Item ID") {
+      select = new String("SELECT * FROM GENERIC_ITEM WHERE I_ID = (?)");
+      CallableStatement stmt = m_dbConn.prepareCall(select);
+      stmt.setInt(1, itemID);
+      stmt.execute();
+      ResultSet results = stmt.getResultSet();
+      values.add(0, results.getInt("GI_ID"));
+      values.add(1, results.getInt("I_ID"));
+    }
+
+    return values;
   }
 }

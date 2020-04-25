@@ -38,8 +38,6 @@ public class Runner {
 
   public static void createStoredProcedures4() throws SQLException {
     Statement stmt = m_dbConn.createStatement();
-    String changeDelimiter = new String("DELIMITER //");
-    stmt.executeUpdate(changeDelimiter);
     String storedProcedure1 = new String("CREATE PROCEDURE get_characters (IN player_login VARCHAR(16)) BEGIN SELECT C_Name FROM P_CHARACTER WHERE P_Login = player_login; END//");
     stmt.executeUpdate(storedProcedure1);
     String storedProcedure2 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE O_Name = cname AND W_Name = NULL; END//");
@@ -50,8 +48,6 @@ public class Runner {
     stmt.executeUpdate(storedProcedure4);
     String storedProcedure5 = new String("CREATE PROCEDURE switch_item_to_used (IN id INT) BEGIN UPDATE ITEM SET W_Name = NULL WHERE ID = id; END//");
     stmt.executeUpdate(storedProcedure5);
-    String changeDelimiterAgain = new String("DELIMITER ;");
-    stmt.executeUpdate(changeDelimiterAgain);
   }
 
   /**
