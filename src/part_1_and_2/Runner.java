@@ -18,15 +18,15 @@ public class Runner {
   public static void main(String[] args) throws Exception {
 
     Runner runner = new Runner();
-    runner.dropAllTables();
-    runner.createAllTables();
+//    runner.dropAllTables();
+//    runner.createAllTables();
 
-    runner.insertEverythingIntoTables();
-	  Runner.createStoredProcedures4();
+//    runner.insertEverythingIntoTables();
+//	  Runner.createStoredProcedures4();
 //	  DisplayThreeSQLHandler.setConnection(m_dbConn);
 //	  DisplayThreeSQLHandler.setStoredProcedures();
 //	  DisplayThree display3 = DisplayThree.getInstance();
-	  Display_4 display4 = new Display_4();
+	  new Display_4(m_dbConn);
 	  
 
 
@@ -221,11 +221,15 @@ public class Runner {
                     "INSERT INTO LOCATION VALUES (9,2,204)",
                     "INSERT INTO LOCATION VALUES (10,0,354)",
                     // P_CHARACTER
-                    "INSERT INTO P_CHARACTER VALUES ('Leeroy Jenkins', 10, 20, 20, 10, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster'))",
-                    "INSERT INTO P_CHARACTER VALUES ('Roy', 11, 21, 21, 11, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster2'))",
-                    "INSERT INTO P_CHARACTER VALUES ('Moss', 12, 22, 22, 12, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster3'))",
-                    "INSERT INTO P_CHARACTER VALUES ('Jen', 13, 23, 23, 13, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster4'))",
-                    "INSERT INTO P_CHARACTER VALUES ('Douglas', 14, 24, 24, 14, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Raffy', 10, 20, 20, 10, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Limmy', 11, 21, 21, 11, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster2'))",
+                    "INSERT INTO P_CHARACTER VALUES ('BillCrouse', 12, 22, 22, 12, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster3'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Richmond', 13, 23, 23, 13, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster4'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Leeroy Jenkins', 14, 24, 24, 14, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Roy', 17, 20, 22, 19, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 6), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Moss', 16, 24, 20, 18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 7), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Jen', 12, 21, 28, 13, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 8), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'))",
+                    "INSERT INTO P_CHARACTER VALUES ('Douglas', 11, 50, 42, 31, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3), (SELECT P.Player_Login FROM PLAYER P WHERE P.Player_Login = 'Noobmaster5'))",
                     // LOCATION_EXITS_TO_LOCATION
                     "INSERT INTO LOCATION_EXITS_TO_LOCATION VALUES ((SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1), (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
                     "INSERT INTO LOCATION_EXITS_TO_LOCATION VALUES ((SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3), (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",

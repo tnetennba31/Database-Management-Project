@@ -14,6 +14,8 @@ import java.util.Arrays;
 
 public class Display_4 extends JFrame implements ActionListener
 {
+  Connection m_dbConn;
+
   ArrayList<String> characterList = new ArrayList<>();
   JList characters;
 
@@ -30,10 +32,11 @@ public class Display_4 extends JFrame implements ActionListener
   Color light_pink = new Color(234 , 209 , 220);
   Border blackBorder = BorderFactory.createLineBorder(Color.black);  // the standard border for components
 
-  public static void main(String[] args) throws SQLException {
-    new Display_4();
-  }
-  public Display_4() throws SQLException {
+  public static void main(String[] args) {}
+
+  public Display_4(Connection conn) throws SQLException {
+    m_dbConn = conn;
+
     // assign lists for SQL query results
     characters = new JList(characterList.toArray());
     itemsOwned = new JList(itemsOwnedList.toArray());
@@ -496,8 +499,6 @@ public class Display_4 extends JFrame implements ActionListener
 
   private void getCharactersWithStoredProcedure(String player_login) throws SQLException {
     String sql = "CALL get_characters(?)";
-    Connection m_dbConn = null;
-    assert false;
     CallableStatement stmt = m_dbConn.prepareCall(sql);
     stmt.setString(1, player_login);
     stmt.execute();
@@ -511,8 +512,6 @@ public class Display_4 extends JFrame implements ActionListener
 
   public void getItemsOwnedWithStoredProcedure(String character_name) throws SQLException {
     String sql = "CALL get_items_owned(?)";
-    Connection m_dbConn = null;
-    assert false;
     CallableStatement stmt = m_dbConn.prepareCall(sql);
     stmt.setString(1, character_name);
     stmt.execute();
@@ -526,8 +525,6 @@ public class Display_4 extends JFrame implements ActionListener
 
   public void getItemsWornWithStoredProcedure(String character_name) throws SQLException {
     String sql = "CALL get_items_worn(?)";
-    Connection m_dbConn = null;
-    assert false;
     CallableStatement stmt = m_dbConn.prepareCall(sql);
     stmt.setString(1, character_name);
     stmt.execute();
@@ -541,8 +538,6 @@ public class Display_4 extends JFrame implements ActionListener
 
   public void switchItemToWornWithStoredProcedure(@NotNull ArrayList<Integer> item_IDs) throws SQLException {
     String sql = "CALL switch_item_to_worn(?)";
-    Connection m_dbConn = null;
-    assert false;
     for (int i = 0; i < item_IDs.size(); i++) {
       CallableStatement stmt = m_dbConn.prepareCall(sql);
       stmt.setInt(1, item_IDs.get(i));
@@ -552,8 +547,6 @@ public class Display_4 extends JFrame implements ActionListener
 
   public void switchItemToOwnedWithStoredProcedure(@NotNull ArrayList<Integer> item_IDs) throws SQLException {
     String sql = "CALL switch_item_to_owned(?)";
-    Connection m_dbConn = null;
-    assert false;
     for (int i = 0; i < item_IDs.size(); i++) {
       CallableStatement stmt = m_dbConn.prepareCall(sql);
       stmt.setInt(1, item_IDs.get(i));
@@ -564,8 +557,6 @@ public class Display_4 extends JFrame implements ActionListener
   public ArrayList<Integer> getAttributeValues(int itemID, ArrayList<String> attributeNames) throws SQLException {
     ArrayList<Integer> values = new ArrayList<>(attributeNames.size());
     String select;
-    Connection m_dbConn = null;
-    assert false;
 
     if (attributeNames.get(0) == "Container ID") {
       select = new String("SELECT * FROM CONTAINER WHERE I_ID = (?)");
