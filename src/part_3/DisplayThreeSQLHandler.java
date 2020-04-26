@@ -90,10 +90,71 @@ public class DisplayThreeSQLHandler {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}	
+	}
+	
+	public static void deleteCreature(String ID, int L_ID) {
 
-		
-		
+		try {
+			
+//	        String selectData = "ALTER TABLE ABILITY DROP FOREIGN KEY ABILITY_ibfk_1";
+//	        PreparedStatement stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE ABILITY DROP FOREIGN KEY ABILITY_ibfk_2";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE DROP FOREIGN KEY CREATURE_LIKES_HATES_CREATURE_ibfk_1";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE DROP FOREIGN KEY CREATURE_LIKES_HATES_CREATURE_ibfk_2";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_HAS_POSSIBLE_AREAS DROP FOREIGN KEY CREATURE_HAS_POSSIBLE_AREAS_ibfk_1";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_PLAYER DROP FOREIGN KEY CREATURE_LIKES_HATES_PLAYER_ibfk_1";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+			
+			
+	        String selectData = "DELETE FROM CREATURE WHERE ID = " + ID + " AND L_ID = " + L_ID;
+	        PreparedStatement stmt = connection.prepareStatement(selectData);
+			stmt.execute();
+			
+			
+//	        selectData = "ALTER TABLE ABILITY ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE ABILITY ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_HAS_POSSIBLE_AREAS ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			
+//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_PLAYER ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
+//			stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

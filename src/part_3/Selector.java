@@ -149,17 +149,19 @@ class Selector extends JPanel implements ActionListener {
 			scrollDown();
 			
 		} else if (e.getSource() == middleButtons[0]) {
-			//DisplayThree.getInstance().changeCreatureSelector(thingsInColumn.get(itemsVisible[0]));
-
+			selectedRoom = itemsVisible[0] + 1;
 			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0] + 1);
 	
 		} else if (e.getSource() == middleButtons[1]) {
+			selectedRoom = itemsVisible[1] + 1;
 			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[1] + 1);
 
 		} else if (e.getSource() == middleButtons[2]) {
+			selectedRoom = itemsVisible[2] + 1;
 			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[2] + 1);
-
+			
 		} else if (e.getSource() == middleButtons[3]) {
+			selectedRoom = itemsVisible[3] + 1;
 			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[3] + 1);
 
 		}
