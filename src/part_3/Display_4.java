@@ -138,6 +138,7 @@ public class Display_4 extends JFrame implements ActionListener
     L_ListScrollPane.setBackground(Color.white);
     L_ListScrollPane.setBorder(blackBorder);
     leftPanel.add(L_ListScrollPane, BorderLayout.CENTER);
+    validate();
   }
 
   public void L_CreateButton()
@@ -215,6 +216,7 @@ public class Display_4 extends JFrame implements ActionListener
     C_ListScrollPane = new JScrollPane(itemsOwned);
     itemsOwned.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     C_ListPanel.add(C_ListScrollPane, BorderLayout.CENTER);
+    validate();
   }
 
   public void C_CreateItemInfo() throws SQLException {
@@ -264,6 +266,7 @@ public class Display_4 extends JFrame implements ActionListener
     }
 
     C_ListPanel.add(infoPanel, BorderLayout.EAST);
+    validate();
   }
 
   public void C_CreateButton()
@@ -341,6 +344,7 @@ public class Display_4 extends JFrame implements ActionListener
     R_ListScrollPane = new JScrollPane(itemsWorn);
     itemsWorn.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     R_ListPanel.add(R_ListScrollPane, BorderLayout.CENTER);
+    validate();
   }
 
   public void R_CreateItemInfo() throws SQLException {
@@ -389,6 +393,7 @@ public class Display_4 extends JFrame implements ActionListener
       window.add(R_InformationPanel);
     }
     R_ListPanel.add(infoPanel, BorderLayout.EAST);
+    validate();
   }
 
   public void R_CreateButton()
@@ -403,8 +408,7 @@ public class Display_4 extends JFrame implements ActionListener
 
   //----------------- ACTION LISTENER ------------------------------------------//
 
-  @Override
-  public void actionPerformed(ActionEvent event) {
+  public void actionPerformed(@NotNull ActionEvent event) {
     if (event.getSource() == L_Login) {
       String player_login = L_Login.getText();
       try {
@@ -412,20 +416,34 @@ public class Display_4 extends JFrame implements ActionListener
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
+      leftPanel.remove(L_ListScrollPane);
+      L_CreateCharacterList();
     } else if (event.getSource() == selectCharacterButton) {
       String character = (String) characters.getSelectedValue();
       selectCharacterButton.setText("Character Selected: " + character);
       selectCharacterButton.setBackground(light_pink);
       try {
         getItemsOwnedWithStoredProcedure(character);
-      } catch (SQLException throwables) {
-        throwables.printStackTrace();
-      }
-      try {
         getItemsWornWithStoredProcedure(character);
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
+      centerPanel.remove(C_ListScrollPane);
+      C_CreateItemsOwnedList();
+      rightPanel.remove(R_ListScrollPane);
+      R_CreateItemsWornList();
+      try {
+        C_CreateItemInfo();
+        R_CreateItemInfo();
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
+      }
+//      try {
+//        C_CreateItemInfo();
+//        R_CreateItemInfo();
+//      } catch (SQLException throwables) {
+//        throwables.printStackTrace();
+//      }
     } else if (event.getSource() == addItemsToCharacterButton) {
       int[] stuff = itemsOwned.getSelectedIndices();
       ArrayList<Integer> itemsToSwitch = new ArrayList<>();
@@ -504,10 +522,20 @@ public class Display_4 extends JFrame implements ActionListener
     stmt.execute();
     ResultSet characterSet = stmt.getResultSet();
 
+    int x = 0;
+    characterList.clear();
     while (characterSet.next()) {
       String name = characterSet.getString("C_Name");
       characterList.add(name);
+      x++;
     }
+
+    DefaultListModel c = new DefaultListModel();
+    for (int i = 0; i < characterList.size(); i++) {
+      c.add(i, characterList.get(i));
+    }
+
+    characters = new JList(c);
   }
 
   public void getItemsOwnedWithStoredProcedure(String character_name) throws SQLException {
@@ -517,10 +545,20 @@ public class Display_4 extends JFrame implements ActionListener
     stmt.execute();
     ResultSet setOwned = stmt.getResultSet();
 
+    int x = 0;
+    itemsOwnedList.clear();
     while (setOwned.next()) {
       int data = setOwned.getInt("ID");
       itemsOwnedList.add(data);
+      x++;
     }
+
+    DefaultListModel items = new DefaultListModel();
+    for (int i = 0; i < itemsOwnedList.size(); i++) {
+      items.add(i, itemsOwnedList.get(i));
+    }
+
+    itemsOwned = new JList(items);
   }
 
   public void getItemsWornWithStoredProcedure(String character_name) throws SQLException {
@@ -530,10 +568,19 @@ public class Display_4 extends JFrame implements ActionListener
     stmt.execute();
     ResultSet setWorn = stmt.getResultSet();
 
+    int x = 0;
+    itemsWornList.clear();
     while(setWorn.next()) {
       int data = setWorn.getInt("ID");
       itemsWornList.add(data);
     }
+
+    DefaultListModel items = new DefaultListModel();
+    for (int i = 0; i < itemsWornList.size(); i++) {
+      items.add(i, itemsWornList.get(i));
+    }
+
+    itemsWorn = new JList(items);
   }
 
   public void switchItemToWornWithStoredProcedure(@NotNull ArrayList<Integer> item_IDs) throws SQLException {
