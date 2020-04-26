@@ -40,16 +40,9 @@ public class CreatureSelector extends Selector {
 
 	public void deleteSelectedAndRefresh() {
 		
-		//DisplayThreeSQLHandler.delete("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
-		
-		
-//		System.out.println(thingsInColumn.get(indexOfSelectedCreature));
-		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}System.out.println();
-		thingsInColumn.removeElementAt(indexOfSelectedCreature);
-		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}
+		DisplayThreeSQLHandler.deleteCreature(thingsInColumn.get(indexOfSelectedCreature), Selector.selectedRoom);
 
-//		System.out.println(thingsInColumn.get(indexOfSelectedCreature));
-//		System.out.println();
+		thingsInColumn.removeElementAt(indexOfSelectedCreature);
 
 		this.updateButtons();
 	}
