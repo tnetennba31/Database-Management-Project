@@ -56,6 +56,7 @@ public class CreatureSelector extends Selector {
 	
 	public void updateButtons() {
 		for (int i = 0; i < middleButtons.length; i++) {
+
 			middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
 
 
@@ -63,6 +64,7 @@ public class CreatureSelector extends Selector {
 	}
 
 	public void changeContentsToNewRoom(Vector<String> creaturesInRoom) {
+
 		indexOfSelectedCreature = 0;
 		
 		itemsVisible[0] = 0;

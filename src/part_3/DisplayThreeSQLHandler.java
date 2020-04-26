@@ -16,23 +16,23 @@ public class DisplayThreeSQLHandler {
 	public static void setConnection(Connection c) {
 		connection = c;
 	}
+	
 
-	public static Vector<String> getCreaturesInRoom(int roomID) {
+	public static Vector<String> getRooms() {
 		Vector<String> result = new Vector<String>();
-		
+			
         try {
         	
-            String selectData = "CALL get_creatures(?)";
+            String selectData = "SELECT * FROM LOCATION";
 
             PreparedStatement stmt = connection.prepareStatement(selectData);
-			stmt.setInt(1, roomID);
 			stmt.execute();
 			
 			ResultSet rs = stmt.getResultSet();
 			
 			while (rs.next()) {
 				
-				String data = rs.getString("ID");//getNString(1);
+				String data = rs.getString("L_ID");//getNString(1);
 				result.add(data);
 			}
 
@@ -40,36 +40,44 @@ public class DisplayThreeSQLHandler {
         	e.printStackTrace();
         }
  
-        return result;
-        
-//        try {
-//        	
-//            String selectData = new String("SELECT * FROM CREATURE WHERE L_ID (Col1, Col2, Col3, Col4, Col5) VALUES (?,?,?,?,?)");
-//
-//            PreparedStatement stmt = connection.prepareStatement(selectData);
-//			stmt.setInt(1, roomID);
-//
-//            ResultSet rs = stmt.executeQuery(selectData);
-//            
-//            for (int i=0; rs.next(); i++) {
-//            	
-//               result.add( rs.getString(i) );
-//               
-//            }
-//        } catch (SQLException e) {
-//        	e.printStackTrace();
-//        }
-// 
-//        return result;
-        
+        return result;    
+		
+
+	}
+
+	public static Vector<String> getCreaturesInRoom(int roomID) {
+		Vector<String> result = new Vector<String>();
+
+		
+        try {
+            String selectData = "CALL get_creatures(?)";
+
+            PreparedStatement stmt = connection.prepareCall(selectData);
+			stmt.setInt(1, roomID);
+			stmt.execute();
+
+			ResultSet rs = stmt.getResultSet();
+
+			while (rs.next()) {
+
+				String data = rs.getString("ID");
+				result.add(data);
+
+			}
+
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }
+ 
+
+        return result;        
 		
 	}
 
 	public static void setStoredProcedures() {
 		
-	    //Statement stmt;
 		try {
-			//stmt = connection.createStatement();
+			
             String selectData = "DROP PROCEDURE IF EXISTS get_creatures";
             PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
@@ -78,18 +86,6 @@ public class DisplayThreeSQLHandler {
             stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			
-////			String statement = "DELIMITER // CREATE PROCEDURE get_creatures(IN n INT) BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END//";
-////			stmt.executeUpdate(statement);
-//		    String changeDelimiter = new String("DELIMITER //");
-//		    stmt.executeUpdate(changeDelimiter);
-//		    String storedProcedure1 = new String("CREATE PROCEDURE get_creatures(IN n INT)"
-//		    		+ " BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END//");
-//		    stmt.executeUpdate(storedProcedure1);
-////		    String storedProcedure2 = new String("CREATE PROCEDURE get_items (IN n int)"
-////		    		+ " BEGIN SELECT * FROM ITEM WHERE L_ID = n; END//");
-////		    stmt.executeUpdate(storedProcedure2);
-//		    String changeDelimiterBack = new String("DELIMITER ;");
-//		    stmt.executeUpdate(changeDelimiterBack);
 		    
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -99,6 +95,5 @@ public class DisplayThreeSQLHandler {
 		
 		
 	}
-
 	
 }

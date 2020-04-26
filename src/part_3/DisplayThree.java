@@ -79,20 +79,14 @@ public class DisplayThree extends JFrame implements ActionListener {
 	CreatureSelector creatureSelector;
 	ItemSelector itemSelector;
 	
-	public int selectedRoomID;
+	public int selectedRoomID = 1;
 	Vector<String> rooms = new Vector<String>();
 	Vector<String> creaturesInRoom = new Vector<String>();
 	Vector<String> itemsInRoom = new Vector<String>();
 	
-	Vector<String> testV1 = new Vector<String>();
-	Vector<String> testV2 = new Vector<String>();
-
-
-
 	public static DisplayThree getInstance() { 
         if (display == null) 
             display = new DisplayThree(); 
-  
         return display; 
     } 
 	
@@ -107,60 +101,27 @@ public class DisplayThree extends JFrame implements ActionListener {
 		usageInstructions.setBounds(INSTRUCTIONS_X, INSTRUCTIONS_Y, INSTRUCTIONS_WIDTH, INSTRUCTIONS_HEIGHT);
 		usageInstructions.setBorder(new LineBorder(Color.BLACK));
 		add(usageInstructions);
-		
-		
-		rooms.add("one");
-		rooms.add("two");
-		rooms.add("three");
-		rooms.add("four");
-		rooms.add("five");
-		rooms.add("six");
-		
-		
-		testV1.add("creature 1");
-		testV1.add("creature 2");
-		testV1.add("creature 3");
-		testV1.add("creature 4");
-		testV1.add("creature 5");
-		testV1.add("creature 6");
-		
-		
-		testV2.add("item 1");
-		testV2.add("item 2");
-		testV2.add("item 3");
-		testV2.add("item 4");
-		testV2.add("item 5");
-		testV2.add("item 6");
 
 
+		rooms = DisplayThreeSQLHandler.getRooms();
 
 
+		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
+		//itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(1);
 
-
-
-
-
-
-
-
-
-
-		//put rooms in vector
-		
-		
 		roomSelector = new Selector(this, rooms);
 		roomSelector.setBounds(ROOM_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(roomSelector);
 
-		
-		creatureSelector = new CreatureSelector(this, testV1);
+
+		creatureSelector = new CreatureSelector(this, creaturesInRoom);
 		creatureSelector.setBounds(C_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(creatureSelector);
 		
 		
-		itemSelector = new ItemSelector(this, rooms);
-		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
-		add(itemSelector);
+//		itemSelector = new ItemSelector(this, itemsInRoom);
+//		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
+//		add(itemSelector);
 		
 		
 		deleteCreatureButton = new JButton("Del"); //TODO: make it an image instead
@@ -205,12 +166,13 @@ public class DisplayThree extends JFrame implements ActionListener {
 	}
 	
 	public void changeSelectedRoom(int selectedRoom) {
+
 		this.selectedRoomID = selectedRoom;
 		
-		//creaturesInRoom = DisplayThreeSQLHandler.getVectorOfCreaturesInRoom(selectedRoomID);
-		creaturesInRoom = testV2; //also for item
-		creatureSelector.changeContentsToNewRoom(creaturesInRoom);
+		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
 		
+		creatureSelector.changeContentsToNewRoom(creaturesInRoom);
+
 	}
 	
 	private String getInstructionString() {

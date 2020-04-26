@@ -38,7 +38,7 @@ class Selector extends JPanel implements ActionListener {
 	protected Vector<String> thingsInColumn;
 	
 	public Selector(JFrame frame, Vector<String> thingsInColumn) {
-		
+
 		this.thingsInColumn = thingsInColumn;
 		//this.setBounds(50, 50, 100, 200);
 		this.setBackground(Color.LIGHT_GRAY);
@@ -106,9 +106,11 @@ class Selector extends JPanel implements ActionListener {
 //		for (JButton j : middleButtons) {
 //			j.
 //		}
+
 		
 		for (int i = 0; i < middleButtons.length; i++) {
-			middleButtons[i] = new JButton(thingsInColumn.get(i));
+			//System.out.println(thingsInColumn.get(i)+" ugh");
+			middleButtons[i] = new JButton(thingsInColumn.get(i));//thingsInColumn.get(i)
 			middleButtons[i].addActionListener(this);
 			middleButtons[i].setContentAreaFilled(false);
 			middleButtons[i].setBorderPainted(false);
@@ -126,6 +128,11 @@ class Selector extends JPanel implements ActionListener {
 			//this.add(middleButtons[i]);        MAY ONLY NEED TO DO THIS ONCE
 
 		}
+		
+//		for (int i = 0; i <= thingsInColumn.size(); i++) {
+//			System.out.println(thingsInColumn.get(i));
+//		}
+		
 	}
 
 	@Override
@@ -133,8 +140,7 @@ class Selector extends JPanel implements ActionListener {
 		
 		if (e.getSource() == upArrowButton) {
 			
-			Vector<String> s = DisplayThreeSQLHandler.getCreaturesInRoom(1);
-			for (String str : s) {System.out.println(str);}
+
 			scrollUp();
 						
 
@@ -144,19 +150,17 @@ class Selector extends JPanel implements ActionListener {
 			
 		} else if (e.getSource() == middleButtons[0]) {
 			//DisplayThree.getInstance().changeCreatureSelector(thingsInColumn.get(itemsVisible[0]));
-			
-			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
-			//DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
-			
 
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0] + 1);
+	
 		} else if (e.getSource() == middleButtons[1]) {
-			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[1] + 1);
 
 		} else if (e.getSource() == middleButtons[2]) {
-			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[2] + 1);
 
 		} else if (e.getSource() == middleButtons[3]) {
-			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[0]);
+			DisplayThree.getInstance().changeSelectedRoom(itemsVisible[3] + 1);
 
 		}
 	}
