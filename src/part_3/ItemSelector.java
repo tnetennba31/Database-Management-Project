@@ -24,7 +24,7 @@ public class ItemSelector extends Selector {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		
+		System.out.println(armorsBegin + " " + weaponsBegin + " " + containersBegin);
 		if (e.getSource() == upArrowButton) {
 			
 			scrollUp();
@@ -35,22 +35,32 @@ public class ItemSelector extends Selector {
 			
 		} else if (e.getSource() == middleButtons[0]) {
 			indexOfSelectedItem = itemsVisible[0];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
+			signalCorrectAddBoxToDisplay();
 		} else if (e.getSource() == middleButtons[1]) {
 			indexOfSelectedItem = itemsVisible[1];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
 		} else if (e.getSource() == middleButtons[2]) {
 			indexOfSelectedItem = itemsVisible[2];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
 		} else if (e.getSource() == middleButtons[3]) {
 			indexOfSelectedItem = itemsVisible[3];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
 		}
 	}
 	
+	private void signalCorrectAddBoxToDisplay() {
+		
+		if (indexOfSelectedItem < armorsBegin) {
+			DisplayThree.getInstance().setAddBox("generic");
+		} else if (indexOfSelectedItem < weaponsBegin) {
+			DisplayThree.getInstance().setAddBox("armor");
+		} else if (indexOfSelectedItem < containersBegin) {
+			DisplayThree.getInstance().setAddBox("weapon");
+		} else if (indexOfSelectedItem >= containersBegin) {
+			DisplayThree.getInstance().setAddBox("container");
+		}
+	}
+
 	public void deleteSelectedAndRefresh() {
 		
-		//DisplayThreeSQLHandler.delete("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
+		//TODO: DisplayThreeSQLHandler.delete("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
 				
 		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}System.out.println();
 		thingsInColumn.removeElementAt(indexOfSelectedItem);
@@ -67,4 +77,27 @@ public class ItemSelector extends Selector {
 		
 	}
 
+	public void setWhereNewItemTypesBegin(int a, int w, int c) {
+		
+		armorsBegin = a;
+		weaponsBegin = w;
+		containersBegin = c;
+	}
+	
+	public void changeContentsToNewRoom(Vector<String> itemsInRoom) {
+
+		indexOfSelectedItem = 0;
+		
+		itemsVisible[0] = 0;
+		itemsVisible[1] = 1;
+		itemsVisible[2] = 2;
+		itemsVisible[3] = 3;
+		
+		thingsInColumn = itemsInRoom;
+		
+		updateButtons();
+		
+	}
+
 }
+
