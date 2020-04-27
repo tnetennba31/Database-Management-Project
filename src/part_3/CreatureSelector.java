@@ -40,7 +40,7 @@ public class CreatureSelector extends Selector {
 
 	public void deleteSelectedAndRefresh() {
 		
-		DisplayThreeSQLHandler.deleteCreature(thingsInColumn.get(indexOfSelectedCreature), Selector.selectedRoom);
+		//TODO: FIX THIS DisplayThreeSQLHandler.deleteCreature(thingsInColumn.get(indexOfSelectedCreature), Selector.selectedRoom);
 
 		thingsInColumn.removeElementAt(indexOfSelectedCreature);
 

@@ -73,6 +73,44 @@ public class DisplayThreeSQLHandler {
         return result;        
 		
 	}
+	
+
+	public static Vector<String> getItemsInRoom(int roomID) {
+		
+		Vector<String> result = new Vector<String>();
+		int i = 0;
+		
+        try {
+	        String selectData = "SELECT * FROM GENERIC_ITEM WHERE L_ID = " + roomID;
+	        PreparedStatement stmt = connection.prepareStatement(selectData);
+			stmt.execute();
+			ResultSet rs = stmt.getResultSet();
+			while (rs.next()) {
+				String data = rs.getString("GI_ID");
+				result.add(data);
+				i++;
+			}
+			DisplayThree.getInstance().setWhereNewItemTypesBeginInItemSelector(1, i);
+			
+	        selectData = "SELECT * ARMORS WHERE L_ID = " + roomID;
+	        stmt = connection.prepareStatement(selectData);
+			stmt.execute();
+			rs = stmt.getResultSet();
+			while (rs.next()) {
+				String data = rs.getString("A_ID");
+				result.add(data);
+			}
+			DisplayThree.getInstance().setWhereNewItemTypesBeginInItemSelector(2, i);
+
+
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }
+ 
+
+        return result; 
+		
+	}
 
 	public static void setStoredProcedures() {
 		
@@ -82,6 +120,7 @@ public class DisplayThreeSQLHandler {
             PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			
+		
             selectData = "CREATE PROCEDURE get_creatures(IN n INT) BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END";
             stmt = connection.prepareStatement(selectData);
 			stmt.execute();
@@ -156,5 +195,5 @@ public class DisplayThreeSQLHandler {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

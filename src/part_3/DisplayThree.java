@@ -107,7 +107,7 @@ public class DisplayThree extends JFrame implements ActionListener {
 
 
 		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
-		//itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(1);
+		itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(selectedRoomID);
 
 		roomSelector = new Selector(this, rooms);
 		roomSelector.setBounds(ROOM_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
@@ -119,9 +119,9 @@ public class DisplayThree extends JFrame implements ActionListener {
 		add(creatureSelector);
 		
 		
-//		itemSelector = new ItemSelector(this, itemsInRoom);
-//		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
-//		add(itemSelector);
+		itemSelector = new ItemSelector(this, itemsInRoom);
+		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
+		add(itemSelector);
 		
 		
 		deleteCreatureButton = new JButton("Del"); //TODO: make it an image instead
@@ -170,6 +170,17 @@ public class DisplayThree extends JFrame implements ActionListener {
 	
 	private String getInstructionString() {
 		return "[instructions]";
+	}
+
+	public void setWhereNewItemTypesBeginInItemSelector(int itemType, int lineNum) {
+
+		if (itemType == 1) {
+			itemSelector.armorsBegin = lineNum;
+		} else if (itemType == 2) {
+			itemSelector.containersBegin = lineNum;
+		} else if (itemType == 3) {
+			itemSelector.weaponsBegin = lineNum;
+		}
 	}
 
 
