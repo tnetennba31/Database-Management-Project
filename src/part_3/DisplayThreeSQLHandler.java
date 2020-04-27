@@ -81,7 +81,7 @@ public class DisplayThreeSQLHandler {
 		int i = 0;
 		
         try {
-	        String selectData = "SELECT * FROM GENERIC_ITEM WHERE L_ID = " + roomID;
+	        String selectData = "SELECT g.GI_ID FROM GENERIC_ITEM as g, ITEM as i WHERE g.I_ID = i.ID and i.L_ID = " + roomID;
 	        PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			ResultSet rs = stmt.getResultSet();
@@ -92,7 +92,7 @@ public class DisplayThreeSQLHandler {
 			}
 			DisplayThree.getInstance().setWhereNewItemTypesBeginInItemSelector(1, i);
 			
-	        selectData = "SELECT * ARMORS WHERE L_ID = " + roomID;
+	        selectData = "SELECT a.A_ID FROM ARMOR as a, ITEM as i WHERE a.I_ID = i.ID and i.L_ID = " + roomID;
 	        stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			rs = stmt.getResultSet();

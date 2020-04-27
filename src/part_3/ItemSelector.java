@@ -35,16 +35,16 @@ public class ItemSelector extends Selector {
 			
 		} else if (e.getSource() == middleButtons[0]) {
 			indexOfSelectedItem = itemsVisible[0];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is armor");} else {System.out.println("this is weapon");}
+			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
 		} else if (e.getSource() == middleButtons[1]) {
 			indexOfSelectedItem = itemsVisible[1];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is armor");} else {System.out.println("this is weapon");}
+			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
 		} else if (e.getSource() == middleButtons[2]) {
 			indexOfSelectedItem = itemsVisible[2];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is armor");} else {System.out.println("this is weapon");}
+			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
 		} else if (e.getSource() == middleButtons[3]) {
 			indexOfSelectedItem = itemsVisible[3];
-			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is armor");} else {System.out.println("this is weapon");}
+			if (indexOfSelectedItem < weaponsBegin) {System.out.println("this is generic");} else {System.out.println("this is armor");}
 		}
 	}
 	
