@@ -19,10 +19,7 @@ public class Display_4 extends JFrame implements ActionListener
   ArrayList<String> characterList = new ArrayList<>();
   JList characters;
 
-  ArrayList<Integer> itemsOwnedList = new ArrayList<>();
   JList itemsOwned;
-
-  ArrayList<Integer> itemsWornList = new ArrayList<>();
   JList itemsWorn;
 
   ArrayList<Integer> itemsOwnedIDs = new ArrayList<>();
@@ -39,8 +36,8 @@ public class Display_4 extends JFrame implements ActionListener
 
     // assign lists for SQL query results
     characters = new JList(characterList.toArray());
-    itemsOwned = new JList(itemsOwnedList.toArray());
-    itemsWorn = new JList(itemsWornList.toArray());
+    itemsOwned = new JList(itemsOwnedIDs.toArray());
+    itemsWorn = new JList(itemsWornIDs.toArray());
 
     // format window
     setLayout(new GridLayout(1, 3));
@@ -157,8 +154,8 @@ public class Display_4 extends JFrame implements ActionListener
   JScrollPane C_ListScrollPane;
   JButton addItemsToCharacterButton;
 
-  ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(itemsOwnedList.size());
-  ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(itemsOwnedList.size());
+  ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(itemsOwnedIDs.size());
+  ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(itemsOwnedIDs.size());
 
   public void C_CreatePanel()
   {
@@ -227,7 +224,7 @@ public class Display_4 extends JFrame implements ActionListener
     infoPanel.setLayout(info_layout);
 
     // make an info button for each item in the list
-    for (int i = 0; i < itemsOwnedList.size(); i++) {
+    for (int i = 0; i < itemsOwnedIDs.size(); i++) {
       // fill the panel with buttons
       JButton infoButton = new JButton("    .  .  .     ");
       infoButton.addActionListener(this);
@@ -285,8 +282,8 @@ public class Display_4 extends JFrame implements ActionListener
   JScrollPane R_ListScrollPane;
   JButton removeItemsFromCharacterButton;
 
-  ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(itemsWornList.size());
-  ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(itemsWornList.size());
+  ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(itemsWornIDs.size());
+  ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(itemsWornIDs.size());
 
   public void R_CreatePanel()
   {
@@ -355,7 +352,7 @@ public class Display_4 extends JFrame implements ActionListener
     infoPanel.setLayout(info_layout);
 
     // make info button for each item in the list
-    for (int i = 0; i < itemsWornList.size(); i++) {
+    for (int i = 0; i < itemsWornIDs.size(); i++) {
       // fill the panel with buttons
       JButton infoButton = new JButton("    .  .  .     ");
       items_worn_info_buttons.add(i, infoButton);
@@ -423,8 +420,11 @@ public class Display_4 extends JFrame implements ActionListener
       selectCharacterButton.setText("Character Selected: " + character);
       selectCharacterButton.setBackground(light_pink);
       try {
+        //---------------------------------------------------------------------------------------------------------//
         getItemsOwnedWithStoredProcedure(character);
+        System.out.println("Items Owned IDs" + itemsOwnedIDs);
         getItemsWornWithStoredProcedure(character);
+        System.out.println("Items Worn IDs" + itemsWornIDs);
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
@@ -467,7 +467,7 @@ public class Display_4 extends JFrame implements ActionListener
         throwables.printStackTrace();
       }
     } else {
-      for (int i = 0; i < itemsOwnedList.size(); i++) {
+      for (int i = 0; i < itemsOwnedIDs.size(); i++) {
         if (event.getSource() == items_owned_info_buttons.get(i)) {
           items_owned_info_buttons.get(i).setBackground(dark_pink);
           items_owned_info_windows.get(i).setVisible(true);
@@ -476,7 +476,7 @@ public class Display_4 extends JFrame implements ActionListener
           }
         }
       }
-      for (int i = 0; i < itemsWornList.size(); i++) {
+      for (int i = 0; i < itemsWornIDs.size(); i++) {
         if (event.getSource() == items_worn_info_buttons.get(i)) {
           items_worn_info_buttons.get(i).setBackground(dark_pink);
           items_worn_info_windows.get(i).setVisible(true);
@@ -546,16 +546,16 @@ public class Display_4 extends JFrame implements ActionListener
     ResultSet setOwned = stmt.getResultSet();
 
     int x = 0;
-    itemsOwnedList.clear();
+    itemsOwnedIDs.clear();
     while (setOwned.next()) {
       int data = setOwned.getInt("ID");
-      itemsOwnedList.add(data);
+      itemsOwnedIDs.add(data);
       x++;
     }
 
     DefaultListModel items = new DefaultListModel();
-    for (int i = 0; i < itemsOwnedList.size(); i++) {
-      items.add(i, itemsOwnedList.get(i));
+    for (int i = 0; i < itemsOwnedIDs.size(); i++) {
+      items.add(i, itemsOwnedIDs.get(i));
     }
 
     itemsOwned = new JList(items);
@@ -569,15 +569,15 @@ public class Display_4 extends JFrame implements ActionListener
     ResultSet setWorn = stmt.getResultSet();
 
     int x = 0;
-    itemsWornList.clear();
+    itemsWornIDs.clear();
     while(setWorn.next()) {
       int data = setWorn.getInt("ID");
-      itemsWornList.add(data);
+      itemsWornIDs.add(data);
     }
 
     DefaultListModel items = new DefaultListModel();
-    for (int i = 0; i < itemsWornList.size(); i++) {
-      items.add(i, itemsWornList.get(i));
+    for (int i = 0; i < itemsWornIDs.size(); i++) {
+      items.add(i, itemsWornIDs.get(i));
     }
 
     itemsWorn = new JList(items);
@@ -606,42 +606,50 @@ public class Display_4 extends JFrame implements ActionListener
     String select;
 
     if (attributeNames.get(0) == "Container ID") {
-      select = new String("SELECT * FROM CONTAINER WHERE I_ID = (?)");
+      select = "SELECT * FROM CONTAINER WHERE I_ID = (?)";
       CallableStatement stmt = m_dbConn.prepareCall(select);
       stmt.setInt(1, itemID);
       stmt.execute();
       ResultSet results = stmt.getResultSet();
-      values.add(0, results.getInt("Con_ID"));
-      values.add(1, results.getInt("I_ID"));
-      values.add(2, results.getInt("Volume_Limit"));
-      values.add(3, results.getInt("Weight_Limit"));
+      if (results.next()) {
+        values.add(0, results.getInt("Con_ID"));
+        values.add(1, results.getInt("I_ID"));
+        values.add(2, results.getInt("Volume_Limit"));
+        values.add(3, results.getInt("Weight_Limit"));
+      }
     } else if (attributeNames.get(0) == "Armor ID") {
-      select = new String("SELECT * FROM ARMOR WHERE I_ID = (?)");
+      select = "SELECT * FROM ARMOR WHERE I_ID = (?)";
       CallableStatement stmt = m_dbConn.prepareCall(select);
       stmt.setInt(1, itemID);
       stmt.execute();
       ResultSet results = stmt.getResultSet();
-      values.add(0, results.getInt("A_ID"));
-      values.add(1, results.getInt("I_ID"));
-      values.add(2, results.getInt("Place"));
-      values.add(3, results.getInt("Protection_Amount"));
+      if (results.next()) {
+        values.add(0, results.getInt("A_ID"));
+        values.add(1, results.getInt("I_ID"));
+        values.add(2, results.getInt("Place"));
+        values.add(3, results.getInt("Protection_Amount"));
+      }
     } else if (attributeNames.get(0) == "Weapon ID") {
-      select = new String("SELECT * FROM WEAPON WHERE I_ID = (?)");
+      select = "SELECT * FROM WEAPON WHERE I_ID = (?)";
       CallableStatement stmt = m_dbConn.prepareCall(select);
       stmt.setInt(1, itemID);
       stmt.execute();
       ResultSet results = stmt.getResultSet();
-      values.add(0, results.getInt("W_ID"));
-      values.add(1, results.getInt("I_ID"));
-      values.add(2, results.getInt("Ability_ID"));
+      if (results.next()) {
+        values.add(0, results.getInt("W_ID"));
+        values.add(1, results.getInt("I_ID"));
+        values.add(2, results.getInt("Ability_ID"));
+      }
     } else if (attributeNames.get(0) == "Generic Item ID") {
-      select = new String("SELECT * FROM GENERIC_ITEM WHERE I_ID = (?)");
+      select = "SELECT * FROM GENERIC_ITEM WHERE I_ID = (?)";
       CallableStatement stmt = m_dbConn.prepareCall(select);
       stmt.setInt(1, itemID);
       stmt.execute();
       ResultSet results = stmt.getResultSet();
-      values.add(0, results.getInt("GI_ID"));
-      values.add(1, results.getInt("I_ID"));
+      if (results.next()) {
+        values.add(0, results.getInt("GI_ID"));
+        values.add(1, results.getInt("I_ID"));
+      }
     }
 
     return values;
