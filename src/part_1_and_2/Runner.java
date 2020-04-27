@@ -18,15 +18,15 @@ public class Runner {
   public static void main(String[] args) throws Exception {
 
     Runner runner = new Runner();
-//    runner.dropAllTables();
-//    runner.createAllTables();
+    runner.dropAllTables();
+    runner.createAllTables();
 
-//    runner.insertEverythingIntoTables();
+    runner.insertEverythingIntoTables();
 //	  Runner.createStoredProcedures4();
 //	  DisplayThreeSQLHandler.setConnection(m_dbConn);
 //	  DisplayThreeSQLHandler.setStoredProcedures();
 //	  DisplayThree display3 = DisplayThree.getInstance();
-	  new Display_4(m_dbConn);
+//	  new Display_4(m_dbConn);
 	  
 
 
@@ -333,30 +333,130 @@ public class Runner {
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (505, 11, 14, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1005, 18, 19, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1505, 24, 29, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (6, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (506, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1006, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1506, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (7, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (507, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1007, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1507, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (8, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (508, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1008, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1508, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (9, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (509, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1009, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1509, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (10, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (510, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1010, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1510, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (11, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (511, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1011, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1511, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (12, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (512, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1012, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1512, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (13, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (513, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1013, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1513, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (14, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (514, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1014, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1514, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (15, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (515, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1015, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1515, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (16, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (516, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1016, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1516, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (17, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (517, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1017, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1517, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
                     // CONTAINER
                     "INSERT INTO CONTAINER VALUES (1, 1000, 500, (SELECT I.ID FROM ITEM I WHERE I.ID = 1))",
                     "INSERT INTO CONTAINER VALUES (2, 999, 499, (SELECT I.ID FROM ITEM I WHERE I.ID = 2))",
                     "INSERT INTO CONTAINER VALUES (3, 998, 498, (SELECT I.ID FROM ITEM I WHERE I.ID = 3))",
                     "INSERT INTO CONTAINER VALUES (4, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 4))",
                     "INSERT INTO CONTAINER VALUES (5, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 5))",
+                    
+                    "INSERT INTO CONTAINER VALUES (6, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 6))",
+                    "INSERT INTO CONTAINER VALUES (7, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 7))",
+                    "INSERT INTO CONTAINER VALUES (8, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 8))",
+                    "INSERT INTO CONTAINER VALUES (9, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 9))",
+                    "INSERT INTO CONTAINER VALUES (10, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 10))",
+                    "INSERT INTO CONTAINER VALUES (11, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 11))",
+                    "INSERT INTO CONTAINER VALUES (12, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 12))",
+                    "INSERT INTO CONTAINER VALUES (13, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 13))",
+                    "INSERT INTO CONTAINER VALUES (14, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 14))",
+                    "INSERT INTO CONTAINER VALUES (15, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 15))",
+                    "INSERT INTO CONTAINER VALUES (16, 997, 497, (SELECT I.ID FROM ITEM I WHERE I.ID = 16))",
+                    "INSERT INTO CONTAINER VALUES (17, 996, 496, (SELECT I.ID FROM ITEM I WHERE I.ID = 17))",
                     // ARMOR
                     "INSERT INTO ARMOR VALUES (1, 0, 50, (SELECT I.ID FROM ITEM I WHERE I.ID = 501))",
                     "INSERT INTO ARMOR VALUES (2, 1, 25, (SELECT I.ID FROM ITEM I WHERE I.ID = 502))",
                     "INSERT INTO ARMOR VALUES (3, 2, 74, (SELECT I.ID FROM ITEM I WHERE I.ID = 503))",
                     "INSERT INTO ARMOR VALUES (4, 3, 75, (SELECT I.ID FROM ITEM I WHERE I.ID = 504))",
                     "INSERT INTO ARMOR VALUES (5, 2, 100, (SELECT I.ID FROM ITEM I WHERE I.ID = 505))",
+                    
+                    "INSERT INTO ARMOR VALUES (6, 0, 50, (SELECT I.ID FROM ITEM I WHERE I.ID = 506))",
+                    "INSERT INTO ARMOR VALUES (7, 1, 25, (SELECT I.ID FROM ITEM I WHERE I.ID = 507))",
+                    "INSERT INTO ARMOR VALUES (8, 2, 74, (SELECT I.ID FROM ITEM I WHERE I.ID = 508))",
+                    "INSERT INTO ARMOR VALUES (9, 3, 75, (SELECT I.ID FROM ITEM I WHERE I.ID = 509))",
+                    "INSERT INTO ARMOR VALUES (10, 2, 100, (SELECT I.ID FROM ITEM I WHERE I.ID = 510))",
+                    "INSERT INTO ARMOR VALUES (11, 0, 50, (SELECT I.ID FROM ITEM I WHERE I.ID = 511))",
+                    "INSERT INTO ARMOR VALUES (12, 1, 25, (SELECT I.ID FROM ITEM I WHERE I.ID = 512))",
+                    "INSERT INTO ARMOR VALUES (13, 2, 74, (SELECT I.ID FROM ITEM I WHERE I.ID = 513))",
+                    "INSERT INTO ARMOR VALUES (14, 3, 75, (SELECT I.ID FROM ITEM I WHERE I.ID = 514))",
+                    "INSERT INTO ARMOR VALUES (15, 2, 100, (SELECT I.ID FROM ITEM I WHERE I.ID = 515))",
+                    "INSERT INTO ARMOR VALUES (16, 3, 75, (SELECT I.ID FROM ITEM I WHERE I.ID = 516))",
+                    "INSERT INTO ARMOR VALUES (17, 2, 100, (SELECT I.ID FROM ITEM I WHERE I.ID = 517))",
                     // WEAPON
                     "INSERT INTO WEAPON VALUES (1, (SELECT A.ID FROM ABILITY A WHERE A.ID = 1), (SELECT I.ID FROM ITEM I WHERE I.ID = 1001))",
                     "INSERT INTO WEAPON VALUES (2, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1002))",
                     "INSERT INTO WEAPON VALUES (3, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1003))",
                     "INSERT INTO WEAPON VALUES (4, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1004))",
                     "INSERT INTO WEAPON VALUES (5, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1005))",
+                    "INSERT INTO WEAPON VALUES (6, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1006))",
+                    "INSERT INTO WEAPON VALUES (7, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1007))",
+                    "INSERT INTO WEAPON VALUES (8, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1008))",
+                    "INSERT INTO WEAPON VALUES (9, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1009))",
+                    "INSERT INTO WEAPON VALUES (10, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1010))",
+                    "INSERT INTO WEAPON VALUES (11, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1011))",
+                    "INSERT INTO WEAPON VALUES (12, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1012))",
+                    "INSERT INTO WEAPON VALUES (13, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1013))",
+                    "INSERT INTO WEAPON VALUES (14, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1014))",
+                    "INSERT INTO WEAPON VALUES (15, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1015))",
+                    "INSERT INTO WEAPON VALUES (16, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1016))",
+                    "INSERT INTO WEAPON VALUES (17, NULL, (SELECT I.ID FROM ITEM I WHERE I.ID = 1017))",
                     // GENERIC_ITEM
                     "INSERT INTO GENERIC_ITEM VALUES (1, (SELECT I.ID FROM ITEM I WHERE I.ID = 1501))",
                     "INSERT INTO GENERIC_ITEM VALUES (2, (SELECT I.ID FROM ITEM I WHERE I.ID = 1502))",
                     "INSERT INTO GENERIC_ITEM VALUES (3, (SELECT I.ID FROM ITEM I WHERE I.ID = 1503))",
                     "INSERT INTO GENERIC_ITEM VALUES (4, (SELECT I.ID FROM ITEM I WHERE I.ID = 1504))",
-                    "INSERT INTO GENERIC_ITEM VALUES (5, (SELECT I.ID FROM ITEM I WHERE I.ID = 1505))"
+                    "INSERT INTO GENERIC_ITEM VALUES (5, (SELECT I.ID FROM ITEM I WHERE I.ID = 1505))",
+                    "INSERT INTO GENERIC_ITEM VALUES (6, (SELECT I.ID FROM ITEM I WHERE I.ID = 1506))",
+                    "INSERT INTO GENERIC_ITEM VALUES (7, (SELECT I.ID FROM ITEM I WHERE I.ID = 1507))",
+                    "INSERT INTO GENERIC_ITEM VALUES (8, (SELECT I.ID FROM ITEM I WHERE I.ID = 1508))",
+                    "INSERT INTO GENERIC_ITEM VALUES (9, (SELECT I.ID FROM ITEM I WHERE I.ID = 1509))",
+                    "INSERT INTO GENERIC_ITEM VALUES (10, (SELECT I.ID FROM ITEM I WHERE I.ID = 1510))",
+                    "INSERT INTO GENERIC_ITEM VALUES (11, (SELECT I.ID FROM ITEM I WHERE I.ID = 1511))",
+                    "INSERT INTO GENERIC_ITEM VALUES (12, (SELECT I.ID FROM ITEM I WHERE I.ID = 1512))",
+                    "INSERT INTO GENERIC_ITEM VALUES (13, (SELECT I.ID FROM ITEM I WHERE I.ID = 1513))",
+                    "INSERT INTO GENERIC_ITEM VALUES (14, (SELECT I.ID FROM ITEM I WHERE I.ID = 1514))",
+                    "INSERT INTO GENERIC_ITEM VALUES (15, (SELECT I.ID FROM ITEM I WHERE I.ID = 1515))",
+                    "INSERT INTO GENERIC_ITEM VALUES (16, (SELECT I.ID FROM ITEM I WHERE I.ID = 1516))",                  
+                    "INSERT INTO GENERIC_ITEM VALUES (17, (SELECT I.ID FROM ITEM I WHERE I.ID = 1517))"
             };
 
     for (int i = 0; i < insert_statements.length; i++) {
