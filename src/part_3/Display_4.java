@@ -213,7 +213,6 @@ public class Display_4 extends JFrame implements ActionListener
     C_ListScrollPane = new JScrollPane(itemsOwned);
     itemsOwned.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     C_ListPanel.add(C_ListScrollPane, BorderLayout.CENTER);
-    validate();
   }
 
   public void C_CreateItemInfo() throws SQLException {
@@ -422,9 +421,7 @@ public class Display_4 extends JFrame implements ActionListener
       try {
         //---------------------------------------------------------------------------------------------------------//
         getItemsOwnedWithStoredProcedure(character);
-        System.out.println("Items Owned IDs" + itemsOwnedIDs);
         getItemsWornWithStoredProcedure(character);
-        System.out.println("Items Worn IDs" + itemsWornIDs);
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
@@ -438,12 +435,6 @@ public class Display_4 extends JFrame implements ActionListener
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
-//      try {
-//        C_CreateItemInfo();
-//        R_CreateItemInfo();
-//      } catch (SQLException throwables) {
-//        throwables.printStackTrace();
-//      }
     } else if (event.getSource() == addItemsToCharacterButton) {
       int[] stuff = itemsOwned.getSelectedIndices();
       ArrayList<Integer> itemsToSwitch = new ArrayList<>();
@@ -655,3 +646,10 @@ public class Display_4 extends JFrame implements ActionListener
     return values;
   }
 }
+
+/*
+   TODO Questions to Ask:
+   1) Why have the center and right JScrollPanes suddenly stopped being clickable?
+   2) Do I have to incorporate the squares that were the select buttons or is the ScrollPane okay?
+   3) Is there a way to make the main three buttons bigger?
+*/
