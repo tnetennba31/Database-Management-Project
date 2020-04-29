@@ -445,26 +445,22 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
         throwables.printStackTrace();
       }
     } else if (event.getSource() == addItemsToCharacterButton) {
-      int[] stuff = itemsOwned.getSelectedIndices();
-      ArrayList<Integer> itemsToSwitch = new ArrayList<>();
-      for (int i = 0; i < stuff.length; i++) {
-        itemsToSwitch.add(itemsOwnedIDs.get(stuff[i]));
-      }
-      try {
-        switchItemToWornWithStoredProcedure(itemsToSwitch);
-      } catch (SQLException throwables) {
-        throwables.printStackTrace();
+      ArrayList<Integer> toSwitch = new ArrayList<>(itemsOwned.getSelectedValuesList());
+      for (int i = 0; i < toSwitch.size(); i++) {
+        try {
+          switchItemsToWornWithStoredProcedure(toSwitch);
+        } catch (SQLException throwables) {
+          throwables.printStackTrace();
+        }
       }
     } else if (event.getSource() == removeItemsFromCharacterButton) {
-      int[] stuff = itemsWorn.getSelectedIndices();
-      ArrayList<Integer> itemsToSwitch = new ArrayList<>();
-      for (int i = 0; i < stuff.length; i++) {
-        itemsToSwitch.add(itemsWornIDs.get(stuff[i]));
-      }
-      try {
-        switchItemToOwnedWithStoredProcedure(itemsToSwitch);
-      } catch (SQLException throwables) {
-        throwables.printStackTrace();
+      ArrayList<Integer> toSwitch = new ArrayList<>(itemsWorn.getSelectedValuesList());
+      for (int i = 0; i < toSwitch.size(); i++) {
+        try {
+          switchItemsToOwnedWithStoredProcedure(toSwitch);
+        } catch (SQLException throwables) {
+          throwables.printStackTrace();
+        }
       }
     } else {
       for (int i = 0; i < itemsOwnedIDs.size(); i++) {
@@ -577,22 +573,30 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
     }
   }
 
-  public void switchItemToWornWithStoredProcedure(ArrayList<Integer> item_IDs) throws SQLException {
+  public void switchItemsToWornWithStoredProcedure(ArrayList<Integer> item_IDs) throws SQLException {
     String sql = "CALL switch_item_to_worn(?)";
     for (int i = 0; i < item_IDs.size(); i++) {
       CallableStatement stmt = m_dbConn.prepareCall(sql);
       stmt.setInt(1, item_IDs.get(i));
       stmt.execute();
     }
+    C_ListScrollPane.validate();
+    R_ListScrollPane.validate();
+    C_InformationPanel.validate();
+    R_InformationPanel.validate();
   }
 
-  public void switchItemToOwnedWithStoredProcedure(ArrayList<Integer> item_IDs) throws SQLException {
+  public void switchItemsToOwnedWithStoredProcedure(ArrayList<Integer> item_IDs) throws SQLException {
     String sql = "CALL switch_item_to_owned(?)";
     for (int i = 0; i < item_IDs.size(); i++) {
       CallableStatement stmt = m_dbConn.prepareCall(sql);
       stmt.setInt(1, item_IDs.get(i));
       stmt.execute();
     }
+    C_ListScrollPane.repaint();
+    R_ListScrollPane.repaint();
+    C_InformationPanel.repaint();
+    R_InformationPanel.repaint();
   }
 
   public ArrayList<Integer> getAttributeValues(int itemID, ArrayList<String> attributeNames) throws SQLException {
