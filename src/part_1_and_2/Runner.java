@@ -20,13 +20,13 @@ public class Runner {
     Runner runner = new Runner();
     runner.dropAllTables();
     runner.createAllTables();
-//
+
     runner.insertEverythingIntoTables();
 //	  Runner.createStoredProcedures4();
-	  DisplayThreeSQLHandler.setConnection(m_dbConn);
-	  DisplayThreeSQLHandler.setStoredProcedures();
-	  DisplayThree display3 = DisplayThree.getInstance();
-//	  new Display_4(m_dbConn);
+//	  DisplayThreeSQLHandler.setConnection(m_dbConn);
+//	  DisplayThreeSQLHandler.setStoredProcedures();
+//	  DisplayThree display3 = DisplayThree.getInstance();
+	  new Display_4(m_dbConn);
 	  
 
 
