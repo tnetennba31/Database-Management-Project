@@ -1,9 +1,9 @@
 package part_3;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Display_4 extends JFrame implements ActionListener
-{
+public class Display_4 extends JFrame implements ActionListener, ListSelectionListener {
   Connection m_dbConn;
 
   ArrayList<String> characterList = new ArrayList<>();
@@ -35,9 +34,9 @@ public class Display_4 extends JFrame implements ActionListener
     m_dbConn = conn;
 
     // assign lists for SQL query results
-    characters = new JList(characterList.toArray());
-    itemsOwned = new JList(itemsOwnedIDs.toArray());
-    itemsWorn = new JList(itemsWornIDs.toArray());
+    characters = new JList(new DefaultListModel());
+    itemsWorn = new JList(new DefaultListModel());
+    itemsOwned = new JList(new DefaultListModel());
 
     // format window
     setLayout(new GridLayout(1, 3));
@@ -53,14 +52,14 @@ public class Display_4 extends JFrame implements ActionListener
     C_CreatePanel();
     C_CreateHeading();
     C_CreateItemsOwnedList();
-    C_CreateItemInfo();
+    C_CreateItemInfoButtons();
     C_CreateButton();
 
     // run right panel creation methods
     R_CreatePanel();
     R_CreateHeading();
     R_CreateItemsWornList();
-    R_CreateItemInfo();
+    R_CreateItemInfoButtons();
     R_CreateButton();
 
     pack();
@@ -212,18 +211,21 @@ public class Display_4 extends JFrame implements ActionListener
     // scroll pane list
     C_ListScrollPane = new JScrollPane(itemsOwned);
     itemsOwned.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    itemsOwned.addListSelectionListener(this);
     C_ListPanel.add(C_ListScrollPane, BorderLayout.CENTER);
+    validate();
   }
 
-  public void C_CreateItemInfo() throws SQLException {
+  public void C_CreateItemInfoButtons() throws SQLException {
+    items_owned_info_buttons.clear();
     // entire panel
     JPanel infoPanel = new JPanel();
     infoPanel.setBackground(Color.white);
     BoxLayout info_layout = new BoxLayout(infoPanel, BoxLayout.Y_AXIS);
     infoPanel.setLayout(info_layout);
 
-    // make an info button for each item in the list
-    for (int i = 0; i < itemsOwnedIDs.size(); i++) {
+    // make max number of info buttons
+    for (int i = 0; i < 32; i++) {
       // fill the panel with buttons
       JButton infoButton = new JButton("    .  .  .     ");
       infoButton.addActionListener(this);
@@ -231,7 +233,14 @@ public class Display_4 extends JFrame implements ActionListener
       infoButton.setBorder(blackBorder);
       infoPanel.add(infoButton);
       items_owned_info_buttons.add(i, infoButton);  // add button to list to keep track
+    }
+    C_ListPanel.add(infoPanel, BorderLayout.EAST);
+    validate();
+  }
 
+  public void C_AddInformationToButtons() throws SQLException {
+    items_owned_info_windows.clear();
+    for (int i = 0; i < itemsOwnedIDs.size(); i++) {
       // link each button to a new pop-up window
       JFrame window = new JFrame();
       window.pack();
@@ -260,8 +269,6 @@ public class Display_4 extends JFrame implements ActionListener
       }
       window.add(C_InformationPanel);
     }
-
-    C_ListPanel.add(infoPanel, BorderLayout.EAST);
   }
 
   public void C_CreateButton()
@@ -338,33 +345,43 @@ public class Display_4 extends JFrame implements ActionListener
     // scroll pane list
     R_ListScrollPane = new JScrollPane(itemsWorn);
     itemsWorn.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    itemsWorn.addListSelectionListener(this);
     R_ListPanel.add(R_ListScrollPane, BorderLayout.CENTER);
+    validate();
   }
 
-  public void R_CreateItemInfo() throws SQLException {
+  public void R_CreateItemInfoButtons() throws SQLException {
+    items_worn_info_buttons.clear();
     // entire panel
     JPanel infoPanel = new JPanel();
     infoPanel.setBackground(Color.white);
     BoxLayout info_layout = new BoxLayout(infoPanel, BoxLayout.Y_AXIS);
     infoPanel.setLayout(info_layout);
 
-    // make info button for each item in the list
-    for (int i = 0; i < itemsWornIDs.size(); i++) {
+    // make max number of info buttons
+    for (int i = 0; i < 32; i++) {
       // fill the panel with buttons
       JButton infoButton = new JButton("    .  .  .     ");
-      items_worn_info_buttons.add(i, infoButton);
       infoButton.addActionListener(this);
+      items_worn_info_buttons.add(i, infoButton);
       infoButton.setBackground(Color.white);
       infoButton.setBorder(blackBorder);
       infoPanel.add(infoButton);  // add button to list to keep track
+    }
+    R_ListPanel.add(infoPanel, BorderLayout.EAST);
+    validate();
+  }
 
+  public void R_AddInformationToButtons() throws SQLException {
+    items_worn_info_windows.clear();
+    for (int i = 0; i < itemsWornIDs.size(); i++) {
       // link each button to a new pop-up window
       JFrame window = new JFrame();
       window.pack();
       window.setDefaultCloseOperation(HIDE_ON_CLOSE);
       window.setLayout(new GridLayout());
       window.setLocationRelativeTo(items_worn_info_buttons.get(i));
-      items_worn_info_windows.add(i, window);  // add window to list to keep track
+      items_worn_info_windows.add(window);  // add window to list to keep track
 
       // add information to each window
       ArrayList<String> itemAttributes = getItemType(itemsWornIDs.get(i));
@@ -372,10 +389,9 @@ public class Display_4 extends JFrame implements ActionListener
       R_InformationPanel = new JPanel(new GridLayout(itemAttributes.size(), 2));
       R_InformationPanel.setBackground(light_pink);
       R_InformationPanel.setBorder(blackBorder);
-      for (int x = 0; x < itemAttributes.size(); x++)
-      {
+      for (int x = 0; x < itemAttributes.size(); x++) {
         // attribute title in left block
-        JLabel idk = new JLabel("   "  + itemAttributes.get(x));
+        JLabel idk = new JLabel("   " + itemAttributes.get(x));
         idk.setBorder(blackBorder);
         R_InformationPanel.add(idk);
 
@@ -386,7 +402,6 @@ public class Display_4 extends JFrame implements ActionListener
       }
       window.add(R_InformationPanel);
     }
-    R_ListPanel.add(infoPanel, BorderLayout.EAST);
   }
 
   public void R_CreateButton()
@@ -399,9 +414,9 @@ public class Display_4 extends JFrame implements ActionListener
   }
 
 
-  //----------------- ACTION LISTENER ------------------------------------------//
+  //----------------- LISTENERS ------------------------------------------//
 
-  public void actionPerformed(@NotNull ActionEvent event) {
+  public void actionPerformed(ActionEvent event) {
     if (event.getSource() == L_Login) {
       String player_login = L_Login.getText();
       try {
@@ -416,66 +431,53 @@ public class Display_4 extends JFrame implements ActionListener
       selectCharacterButton.setText("Character Selected: " + character);
       selectCharacterButton.setBackground(light_pink);
       try {
-        //---------------------------------------------------------------------------------------------------------//
         getItemsOwnedWithStoredProcedure(character);
         getItemsWornWithStoredProcedure(character);
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
-      centerPanel.remove(C_ListScrollPane);
-      C_CreateItemsOwnedList();
-      rightPanel.remove(R_ListScrollPane);
-      R_CreateItemsWornList();
+      C_ListScrollPane.validate();
+      R_ListScrollPane.validate();
       try {
-        C_CreateItemInfo();
-        R_CreateItemInfo();
+        C_AddInformationToButtons();
+        R_AddInformationToButtons();
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
-      validate();
     } else if (event.getSource() == addItemsToCharacterButton) {
-      int[] stuff = itemsOwned.getSelectedIndices();
-      ArrayList<Integer> itemsToSwitch = new ArrayList<>();
-      for (int i = 0; i < stuff.length; i++) {
-        itemsToSwitch.add(itemsOwnedIDs.get(stuff[i]));
-      }
+      ArrayList<Integer> toSwitch = new ArrayList<>(itemsOwned.getSelectedValuesList());
       try {
-        switchItemToWornWithStoredProcedure(itemsToSwitch);
+        switchItemsToWorn(toSwitch);
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
+      selectCharacterButton.doClick();
     } else if (event.getSource() == removeItemsFromCharacterButton) {
-      int[] stuff = itemsWorn.getSelectedIndices();
-      ArrayList<Integer> itemsToSwitch = new ArrayList<>();
-      for (int i = 0; i < stuff.length; i++) {
-        itemsToSwitch.add(itemsWornIDs.get(stuff[i]));
-      }
+      ArrayList<Integer> toSwitch = new ArrayList<>(itemsWorn.getSelectedValuesList());
       try {
-        switchItemToOwnedWithStoredProcedure(itemsToSwitch);
+        switchItemsToOwned(toSwitch);
       } catch (SQLException throwables) {
         throwables.printStackTrace();
       }
+      selectCharacterButton.doClick();
     } else {
       for (int i = 0; i < itemsOwnedIDs.size(); i++) {
         if (event.getSource() == items_owned_info_buttons.get(i)) {
           items_owned_info_buttons.get(i).setBackground(dark_pink);
           items_owned_info_windows.get(i).setVisible(true);
-          if (!items_owned_info_windows.get(i).isVisible()) {
-            items_owned_info_buttons.get(i).setBackground(Color.white);
-          }
         }
       }
       for (int i = 0; i < itemsWornIDs.size(); i++) {
         if (event.getSource() == items_worn_info_buttons.get(i)) {
           items_worn_info_buttons.get(i).setBackground(dark_pink);
           items_worn_info_windows.get(i).setVisible(true);
-          if (!items_worn_info_windows.get(i).isVisible()) {
-            items_worn_info_buttons.get(i).setBackground(Color.white);
-          }
         }
       }
     }
   }
+
+  @Override
+  public void valueChanged(ListSelectionEvent e) {}
 
 
   //----------------- MISCELLANEOUS ------------------------------------------//
@@ -532,20 +534,19 @@ public class Display_4 extends JFrame implements ActionListener
     stmt.execute();
     ResultSet setOwned = stmt.getResultSet();
 
-    int x = 0;
     itemsOwnedIDs.clear();
-    while (setOwned.next()) {
+    while (setOwned.next())
+    {
       int data = setOwned.getInt("ID");
       itemsOwnedIDs.add(data);
-      x++;
     }
+    ((DefaultListModel)itemsOwned.getModel()).removeAllElements();
 
     DefaultListModel items = new DefaultListModel();
     for (int i = 0; i < itemsOwnedIDs.size(); i++) {
       items.add(i, itemsOwnedIDs.get(i));
+      ((DefaultListModel)(itemsOwned.getModel())).addElement(itemsOwnedIDs.get(i));
     }
-
-    itemsOwned = new JList(items);
   }
 
   public void getItemsWornWithStoredProcedure(String character_name) throws SQLException {
@@ -556,34 +557,35 @@ public class Display_4 extends JFrame implements ActionListener
     ResultSet setWorn = stmt.getResultSet();
 
     itemsWornIDs.clear();
-    while(setWorn.next()) {
+    while (setWorn.next())
+    {
       int data = setWorn.getInt("ID");
       itemsWornIDs.add(data);
     }
+    ((DefaultListModel)itemsWorn.getModel()).removeAllElements();
 
     DefaultListModel items = new DefaultListModel();
     for (int i = 0; i < itemsWornIDs.size(); i++) {
       items.add(i, itemsWornIDs.get(i));
-    }
-
-    itemsWorn = new JList(items);
-  }
-
-  public void switchItemToWornWithStoredProcedure(@NotNull ArrayList<Integer> item_IDs) throws SQLException {
-    String sql = "CALL switch_item_to_worn(?)";
-    for (int i = 0; i < item_IDs.size(); i++) {
-      CallableStatement stmt = m_dbConn.prepareCall(sql);
-      stmt.setInt(1, item_IDs.get(i));
-      stmt.execute();
+      ((DefaultListModel)(itemsWorn.getModel())).addElement(itemsWornIDs.get(i));
     }
   }
 
-  public void switchItemToOwnedWithStoredProcedure(@NotNull ArrayList<Integer> item_IDs) throws SQLException {
-    String sql = "CALL switch_item_to_owned(?)";
+  public void switchItemsToWorn(ArrayList<Integer> item_IDs) throws SQLException {
     for (int i = 0; i < item_IDs.size(); i++) {
-      CallableStatement stmt = m_dbConn.prepareCall(sql);
-      stmt.setInt(1, item_IDs.get(i));
-      stmt.execute();
+      Statement stmt = m_dbConn.createStatement();
+      String sql = "UPDATE ITEM SET W_Name = O_Name WHERE ID = " + item_IDs.get(i) + " AND W_Name IS NULL";
+      stmt.executeUpdate(sql);
+      stmt.close();
+    }
+  }
+
+  public void switchItemsToOwned(ArrayList<Integer> item_IDs) throws SQLException {
+    for (int i = 0; i < item_IDs.size(); i++) {
+      Statement stmt = m_dbConn.createStatement();
+      String sql = "UPDATE ITEM SET W_Name = NULL WHERE ID = " + item_IDs.get(i) + " AND W_Name = O_Name";
+      stmt.executeUpdate(sql);
+      stmt.close();
     }
   }
 
@@ -636,15 +638,9 @@ public class Display_4 extends JFrame implements ActionListener
         values.add(0, results.getInt("GI_ID"));
         values.add(1, results.getInt("I_ID"));
       }
+
     }
 
     return values;
   }
 }
-
-/*
-   TODO Questions to Ask:
-   1) Why have the center and right JScrollPanes suddenly stopped being clickable?
-   2) Do I have to incorporate the squares that were the select buttons or is the ScrollPane okay?
-   3) Is there a way to make the main three buttons bigger?
-*/
