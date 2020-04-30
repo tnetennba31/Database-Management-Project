@@ -89,7 +89,7 @@ public class DisplayThree extends JFrame implements ActionListener {
 //	static int weaponsBegin = 0;
 //	static int containersBegin = 0;
 	
-	static int itemsBegin = 0;
+//	static int itemsBegin = 0;
 	
 	public static DisplayThree getInstance() { 
         if (display == null) 
@@ -114,6 +114,7 @@ public class DisplayThree extends JFrame implements ActionListener {
 		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
 		itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(selectedRoomID);
 		allThatCanBeAddedToRoom = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom();
+		for (String s : creaturesInRoom) {System.out.print(s + "  ");}
 
 		roomSelector = new Selector(this, rooms);
 		roomSelector.setBounds(ROOM_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);

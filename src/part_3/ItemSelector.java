@@ -101,7 +101,7 @@ public class ItemSelector extends Selector {
 		thingsInColumn.add(item);
 		updateButtons();
 
-		//DisplayThreeSQLHandler.changeRoomOfCreature(item);
+		//DisplayThreeSQLHandler.changeRoomOfItem(item);
 		
 	}
 
