@@ -91,7 +91,7 @@ public class DisplayThreeSQLHandler {
 				i++;
 			}
 			
-			DisplayThree.setWhereNewItemTypesBegin(1, i);
+			//DisplayThree.setWhereNewItemTypesBegin(1, i);
 	        selectData = "SELECT a.A_ID FROM ARMOR as a, ITEM as i WHERE a.I_ID = i.ID and i.L_ID = " + roomID;
 	        stmt = connection.prepareStatement(selectData);
 			stmt.execute();
@@ -102,7 +102,7 @@ public class DisplayThreeSQLHandler {
 				i++;
 			}
 			
-			DisplayThree.setWhereNewItemTypesBegin(2, i);
+			//DisplayThree.setWhereNewItemTypesBegin(2, i);
 	        selectData = "SELECT w.W_ID FROM WEAPON as w, ITEM as i WHERE w.I_ID = i.ID and i.L_ID = " + roomID;
 	        stmt = connection.prepareStatement(selectData);
 			stmt.execute();
@@ -113,7 +113,7 @@ public class DisplayThreeSQLHandler {
 				i++;
 			}
 			
-			DisplayThree.setWhereNewItemTypesBegin(3, i);
+			//DisplayThree.setWhereNewItemTypesBegin(3, i);
 	        selectData = "SELECT c.Con_ID FROM CONTAINER as c, ITEM as i WHERE c.I_ID = i.ID and i.L_ID = " + roomID;
 	        stmt = connection.prepareStatement(selectData);
 			stmt.execute();
@@ -158,64 +158,69 @@ public class DisplayThreeSQLHandler {
 
 		try {
 			
-//	        String selectData = "ALTER TABLE ABILITY DROP FOREIGN KEY ABILITY_ibfk_1";
-//	        PreparedStatement stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE ABILITY DROP FOREIGN KEY ABILITY_ibfk_2";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE DROP FOREIGN KEY CREATURE_LIKES_HATES_CREATURE_ibfk_1";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE DROP FOREIGN KEY CREATURE_LIKES_HATES_CREATURE_ibfk_2";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_HAS_POSSIBLE_AREAS DROP FOREIGN KEY CREATURE_HAS_POSSIBLE_AREAS_ibfk_1";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_PLAYER DROP FOREIGN KEY CREATURE_LIKES_HATES_PLAYER_ibfk_1";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-			
+
 			
 	        String selectData = "DELETE FROM CREATURE WHERE ID = " + ID + " AND L_ID = " + L_ID;
 	        PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			
-			
-//	        selectData = "ALTER TABLE ABILITY ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE ABILITY ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_CREATURE ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_HAS_POSSIBLE_AREAS ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			
-//	        selectData = "ALTER TABLE CREATURE_LIKES_HATES_PLAYER ADD FOREIGN KEY (CREATURE_ID) REFERENCES CREATURE(ID)";
-//			stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+
+	public static Vector<String> getAllThatCanBeAddedToRoom() {
+		
+		Vector<String> result = new Vector<String>();
+        String selectData = "SELECT * FROM CREATURE WHERE L_ID = -1";
+		
+		try {
+			PreparedStatement stmt = connection.prepareStatement(selectData);
+		    stmt.execute();
+		     
+			ResultSet rs = stmt.getResultSet();
+		    int i = 0;
+		    while (rs.next()) {
+		    	String data = rs.getString("ID");
+		    	result.add(data);i++;
+		    }
+				
+		    DisplayThree.setWhereItemsStartInAddBox(i);		
+				
+			selectData = "SELECT * FROM ITEM WHERE L_ID = -1";
+			stmt = connection.prepareStatement(selectData);
+		    stmt.execute();
+				
+		    rs = stmt.getResultSet();
+		    while (rs.next()) {
+		    	String data = rs.getString("ID");
+		    	result.add(data);
+		    }
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 	
+		return result;
+	}
+
+
+	public static void changeRoomOfCreature(String creatureID) {
+		
+		try {
+						
+	        String updateQuery = "UPDATE CREATURE SET L_ID = " + DisplayThree.getInstance().selectedRoomID + " WHERE ID = " + creatureID;
+	        PreparedStatement stmt = connection.prepareStatement(updateQuery);
+			stmt.execute();
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

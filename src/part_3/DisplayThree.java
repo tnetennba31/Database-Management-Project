@@ -44,9 +44,9 @@ public class DisplayThree extends JFrame implements ActionListener {
 	ROOM_SELECTOR_X = SELECTOR_Y,			                
 	C_SELECTOR_X = OFFSET * 5,			                	                
 	I_SELECTOR_X = OFFSET * 9,			                
-	ADDING_BOX_WIDTH = OFFSET * 6,			                
+	ADDING_BOX_WIDTH = OFFSET * 4,			                
 	ADDING_BOX_HEIGHT = OFFSET * 6,			                
-	ADDING_BOX_X = OFFSET * 13 - (OFFSET / 4),			                
+	ADDING_BOX_X = OFFSET * 13,	// - (OFFSET / 4)		                
 	ADDING_BOX_Y = OFFSET,		
 	INSTRUCTIONS_WIDTH = OFFSET * 11,
 	INSTRUCTIONS_HEIGHT = OFFSET * 2,
@@ -65,7 +65,7 @@ public class DisplayThree extends JFrame implements ActionListener {
 	C_DELETE_BUTTON_X = C_SELECTOR_X + (OFFSET / 2),
 	I_DELETE_BUTTON_X = I_SELECTOR_X + (OFFSET / 2),
 	ADD_BUTTON_DIAMETER = OFFSET * 2,
-	ADD_BUTTON_X = ADDING_BOX_X + (OFFSET * 2),
+	ADD_BUTTON_X = ADDING_BOX_X + ((ADDING_BOX_WIDTH / 2) - (ADD_BUTTON_DIAMETER / 2)),
 	ADD_BUTTON_Y = OFFSET * 7 + (OFFSET / 2);		                			                
 			                			              			              
 	JTextPane usageInstructions;
@@ -83,11 +83,13 @@ public class DisplayThree extends JFrame implements ActionListener {
 	Vector<String> rooms = new Vector<String>();
 	Vector<String> creaturesInRoom = new Vector<String>();
 	Vector<String> itemsInRoom = new Vector<String>();
+	Vector<String> allThatCanBeAddedToRoom = new Vector<String>();
+
+//	static int armorsBegin = 0;
+//	static int weaponsBegin = 0;
+//	static int containersBegin = 0;
 	
-	//int genericItemsBegin = 0;
-	static int armorsBegin = 0;
-	static int weaponsBegin = 0;
-	static int containersBegin = 0;
+	static int itemsBegin = 0;
 	
 	public static DisplayThree getInstance() { 
         if (display == null) 
@@ -109,10 +111,9 @@ public class DisplayThree extends JFrame implements ActionListener {
 
 
 		rooms = DisplayThreeSQLHandler.getRooms();
-
-
 		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
 		itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(selectedRoomID);
+		allThatCanBeAddedToRoom = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom();
 
 		roomSelector = new Selector(this, rooms);
 		roomSelector.setBounds(ROOM_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
@@ -125,24 +126,21 @@ public class DisplayThree extends JFrame implements ActionListener {
 		
 		
 		itemSelector = new ItemSelector(this, itemsInRoom);
-		itemSelector.setWhereNewItemTypesBegin(armorsBegin, weaponsBegin, containersBegin);
+		//itemSelector.setWhereNewItemTypesBegin(armorsBegin, weaponsBegin, containersBegin);
 		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(itemSelector);
 		
-		
-//		addBox = new AddBox("creature");
-		addBox = new AddBox("generic");
+		addBox = new AddBox(this, allThatCanBeAddedToRoom);
 		addBox.setBounds(ADDING_BOX_X, ADDING_BOX_Y, ADDING_BOX_WIDTH, ADDING_BOX_HEIGHT);
 		add(addBox);
 		
 		
-		deleteCreatureButton = new JButton("Del"); //TODO: make it an image instead
+		deleteCreatureButton = new JButton(" X "); //TODO: make it an image instead
 		deleteCreatureButton.setBounds(C_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
 		deleteCreatureButton.addActionListener(this);
 		add(deleteCreatureButton);
-		
 
-		deleteItemButton = new JButton("Del"); //TODO: make it an image instead
+		deleteItemButton = new JButton(" X "); //TODO: make it an image instead
 		deleteItemButton.setBounds(I_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
 		deleteItemButton.addActionListener(this);
 		add(deleteItemButton);
@@ -155,7 +153,6 @@ public class DisplayThree extends JFrame implements ActionListener {
 		
 		
 		setSize((int) WINDOW_WIDTH, (int) WINDOW_HEIGHT);
-		//pack();
 		setResizable(false);
 		setVisible(true);
 	}
@@ -172,6 +169,9 @@ public class DisplayThree extends JFrame implements ActionListener {
 
 			itemSelector.deleteSelectedAndRefresh();
 									
+		} else if (event.getSource() == addItemButton) {
+			
+			addBox.moveSelectedToRoom(selectedRoomID);
 		}
 
 	}
@@ -188,36 +188,42 @@ public class DisplayThree extends JFrame implements ActionListener {
 
 	}
 	
-	public void setAddBox(String type) {
-		addBox = null;
-
-		if (type == "generic") {
-			addBox = new AddBox("generic");
-		} else if (type == "armor") {
-			
-		} else if (type == "weapon") {
-			
-		} else if (type == "container") {
-			
-		} else {
-			System.out.println("delete this");
-		}
+//	public void setAddBox(String type) {
+//		addBox = null;
+//
+//		if (type == "generic") {
+//			addBox = new AddBox("generic");
+//		} else if (type == "armor") {
+//			
+//		} else if (type == "weapon") {
+//			
+//		} else if (type == "container") {
+//			
+//		} else {
+//			System.out.println("delete this");
+//		}
+//	}
+	
+	public static void setWhereItemsStartInAddBox(int lineNum) {
+		AddBox.itemsBegin = lineNum;
 	}
+	
 	
 	private String getInstructionString() {
 		return "[instructions]";
 	}
 
-	public static void setWhereNewItemTypesBegin(int itemType, int lineNum) {
+//	public static void setWhereNewItemTypesBegin(int itemType, int lineNum) {
+//
+//		if (itemType == 1) {
+//			armorsBegin = lineNum;
+//		} else if (itemType == 2) {
+//			weaponsBegin = lineNum;
+//		} else if (itemType == 3) {
+//			containersBegin = lineNum;
+//		}
+//	}
 
-		if (itemType == 1) {
-			armorsBegin = lineNum;
-		} else if (itemType == 2) {
-			weaponsBegin = lineNum;
-		} else if (itemType == 3) {
-			containersBegin = lineNum;
-		}
-	}
 }
 
 //static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

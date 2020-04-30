@@ -47,14 +47,21 @@ public class CreatureSelector extends Selector {
 		this.updateButtons();
 	}
 	
-	public void updateButtons() {
-		for (int i = 0; i < middleButtons.length; i++) {
-
-			middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
-
-
-		}
-	}
+//	public void updateButtons() {
+//		for (int i = 0; i < middleButtons.length; i++) {
+//
+//			if (i < thingsInColumn.size()) {
+//				
+//				middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
+//			} else {
+//				
+//				middleButtons[i].setText("");
+//				middleButtons[i].setVisible(false);
+//
+//			}
+//
+//		}
+//	}
 
 	public void changeContentsToNewRoom(Vector<String> creaturesInRoom) {
 
@@ -69,6 +76,15 @@ public class CreatureSelector extends Selector {
 		
 		updateButtons();
 		
+	}
+
+	public void addCreatureToRoom(String creature) {
+		
+		thingsInColumn.add(creature);
+		updateButtons();
+
+		DisplayThreeSQLHandler.changeRoomOfCreature(creature);
+
 	}
 
 }

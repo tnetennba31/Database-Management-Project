@@ -8,10 +8,9 @@ import javax.swing.JPanel;
 
 public class ItemSelector extends Selector {
 	
-	//int genericItemsBegin = 0;
-	int armorsBegin = 0;
-	int weaponsBegin = 0;
-	int containersBegin = 0;
+//	int armorsBegin = 0;
+//	int weaponsBegin = 0;
+//	int containersBegin = 0;
 
 
 
@@ -24,7 +23,6 @@ public class ItemSelector extends Selector {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		System.out.println(armorsBegin + " " + weaponsBegin + " " + containersBegin);
 		if (e.getSource() == upArrowButton) {
 			
 			scrollUp();
@@ -35,7 +33,6 @@ public class ItemSelector extends Selector {
 			
 		} else if (e.getSource() == middleButtons[0]) {
 			indexOfSelectedItem = itemsVisible[0];
-			signalCorrectAddBoxToDisplay();
 		} else if (e.getSource() == middleButtons[1]) {
 			indexOfSelectedItem = itemsVisible[1];
 		} else if (e.getSource() == middleButtons[2]) {
@@ -45,18 +42,18 @@ public class ItemSelector extends Selector {
 		}
 	}
 	
-	private void signalCorrectAddBoxToDisplay() {
-		
-		if (indexOfSelectedItem < armorsBegin) {
-			DisplayThree.getInstance().setAddBox("generic");
-		} else if (indexOfSelectedItem < weaponsBegin) {
-			DisplayThree.getInstance().setAddBox("armor");
-		} else if (indexOfSelectedItem < containersBegin) {
-			DisplayThree.getInstance().setAddBox("weapon");
-		} else if (indexOfSelectedItem >= containersBegin) {
-			DisplayThree.getInstance().setAddBox("container");
-		}
-	}
+//	private void signalCorrectAddBoxToDisplay() {
+//		
+//		if (indexOfSelectedItem < armorsBegin) {
+//			DisplayThree.getInstance().setAddBox("generic");
+//		} else if (indexOfSelectedItem < weaponsBegin) {
+//			DisplayThree.getInstance().setAddBox("armor");
+//		} else if (indexOfSelectedItem < containersBegin) {
+//			DisplayThree.getInstance().setAddBox("weapon");
+//		} else if (indexOfSelectedItem >= containersBegin) {
+//			DisplayThree.getInstance().setAddBox("container");
+//		}
+//	}
 
 	public void deleteSelectedAndRefresh() {
 		
@@ -69,20 +66,20 @@ public class ItemSelector extends Selector {
 		this.updateButtons();
 	}
 
-	public void updateButtons() {
-		for (int i = 0; i < middleButtons.length; i++) {
-			middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
+//	public void updateButtons() {
+//		for (int i = 0; i < middleButtons.length; i++) {
+//			middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
+//
+//		}
+//		
+//	}
 
-		}
-		
-	}
-
-	public void setWhereNewItemTypesBegin(int a, int w, int c) {
-		
-		armorsBegin = a;
-		weaponsBegin = w;
-		containersBegin = c;
-	}
+//	public void setWhereNewItemTypesBegin(int a, int w, int c) {
+//		
+//		armorsBegin = a;
+//		weaponsBegin = w;
+//		containersBegin = c;
+//	}
 	
 	public void changeContentsToNewRoom(Vector<String> itemsInRoom) {
 
@@ -96,6 +93,15 @@ public class ItemSelector extends Selector {
 		thingsInColumn = itemsInRoom;
 		
 		updateButtons();
+		
+	}
+
+	public void addItemToRoom(String item) {
+		
+		thingsInColumn.add(item);
+		updateButtons();
+
+		//DisplayThreeSQLHandler.changeRoomOfCreature(item);
 		
 	}
 

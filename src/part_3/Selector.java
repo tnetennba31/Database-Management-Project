@@ -26,8 +26,8 @@ import javax.swing.border.LineBorder;
 
 class Selector extends JPanel implements ActionListener {
 	
-	public static final int WIDTH = DisplayThree.SELECTOR_WIDTH;
-	public static final int HEIGHT = DisplayThree.SELECTOR_HEIGHT;
+	public int WIDTH;
+	public int HEIGHT;
 	
 	protected JButton[] middleButtons = new JButton[4];
 	protected int[] itemsVisible = {0, 1, 2, 3};
@@ -42,8 +42,9 @@ class Selector extends JPanel implements ActionListener {
 		this.thingsInColumn = thingsInColumn;
 		//this.setBounds(50, 50, 100, 200);
 		this.setBackground(Color.LIGHT_GRAY);
-
 		
+		this.setDimensions();
+
 		this.addUpArrow();
 			
 		
@@ -63,10 +64,44 @@ class Selector extends JPanel implements ActionListener {
 		this.setBorder(new LineBorder(Color.BLACK));				
 	}
 	
+	public Selector(JFrame frame, Vector<String> thingsInColumn, int width, int height, Color color) {
+		this.thingsInColumn = thingsInColumn;
+		//this.setBounds(50, 50, 100, 200);
+		this.setBackground(color);
+		
+		WIDTH = width;
+		HEIGHT = height;
+		
+		this.addUpArrow();
+			
+		
+		this.assignColumnItemsToButton();
+		
+		for (JButton j : middleButtons) {
+			this.add(j);
+		}
+				
+		
+		this.addDownArrow();
+		    
+				
+		//this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setLayout(null);
+
+		this.setBorder(new LineBorder(Color.BLACK));	
+	}
+	
 	
 
-	private void addUpArrow() {
+	protected void setDimensions() {
+		WIDTH = DisplayThree.SELECTOR_WIDTH;
+		HEIGHT = DisplayThree.SELECTOR_HEIGHT;
+	}
 
+
+
+	private void addUpArrow() {
+		
 		Image upArrow = new ImageIcon("img/UpArrow.PNG").getImage()
 				.getScaledInstance((int)(WIDTH), HEIGHT / 7, Image.SCALE_SMOOTH);
 
@@ -106,19 +141,27 @@ class Selector extends JPanel implements ActionListener {
 //		for (JButton j : middleButtons) {
 //			j.
 //		}
-
 		
 		for (int i = 0; i < middleButtons.length; i++) {
-			//System.out.println(thingsInColumn.get(i)+" ugh");
-			middleButtons[i] = new JButton(thingsInColumn.get(i));//thingsInColumn.get(i)
+
+			if (i >= thingsInColumn.size()) {
+				
+				middleButtons[i] = new JButton("");
+				middleButtons[i].setVisible(false);
+
+			} else {
+				
+				middleButtons[i] = new JButton(thingsInColumn.get(i));//thingsInColumn.get(i)
+			}
+			
 			middleButtons[i].addActionListener(this);
 			middleButtons[i].setContentAreaFilled(false);
 			middleButtons[i].setBorderPainted(false);
 			middleButtons[i].setOpaque(false);
 			middleButtons[i].setSize(WIDTH, HEIGHT / 8);
-			
 			middleButtons[i].setLocation(0, upArrowButton.getHeight() + 
 					(i * ((HEIGHT - (upArrowButton.getHeight() * 2)) / 4) + 2));
+
 //			System.out.println(upArrowButton.getHeight() + 
 //					(i * ((HEIGHT - (upArrowButton.getHeight() * 2) / 4))));
 			
@@ -171,6 +214,10 @@ class Selector extends JPanel implements ActionListener {
 
 	protected void scrollUp() {
 		
+		if (thingsInColumn.size() <= 4) {
+			return;
+		}
+		
 		if (itemsVisible[0] != 0) {
 			
 			for (int i = 0; i < itemsVisible.length; i++) {
@@ -198,6 +245,23 @@ class Selector extends JPanel implements ActionListener {
 				//TODO: if (itemsVisible.length >= 3) {}      //add ability to display less than 4 items correctly
 				middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
 			}
+		}
+	}
+	
+	public void updateButtons() {
+		for (int i = 0; i < middleButtons.length; i++) {
+			middleButtons[i].setVisible(true);
+
+			if (i < thingsInColumn.size()) {
+				
+				middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
+			} else {
+				
+				middleButtons[i].setText("");
+				middleButtons[i].setVisible(false);
+
+			}
+
 		}
 	}
 	
