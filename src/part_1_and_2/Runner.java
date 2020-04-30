@@ -26,7 +26,7 @@ public class Runner {
 //	  DisplayThreeSQLHandler.setConnection(m_dbConn);
 //	  DisplayThreeSQLHandler.setStoredProcedures();
 //	  DisplayThree display3 = DisplayThree.getInstance();
-//	  new Display_4(m_dbConn);
+	  new Display_4(m_dbConn);
 
 
 
@@ -44,10 +44,6 @@ public class Runner {
     stmt.executeUpdate(storedProcedure2);
     String storedProcedure3 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END");
     stmt.executeUpdate(storedProcedure3);
-    String storedProcedure4 = new String("CREATE PROCEDURE switch_item_to_worn (IN id INT) BEGIN UPDATE ITEM SET W_Name = O_Name WHERE ID = id AND W_Name IS NULL; END");
-    stmt.executeUpdate(storedProcedure4);
-    String storedProcedure5 = new String("CREATE PROCEDURE switch_item_to_owned (IN id INT) BEGIN UPDATE ITEM SET W_Name = NULL WHERE ID = id AND W_Name = O_Name; END");
-    stmt.executeUpdate(storedProcedure5);
   }
 
   /**

@@ -446,22 +446,20 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
       }
     } else if (event.getSource() == addItemsToCharacterButton) {
       ArrayList<Integer> toSwitch = new ArrayList<>(itemsOwned.getSelectedValuesList());
-      for (int i = 0; i < toSwitch.size(); i++) {
-        try {
-          switchItemsToWornWithStoredProcedure(toSwitch);
-        } catch (SQLException throwables) {
-          throwables.printStackTrace();
-        }
+      try {
+        switchItemsToWorn(toSwitch);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
       }
+      selectCharacterButton.doClick();
     } else if (event.getSource() == removeItemsFromCharacterButton) {
       ArrayList<Integer> toSwitch = new ArrayList<>(itemsWorn.getSelectedValuesList());
-      for (int i = 0; i < toSwitch.size(); i++) {
-        try {
-          switchItemsToOwnedWithStoredProcedure(toSwitch);
-        } catch (SQLException throwables) {
-          throwables.printStackTrace();
-        }
+      try {
+        switchItemsToOwned(toSwitch);
+      } catch (SQLException throwables) {
+        throwables.printStackTrace();
       }
+      selectCharacterButton.doClick();
     } else {
       for (int i = 0; i < itemsOwnedIDs.size(); i++) {
         if (event.getSource() == items_owned_info_buttons.get(i)) {
@@ -573,30 +571,22 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
     }
   }
 
-  public void switchItemsToWornWithStoredProcedure(ArrayList<Integer> item_IDs) throws SQLException {
-    String sql = "CALL switch_item_to_worn(?)";
+  public void switchItemsToWorn(ArrayList<Integer> item_IDs) throws SQLException {
     for (int i = 0; i < item_IDs.size(); i++) {
-      CallableStatement stmt = m_dbConn.prepareCall(sql);
-      stmt.setInt(1, item_IDs.get(i));
-      stmt.execute();
+      Statement stmt = m_dbConn.createStatement();
+      String sql = "UPDATE ITEM SET W_Name = O_Name WHERE ID = " + item_IDs.get(i) + " AND W_Name IS NULL";
+      stmt.executeUpdate(sql);
+      stmt.close();
     }
-    C_ListScrollPane.validate();
-    R_ListScrollPane.validate();
-    C_InformationPanel.validate();
-    R_InformationPanel.validate();
   }
 
-  public void switchItemsToOwnedWithStoredProcedure(ArrayList<Integer> item_IDs) throws SQLException {
-    String sql = "CALL switch_item_to_owned(?)";
+  public void switchItemsToOwned(ArrayList<Integer> item_IDs) throws SQLException {
     for (int i = 0; i < item_IDs.size(); i++) {
-      CallableStatement stmt = m_dbConn.prepareCall(sql);
-      stmt.setInt(1, item_IDs.get(i));
-      stmt.execute();
+      Statement stmt = m_dbConn.createStatement();
+      String sql = "UPDATE ITEM SET W_Name = NULL WHERE ID = " + item_IDs.get(i) + " AND W_Name = O_Name";
+      stmt.executeUpdate(sql);
+      stmt.close();
     }
-    C_ListScrollPane.repaint();
-    R_ListScrollPane.repaint();
-    C_InformationPanel.repaint();
-    R_InformationPanel.repaint();
   }
 
   public ArrayList<Integer> getAttributeValues(int itemID, ArrayList<String> attributeNames) throws SQLException {
