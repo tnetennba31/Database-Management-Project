@@ -18,21 +18,51 @@ import java.util.Arrays;
  */
 public class Display_4 extends JFrame implements ActionListener, ListSelectionListener
 {
+	/**
+	 * Le base of data
+	 */
 	Connection m_dbConn;
 	
-	ArrayList<String> characterList = new ArrayList<>();
-	JList characters;
-	
-	JList itemsOwned;
-	JList itemsWorn;
-	
-	ArrayList<Integer> itemsOwnedIDs = new ArrayList<>();
-	ArrayList<Integer> itemsWornIDs = new ArrayList<>();
-	
+	/**
+	 * Instance variables for #aesthetic
+	 */
 	Color dark_pink = new Color(213, 166, 189);
 	Color light_pink = new Color(234, 209, 220);
 	Border blackBorder = BorderFactory.createLineBorder(Color.black);  // the standard border for components
+	
+	/**
+	 * Instance variables for the left panel
+	 */
+	JPanel leftPanel, L_Heading;
+	JTextField L_Login;
+	JScrollPane L_ListScrollPane;
+	JButton selectCharacterButton;
+	ArrayList<String> characterList = new ArrayList<>();
+	JList characters;
+	
+	/**
+	 * Instance variables for the center panel
+	 */
+	JPanel centerPanel, C_Heading, C_ListPanel, C_InformationPanel;
+	JScrollPane C_ListScrollPane;
+	JButton addItemsToCharacterButton;
+	ArrayList<Integer> itemsOwnedIDs = new ArrayList<>();
+	ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(itemsOwnedIDs.size());
+	ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(itemsOwnedIDs.size());
+	JList itemsOwned;
+	
+	/**
+	 * Instance variables for the right panel
+	 */
+	JPanel rightPanel, R_Heading, R_ListPanel, R_InformationPanel;
+	JScrollPane R_ListScrollPane;
+	JButton removeItemsFromCharacterButton;
+	ArrayList<Integer> itemsWornIDs = new ArrayList<>();
+	ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(itemsWornIDs.size());
+	ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(itemsWornIDs.size());
+	JList itemsWorn;
   
+	
   /**
    * Main method that does nothing
    * @param args pointless parameter
@@ -86,11 +116,6 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- LEFT PANEL ------------------------------------------//
-	
-	JPanel leftPanel, L_Heading;
-	JTextField L_Login;
-	JScrollPane L_ListScrollPane;
-	JButton selectCharacterButton;
   
   /**
    * Create the left panel of the display
@@ -177,13 +202,6 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- CENTER PANEL ------------------------------------------//
-	
-	JPanel centerPanel, C_Heading, C_ListPanel, C_InformationPanel;
-	JScrollPane C_ListScrollPane;
-	JButton addItemsToCharacterButton;
-	
-	ArrayList<JButton> items_owned_info_buttons = new ArrayList<>(itemsOwnedIDs.size());
-	ArrayList<JFrame> items_owned_info_windows = new ArrayList<>(itemsOwnedIDs.size());
   
   /**
    * Create the center panel of the display
@@ -335,13 +353,6 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- RIGHT PANEL ------------------------------------------//
-	
-	JPanel rightPanel, R_Heading, R_ListPanel, R_InformationPanel;
-	JScrollPane R_ListScrollPane;
-	JButton removeItemsFromCharacterButton;
-	
-	ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(itemsWornIDs.size());
-	ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(itemsWornIDs.size());
   
   /**
    * Create the right panel of the display
