@@ -61,21 +61,23 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	ArrayList<JButton> items_worn_info_buttons = new ArrayList<>(itemsWornIDs.size());
 	ArrayList<JFrame> items_worn_info_windows = new ArrayList<>(itemsWornIDs.size());
 	JList itemsWorn;
-  
 	
-  /**
-   * Main method that does nothing
-   * @param args pointless parameter
-   */
+	
+	/**
+	 * Main method that does nothing
+	 *
+	 * @param args pointless parameter
+	 */
 	public static void main(String[] args)
 	{
 	}
-  
-  /**
-   * Constructor to create an instance of the display
-   * @param conn connection to the database
-   * @throws SQLException
-   */
+	
+	/**
+	 * Constructor to create an instance of the display
+	 *
+	 * @param conn connection to the database
+	 * @throws SQLException
+	 */
 	public Display_4(Connection conn) throws SQLException
 	{
 		m_dbConn = conn;
@@ -116,10 +118,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- LEFT PANEL ------------------------------------------//
-  
-  /**
-   * Create the left panel of the display
-   */
+	
+	/**
+	 * Create the left panel of the display
+	 */
 	public void L_CreatePanel()
 	{
 		// add the left panel to the UI
@@ -130,10 +132,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		leftPanel.setBackground(Color.white);
 		leftPanel.setBorder(blackBorder);
 	}
-  
-  /**
-   * Create the left panel's heading and player login bar
-   */
+	
+	/**
+	 * Create the left panel's heading and player login bar
+	 */
 	public void L_CreateHeading()
 	{
 		// entire heading
@@ -175,10 +177,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		characters.setHorizontalAlignment(SwingConstants.CENTER);
 		L_Heading.add(characters);
 	}
-  
-  /**
-   * Create the list to hold all the player's characters
-   */
+	
+	/**
+	 * Create the list to hold all the player's characters
+	 */
 	public void L_CreateCharacterList()
 	{
 		L_ListScrollPane = new JScrollPane(characters);
@@ -187,10 +189,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		leftPanel.add(L_ListScrollPane, BorderLayout.CENTER);
 		validate();
 	}
-  
-  /**
-   * Create the button to let the player select a character
-   */
+	
+	/**
+	 * Create the button to let the player select a character
+	 */
 	public void L_CreateButton()
 	{
 		selectCharacterButton = new JButton("Select Character");
@@ -202,10 +204,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- CENTER PANEL ------------------------------------------//
-  
-  /**
-   * Create the center panel of the display
-   */
+	
+	/**
+	 * Create the center panel of the display
+	 */
 	public void C_CreatePanel()
 	{
 		// add the center panel to the UI
@@ -216,10 +218,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		centerPanel.setBackground(Color.white);
 		centerPanel.setBorder(blackBorder);
 	}
-  
-  /**
-   * Create the center panel's heading
-   */
+	
+	/**
+	 * Create the center panel's heading
+	 */
 	public void C_CreateHeading()
 	{
 		// entire heading
@@ -252,10 +254,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		info_middle.setHorizontalAlignment(SwingConstants.CENTER);
 		c_minor.add(info_middle);
 	}
-  
-  /**
-   * Create the list to hold all the items owned by the character but not being worn
-   */
+	
+	/**
+	 * Create the list to hold all the items owned by the character but not being worn
+	 */
 	public void C_CreateItemsOwnedList()
 	{
 		// list panel
@@ -271,11 +273,12 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		C_ListPanel.add(C_ListScrollPane, BorderLayout.CENTER);
 		validate();
 	}
-  
-  /**
-   * Create the max number of information buttons
-   * @throws SQLException
-   */
+	
+	/**
+	 * Create the max number of information buttons
+	 *
+	 * @throws SQLException
+	 */
 	public void C_CreateItemInfoButtons() throws SQLException
 	{
 		items_owned_info_buttons.clear();
@@ -299,11 +302,12 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		C_ListPanel.add(infoPanel, BorderLayout.EAST);
 		validate();
 	}
-  
-  /**
-   * Add information windows to each button that corresponds with an item in the center list
-   * @throws SQLException
-   */
+	
+	/**
+	 * Add information windows to each button that corresponds with an item in the center list
+	 *
+	 * @throws SQLException
+	 */
 	public void C_AddInformationToButtons() throws SQLException
 	{
 		items_owned_info_windows.clear();
@@ -338,10 +342,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 			window.add(C_InformationPanel);
 		}
 	}
-  
-  /**
-   * Create the button that lets a player add items to their character
-   */
+	
+	/**
+	 * Create the button that lets a player add items to their character
+	 */
 	public void C_CreateButton()
 	{
 		addItemsToCharacterButton = new JButton("Add Items to Character");
@@ -353,10 +357,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- RIGHT PANEL ------------------------------------------//
-  
-  /**
-   * Create the right panel of the display
-   */
+	
+	/**
+	 * Create the right panel of the display
+	 */
 	public void R_CreatePanel()
 	{
 		// add the right panel to the UI
@@ -367,10 +371,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		rightPanel.setBackground(Color.white);
 		rightPanel.setBorder(blackBorder);
 	}
-  
-  /**
-   * Create the right panel's heading
-   */
+	
+	/**
+	 * Create the right panel's heading
+	 */
 	public void R_CreateHeading()
 	{
 		// entire heading
@@ -403,10 +407,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		info_right.setHorizontalAlignment(SwingConstants.CENTER);
 		r_minor.add(info_right);
 	}
-  
-  /**
-   * Create the list to hold all the items being worn by the character
-   */
+	
+	/**
+	 * Create the list to hold all the items being worn by the character
+	 */
 	public void R_CreateItemsWornList()
 	{
 		// list panel
@@ -422,11 +426,12 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		R_ListPanel.add(R_ListScrollPane, BorderLayout.CENTER);
 		validate();
 	}
-  
-  /**
-   * Create the max number of information buttons
-   * @throws SQLException
-   */
+	
+	/**
+	 * Create the max number of information buttons
+	 *
+	 * @throws SQLException
+	 */
 	public void R_CreateItemInfoButtons() throws SQLException
 	{
 		items_worn_info_buttons.clear();
@@ -450,11 +455,12 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		R_ListPanel.add(infoPanel, BorderLayout.EAST);
 		validate();
 	}
-  
-  /**
-   * Add information windows to each button that corresponds with an item in the right list
-   * @throws SQLException
-   */
+	
+	/**
+	 * Add information windows to each button that corresponds with an item in the right list
+	 *
+	 * @throws SQLException
+	 */
 	public void R_AddInformationToButtons() throws SQLException
 	{
 		items_worn_info_windows.clear();
@@ -489,10 +495,10 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 			window.add(R_InformationPanel);
 		}
 	}
-  
-  /**
-   * Create the button that lets a player remove items from their character
-   */
+	
+	/**
+	 * Create the button that lets a player remove items from their character
+	 */
 	public void R_CreateButton()
 	{
 		removeItemsFromCharacterButton = new JButton("Remove Items From Character");
@@ -504,11 +510,12 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- LISTENERS ------------------------------------------//
-  
-  /**
-   * Action listener for the components of the display
-   * @param event the action event
-   */
+	
+	/**
+	 * Action listener for the components of the display
+	 *
+	 * @param event the action event
+	 */
 	public void actionPerformed(ActionEvent event)
 	{
 		if (event.getSource() == L_Login)
@@ -588,11 +595,12 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 			}
 		}
 	}
-  
-  /**
-   * Selection listener for the lists in the display
-   * @param e the list selection event
-   */
+	
+	/**
+	 * Selection listener for the lists in the display
+	 *
+	 * @param e the list selection event
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e)
 	{
@@ -600,12 +608,13 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- MISCELLANEOUS ------------------------------------------//
-  
-  /**
-   * Figure out what type an item is
-   * @param item_id the ID of the item
-   * @return an ArrayList of the attribute names of that type
-   */
+	
+	/**
+	 * Figure out what type an item is
+	 *
+	 * @param item_id the ID of the item
+	 * @return an ArrayList of the attribute names of that type
+	 */
 	public ArrayList<String> getItemType(int item_id)
 	{
 		String[] container_atts = {"Container ID", "Item ID", "Volume Limit", "Weight Limit"};
@@ -633,12 +642,13 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 	
 	
 	//----------------- SQL STUFF ------------------------------------------//
-  
-  /**
-   * Call the stored procedure that gets the list of characters for a certain player
-   * @param player_login the player's login
-   * @throws SQLException
-   */
+	
+	/**
+	 * Call the stored procedure that gets the list of characters for a certain player
+	 *
+	 * @param player_login the player's login
+	 * @throws SQLException
+	 */
 	private void getCharactersWithStoredProcedure(String player_login) throws SQLException
 	{
 		String sql = "CALL get_characters(?)";
@@ -665,12 +675,13 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		characterSet.close();
 		stmt.close();
 	}
-  
-  /**
-   * Calls the stored procedure that gets the items owned but not being worn by the selected character
-   * @param character_name the name of the character
-   * @throws SQLException
-   */
+	
+	/**
+	 * Calls the stored procedure that gets the items owned but not being worn by the selected character
+	 *
+	 * @param character_name the name of the character
+	 * @throws SQLException
+	 */
 	public void getItemsOwnedWithStoredProcedure(String character_name) throws SQLException
 	{
 		String sql = "CALL get_items_owned(?)";
@@ -697,12 +708,13 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		setOwned.close();
 		stmt.close();
 	}
-  
-  /**
-   * Calls the stored procedure that gets the items being worn by the selected character
-   * @param character_name the name of the character
-   * @throws SQLException
-   */
+	
+	/**
+	 * Calls the stored procedure that gets the items being worn by the selected character
+	 *
+	 * @param character_name the name of the character
+	 * @throws SQLException
+	 */
 	public void getItemsWornWithStoredProcedure(String character_name) throws SQLException
 	{
 		String sql = "CALL get_items_worn(?)";
@@ -729,12 +741,13 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 		setWorn.close();
 		stmt.close();
 	}
-  
-  /**
-   * Add items not being worn to the character
-   * @param item_IDs the list of IDs of the items to be worn
-   * @throws SQLException
-   */
+	
+	/**
+	 * Add items not being worn to the character
+	 *
+	 * @param item_IDs the list of IDs of the items to be worn
+	 * @throws SQLException
+	 */
 	public void switchItemsToWorn(ArrayList<Integer> item_IDs) throws SQLException
 	{
 		for (int i = 0; i < item_IDs.size(); i++)
@@ -745,12 +758,13 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 			stmt.close();
 		}
 	}
-  
-  /**
-   * Remove items being worn from the character
-   * @param item_IDs the list of IDs of the items to be removed
-   * @throws SQLException
-   */
+	
+	/**
+	 * Remove items being worn from the character
+	 *
+	 * @param item_IDs the list of IDs of the items to be removed
+	 * @throws SQLException
+	 */
 	public void switchItemsToOwned(ArrayList<Integer> item_IDs) throws SQLException
 	{
 		for (int i = 0; i < item_IDs.size(); i++)
@@ -761,14 +775,15 @@ public class Display_4 extends JFrame implements ActionListener, ListSelectionLi
 			stmt.close();
 		}
 	}
-  
-  /**
-   * Get the values of the item's various attributes
-   * @param itemID the ID of the item
-   * @param attributeNames the list of attribute names for that type of item
-   * @return the list of values in corresponding order to the list of attribute names
-   * @throws SQLException
-   */
+	
+	/**
+	 * Get the values of the item's various attributes
+	 *
+	 * @param itemID         the ID of the item
+	 * @param attributeNames the list of attribute names for that type of item
+	 * @return the list of values in corresponding order to the list of attribute names
+	 * @throws SQLException
+	 */
 	public ArrayList<Integer> getAttributeValues(int itemID, ArrayList<String> attributeNames) throws SQLException
 	{
 		ArrayList<Integer> values = new ArrayList<>(attributeNames.size());

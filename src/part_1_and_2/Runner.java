@@ -1,54 +1,20 @@
 package part_1_and_2;
 
-import java.sql.*;
-
-import part_3.DisplayThree;
-import part_3.DisplayThreeSQLHandler;
 import part_3.Display_4;
+
+import java.sql.*;
 
 
 /**
- * Contains all methods for accessing the databases, creating tables,
- * and inserting and selecting data in the ways that are required by HW4
+ * Runner to initially populate the database and create instances of the four displays
  */
-public class Runner {
+public class Runner
+{
   /**
-   * main method
+   * Connection variable that will be initialized in constructor
    */
-  public static void main(String[] args) throws Exception {
-
-    Runner runner = new Runner();
-    
-//    runner.dropAllTables();
-//    runner.createAllTables();
-//    runner.insertEverythingIntoTables();
-//    
-//	Runner.createStoredProcedures4();
-	
-	DisplayThreeSQLHandler.setConnection(m_dbConn);
-	DisplayThreeSQLHandler.setStoredProcedures();
-	DisplayThree display3 = DisplayThree.getInstance();
-	
-//	new Display_4(m_dbConn);
-
-
-
-    //use for testing
-//    runner.showTables();
-//    runner.printAllRows("PERSON");
-
-  }
-
-  public static void createStoredProcedures4() throws SQLException {
-    Statement stmt = m_dbConn.createStatement();
-    String storedProcedure1 = new String("CREATE PROCEDURE get_characters (IN player_login VARCHAR(16)) BEGIN SELECT C_Name FROM P_CHARACTER WHERE P_Login = player_login; END");
-    stmt.executeUpdate(storedProcedure1);
-    String storedProcedure2 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE O_Name = cname AND W_Name IS NULL; END");
-    stmt.executeUpdate(storedProcedure2);
-    String storedProcedure3 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END");
-    stmt.executeUpdate(storedProcedure3);
-  }
-
+  protected static Connection m_dbConn;
+  
   /**
    * Strings that store the location of the database to connect to,
    * as well as the user name and password
@@ -56,43 +22,109 @@ public class Runner {
   public static final String DB_LOCATION = "jdbc:mysql://db.cs.ship.edu:3306/csc371_08";
   public static final String LOGIN_NAME = "csc371_08";
   public static final String PASSWORD = "Password08";
-
-
+  
+  
   /**
-   * Connection variable that will be initialized in constructor
+   * Main method that does everything
+   *
+   * @param args a parameter that no one really questions but no one knows much about either
+   * @throws Exception
    */
-  protected static Connection m_dbConn;
-
-  /*
+  public static void main(String[] args) throws Exception
+  {
+    /**
+     * Initialize the database with some tables and rows
+     */
+    Runner runner = new Runner();
+    runner.dropAllTables();
+    runner.createAllTables();
+    runner.insertEverythingIntoTables();
+    
+    /**
+     * Create stored procedures
+     */
+//	  Runner.createStoredProcedures4();
+    
+    /**
+     * Create instances of the UI displays
+     */
+//	  DisplayThreeSQLHandler.setConnection(m_dbConn);
+//	  DisplayThreeSQLHandler.setStoredProcedures();
+//	  DisplayThree display3 = DisplayThree.getInstance();
+    new Display_4(m_dbConn);
+    
+    
+    /**
+     * Testing methods
+     */
+//    runner.showTables();
+//    runner.printAllRows("PERSON");
+  }
+  
+  
+  /**
    * Constructor that initializes the connection to the database
+   *
+   * @throws SQLException
    */
-  public Runner() throws SQLException {
+  public Runner() throws SQLException
+  {
     m_dbConn = DriverManager.getConnection(DB_LOCATION, LOGIN_NAME, PASSWORD);
   }
-
+  
+  
   /**
-   * @return Returns true if it successfully sets up the driver.
+   * Create the stored procedures needed in the fourth display
+   *
+   * @throws SQLException
    */
-  public boolean activateJDBC() {
-    try {
+  public static void createStoredProcedures4() throws SQLException
+  {
+    Statement stmt = m_dbConn.createStatement();
+    String dropProcedure1 = new String("DROP procedure IF EXISTS get_characters");
+    stmt.executeUpdate(dropProcedure1);
+    String dropProcedure2 = new String("DROP procedure IF EXISTS get_items_owned");
+    stmt.executeUpdate(dropProcedure2);
+    String dropProcedure3 = new String("DROP procedure IF EXISTS get_items_worn");
+    stmt.executeUpdate(dropProcedure3);
+    String storedProcedure1 = new String("CREATE PROCEDURE get_characters (IN player_login VARCHAR(16)) BEGIN SELECT C_Name FROM P_CHARACTER WHERE P_Login = player_login; END");
+    stmt.executeUpdate(storedProcedure1);
+    String storedProcedure2 = new String("CREATE PROCEDURE get_items_owned (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE O_Name = cname AND W_Name IS NULL; END");
+    stmt.executeUpdate(storedProcedure2);
+    String storedProcedure3 = new String("CREATE PROCEDURE get_items_worn (IN cname VARCHAR(32)) BEGIN SELECT ID FROM ITEM WHERE W_Name = cname; END");
+    stmt.executeUpdate(storedProcedure3);
+    stmt.close();
+  }
+  
+  /**
+   * @return True if it successfully sets up the driver
+   */
+  public boolean activateJDBC()
+  {
+    try
+    {
       DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-    } catch (SQLException sqle) {
+    } catch (SQLException sqle)
+    {
       sqle.printStackTrace();
     }
-
+    
     return true;
   }
-
+  
   /**
-   * Drops the tables
+   * Drops all the tables if they exist in the database already
+   *
+   * @throws SQLException
    */
-  public void dropAllTables() throws SQLException {
-
+  public void dropAllTables() throws SQLException
+  {
+    
     Statement stmt;
     String insertData;
-
+    
     stmt = m_dbConn.createStatement();
-
+    
     String[] table_statements =
             {"DROP TABLE IF EXISTS PERSON",
                     "DROP TABLE IF EXISTS MANAGER",
@@ -113,25 +145,30 @@ public class Runner {
                     "DROP TABLE IF EXISTS WEAPON",
                     "DROP TABLE IF EXISTS GENERIC_ITEM"
             };
-
-    for (int i = table_statements.length - 1; i >= 0; i--) {
+    
+    for (int i = table_statements.length - 1; i >= 0; i--)
+    {
       insertData = new String(table_statements[i]);
       stmt.executeUpdate(insertData);
       System.out.println("yee");
     }
-
+    
+    stmt.close();
   }
-
+  
   /**
-   * creates all the tables in the database with specified columns
+   * Creates all the tables in the database with specified columns
+   *
+   * @throws SQLException
    */
-  public void createAllTables() throws SQLException {
-
+  public void createAllTables() throws SQLException
+  {
+    
     Statement stmt;
     String insertData;
-
+    
     stmt = m_dbConn.createStatement();
-
+    
     String[] table_statements =
             {"CREATE TABLE PERSON (Login VARCHAR(16) NOT NULL, Pwd VARCHAR(16) NOT NULL, Email VARCHAR(320) NOT NULL, PRIMARY KEY (Login))",
                     "CREATE TABLE MANAGER (Manager_Login VARCHAR(16) NOT NULL, Pe_Login VARCHAR(16) NOT NULL, PRIMARY KEY (Manager_Login), FOREIGN KEY (Pe_Login) REFERENCES PERSON(Login))",
@@ -153,25 +190,30 @@ public class Runner {
                     "CREATE TABLE WEAPON (W_ID INT NOT NULL, Ability_ID INT, I_ID INT NOT NULL, PRIMARY KEY (W_ID), FOREIGN KEY (Ability_ID) REFERENCES ABILITY(ID), FOREIGN KEY (I_ID) REFERENCES ITEM(ID))",
                     "CREATE TABLE GENERIC_ITEM (GI_ID INT NOT NULL, I_ID INT NOT NULL, PRIMARY KEY (GI_ID), FOREIGN KEY (I_ID) REFERENCES ITEM(ID))"
             };
-
-    for (int i = 0; i < table_statements.length; i++) {
+    
+    for (int i = 0; i < table_statements.length; i++)
+    {
       insertData = new String(table_statements[i]);
       stmt.executeUpdate(insertData);
       System.out.println("created table " + i);
     }
-
+    
+    stmt.close();
   }
-
+  
   /**
    * Inserts the initial rows of data into all the tables
+   *
+   * @throws SQLException
    */
-  private void insertEverythingIntoTables() throws SQLException {
-
+  private void insertEverythingIntoTables() throws SQLException
+  {
+    
     Statement stmt;
     String insertData;
-
+    
     stmt = m_dbConn.createStatement();
-
+    
     String[] insert_statements =
             {
                     // PERSON
@@ -209,8 +251,6 @@ public class Runner {
                     "INSERT INTO PLAYER VALUES ('Noobmaster4', NULL, NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'DefaultLogin4'))",
                     "INSERT INTO PLAYER VALUES ('Noobmaster5', NULL, NULL, (SELECT P.Login FROM PERSON P WHERE P.Login = 'DefaultLogin5'))",
                     // LOCATION
-                    "INSERT INTO LOCATION VALUES (-1,0,999)",
-
                     "INSERT INTO LOCATION VALUES (1,0,200)",
                     "INSERT INTO LOCATION VALUES (2,1,350)",
                     "INSERT INTO LOCATION VALUES (3,2,201)",
@@ -249,11 +289,11 @@ public class Runner {
                     "INSERT INTO CREATURE VALUES (9,154,8,12,19,20, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 9))",
                     "INSERT INTO CREATURE VALUES (10,179,27,46,29,41, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 10))",
                     
-                    "INSERT INTO CREATURE VALUES (11,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (12,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (13,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (14,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (15,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
+                    "INSERT INTO CREATURE VALUES (11,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (12,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (13,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (14,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (15,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
                     
                     "INSERT INTO CREATURE VALUES (16,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
                     "INSERT INTO CREATURE VALUES (17,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
@@ -261,11 +301,11 @@ public class Runner {
                     "INSERT INTO CREATURE VALUES (19,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
                     "INSERT INTO CREATURE VALUES (20,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
                     
-                    "INSERT INTO CREATURE VALUES (21,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (22,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (23,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (24,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (25,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
+                    "INSERT INTO CREATURE VALUES (21,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (22,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (23,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (24,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (25,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
                     
                     "INSERT INTO CREATURE VALUES (26,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
                     "INSERT INTO CREATURE VALUES (27,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
@@ -273,11 +313,11 @@ public class Runner {
                     "INSERT INTO CREATURE VALUES (29,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
                     "INSERT INTO CREATURE VALUES (30,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
                     
-                    "INSERT INTO CREATURE VALUES (31,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (32,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (33,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (34,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
-                    "INSERT INTO CREATURE VALUES (35,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = -1))",
+                    "INSERT INTO CREATURE VALUES (31,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
+                    "INSERT INTO CREATURE VALUES (32,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
+                    "INSERT INTO CREATURE VALUES (33,151,5,9,16,17, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 3))",
+                    "INSERT INTO CREATURE VALUES (34,176,24,43,26,38, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 4))",
+                    "INSERT INTO CREATURE VALUES (35,152,6,10,17,18, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 5))",
                     
                     "INSERT INTO CREATURE VALUES (36,150,4,8,15,16, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 1))",
                     "INSERT INTO CREATURE VALUES (37,175,23,42,25,37, (SELECT L.L_ID FROM LOCATION L WHERE L.L_ID = 2))",
@@ -328,21 +368,21 @@ public class Runner {
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1503, 22, 27, 8, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Moss'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Moss'))",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (4, 997, 497, 9, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (504, 10, 13, 10, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'))",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1004, 23, 28, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'))",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1504, 17, 18, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'), NULL)",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (5, 996, 496, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (505, 11, 14, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1005, 18, 19, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1505, 24, 29, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1004, 23, 28, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1504, 17, 18, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Jen'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (5, 996, 496, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (505, 11, 14, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1005, 18, 19, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1505, 24, 29, NULL, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
                     
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (6, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (506, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1006, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1506, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (7, 996, 496, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (507, 11, 14, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1007, 18, 19, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1507, 24, 29, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (7, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (507, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1007, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1507, 24, 29, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (8, 996, 496, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (508, 11, 14, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1008, 18, 19, 1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
@@ -372,10 +412,10 @@ public class Runner {
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (514, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1014, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1514, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (15, 996, 496, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (515, 11, 14, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1015, 18, 19, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
-                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1515, 24, 29, -1, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (15, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (515, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1015, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
+                    "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1515, 24, 29, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (16, 996, 496, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'))",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (516, 11, 14, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
                     "INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (1016, 18, 19, 2, (SELECT C_Name FROM P_CHARACTER WHERE C_Name = 'Douglas'), NULL)",
@@ -456,53 +496,68 @@ public class Runner {
                     "INSERT INTO GENERIC_ITEM VALUES (13, (SELECT I.ID FROM ITEM I WHERE I.ID = 1513))",
                     "INSERT INTO GENERIC_ITEM VALUES (14, (SELECT I.ID FROM ITEM I WHERE I.ID = 1514))",
                     "INSERT INTO GENERIC_ITEM VALUES (15, (SELECT I.ID FROM ITEM I WHERE I.ID = 1515))",
-                    "INSERT INTO GENERIC_ITEM VALUES (16, (SELECT I.ID FROM ITEM I WHERE I.ID = 1516))",                  
+                    "INSERT INTO GENERIC_ITEM VALUES (16, (SELECT I.ID FROM ITEM I WHERE I.ID = 1516))",
                     "INSERT INTO GENERIC_ITEM VALUES (17, (SELECT I.ID FROM ITEM I WHERE I.ID = 1517))"
             };
-
-    for (int i = 0; i < insert_statements.length; i++) {
+    
+    for (int i = 0; i < insert_statements.length; i++)
+    {
       insertData = new String(insert_statements[i]);
       stmt.executeUpdate(insertData);
-      System.out.println("yeet "+ insert_statements[i]);
+      System.out.println("yeet " + insert_statements[i]);
     }
-
+    
+    stmt.close();
   }
-
+  
   /**
-   * runs show tables command
+   * Shows all the tables in the database
+   *
+   * @throws SQLException
    */
-  private void showTables() throws SQLException {
+  private void showTables() throws SQLException
+  {
     String s = new String("show tables");
     PreparedStatement stmt = m_dbConn.prepareStatement(s);
     ResultSet rs = stmt.executeQuery(s);
-
-    while (rs.next()) {
+    
+    while (rs.next())
+    {
       System.out.print(rs.getString(1));
       System.out.println();
     }
-
+    
     System.out.println("\n");
+    
+    rs.close();
+    stmt.close();
   }
-
-
+  
+  
   /**
-   * runs SELECT * FROM table_name
+   * Runs a SELECT * query from a specified table
+   *
+   * @param tableName the name of the table to select everything from
+   * @throws SQLException
    */
-  private void printAllRows(String tableName) throws SQLException {
+  private void printAllRows(String tableName) throws SQLException
+  {
     String selectData = new String("SELECT * FROM " + tableName);
     PreparedStatement stmt = m_dbConn.prepareStatement(selectData);
     ResultSet rs = stmt.executeQuery(selectData);
-
+    
     ResultSetMetaData rsmd = rs.getMetaData();
     int columnsNumber = rsmd.getColumnCount();
-
-    while (rs.next()) {
+    
+    while (rs.next())
+    {
       for (int i = 1; i < columnsNumber; i++)
         System.out.print(rs.getString(i) + " ");
       System.out.println();
     }
-
+    
+    rs.close();
+    stmt.close();
   }
-
+  
 }
-
