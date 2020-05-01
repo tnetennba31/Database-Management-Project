@@ -21,8 +21,8 @@ public class AddBox extends Selector {
 		
 
 	public static int itemsBegin;
-	
-	public int selectedIndex;
+	public int selectedIndex = 0;
+	private Boolean[] buttonLastPressed = {false, false, false, false};
 
 	public AddBox(JFrame frame, Vector<String> thingsInColumn) {
 		super(frame, thingsInColumn, DisplayThree.ADDING_BOX_WIDTH, 
@@ -43,15 +43,23 @@ public class AddBox extends Selector {
 			
 		} else if (e.getSource() == middleButtons[0]) {
 			selectedIndex = itemsVisible[0];
+			for (Boolean b : buttonLastPressed) {b = false;}
+			buttonLastPressed[0] = true;
 	
 		} else if (e.getSource() == middleButtons[1]) {
 			selectedIndex = itemsVisible[1];
+			for (Boolean b : buttonLastPressed) {b = false;}
+			buttonLastPressed[1] = true;
 
 		} else if (e.getSource() == middleButtons[2]) {
 			selectedIndex = itemsVisible[2];
+			for (Boolean b : buttonLastPressed) {b = false;}
+			buttonLastPressed[2] = true;
 			
 		} else if (e.getSource() == middleButtons[3]) {
 			selectedIndex = itemsVisible[3];
+			for (Boolean b : buttonLastPressed) {b = false;}
+			buttonLastPressed[3] = true;
 			
 		}
 	}
@@ -60,19 +68,24 @@ public class AddBox extends Selector {
 	public void moveSelectedToRoom(int selectedRoomID) {
 		addSelectedToRoom(selectedRoomID);
 		removeAddedFromAddBox();
+		updateVisible();
 		
 	}
 	
-	
+
 	private void addSelectedToRoom(int selectedRoomID) {
-		
+		for (int i : itemsVisible) {System.out.println(i + " ");}
+
 		if (selectedIndex >= itemsBegin) {
 			DisplayThree.getInstance().itemSelector
 				.addItemToRoom(thingsInColumn.get(selectedIndex));
-			
+			System.out.println("added an item " + selectedIndex);
+
 		} else {			
 			DisplayThree.getInstance().creatureSelector
 				.addCreatureToRoom(thingsInColumn.get(selectedIndex));
+			System.out.println("added a creature " + selectedIndex);
+
 		}
 				
 	}
@@ -82,6 +95,19 @@ public class AddBox extends Selector {
 		thingsInColumn.removeElementAt(selectedIndex);
 		updateButtons();
 
+	}
+	
+	private void updateVisible() {
+		if (buttonLastPressed[0] == true) {
+			itemsVisible[0]--;
+		} else if (buttonLastPressed[1] == true) {
+			itemsVisible[1]--;
+		} else if (buttonLastPressed[2] == true) {
+			itemsVisible[2]--;
+		} else if (buttonLastPressed[3] == true) {
+			itemsVisible[3]--;
+		}
+		
 	}
 	
 //	public void updateButtons() {

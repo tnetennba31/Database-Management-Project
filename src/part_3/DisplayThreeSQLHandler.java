@@ -23,7 +23,7 @@ public class DisplayThreeSQLHandler {
 			
         try {
         	
-            String selectData = "SELECT * FROM LOCATION";
+            String selectData = "SELECT * FROM LOCATION WHERE L_ID != -1";
 
             PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
@@ -78,53 +78,28 @@ public class DisplayThreeSQLHandler {
 	public static Vector<String> getItemsInRoom(int roomID) {
 		
 		Vector<String> result = new Vector<String>();
-		int i = 0;
 		
         try {
-	        String selectData = "SELECT g.GI_ID FROM GENERIC_ITEM as g, ITEM as i WHERE g.I_ID = i.ID and i.L_ID = " + roomID;
+	        String selectData = "SELECT * FROM ITEM WHERE L_ID = " + roomID;
 	        PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
-				String data = rs.getString("GI_ID");
+				String data = rs.getString("ID");
 				result.add(data);
-				i++;
 			}
 			
-			//DisplayThree.setWhereNewItemTypesBegin(1, i);
-	        selectData = "SELECT a.A_ID FROM ARMOR as a, ITEM as i WHERE a.I_ID = i.ID and i.L_ID = " + roomID;
-	        stmt = connection.prepareStatement(selectData);
-			stmt.execute();
-			rs = stmt.getResultSet();
-			while (rs.next()) {
-				String data = rs.getString("A_ID");
-				result.add(data);
-				i++;
-			}
-			
-			//DisplayThree.setWhereNewItemTypesBegin(2, i);
-	        selectData = "SELECT w.W_ID FROM WEAPON as w, ITEM as i WHERE w.I_ID = i.ID and i.L_ID = " + roomID;
-	        stmt = connection.prepareStatement(selectData);
-			stmt.execute();
-			rs = stmt.getResultSet();
-			while (rs.next()) {
-				String data = rs.getString("W_ID");
-				result.add(data);
-				i++;
-			}
-			
-			//DisplayThree.setWhereNewItemTypesBegin(3, i);
-	        selectData = "SELECT c.Con_ID FROM CONTAINER as c, ITEM as i WHERE c.I_ID = i.ID and i.L_ID = " + roomID;
-	        stmt = connection.prepareStatement(selectData);
-			stmt.execute();
-			rs = stmt.getResultSet();
-			while (rs.next()) {
-				String data = rs.getString("Con_ID");
-				result.add(data);
-				i++;
-			}
-
-
+		
+//			DisplayThree.setWhereNewItemTypesBegin(1, i);
+//	        selectData = "SELECT a.A_ID FROM ARMOR as a, ITEM as i WHERE a.I_ID = i.ID and i.L_ID = " + roomID;
+//	        stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//			rs = stmt.getResultSet();
+//			while (rs.next()) {
+//				String data = rs.getString("A_ID");
+//				result.add(data);
+//				i++;
+//			}
         } catch (SQLException e) {
         	e.printStackTrace();
         }
@@ -184,8 +159,10 @@ public class DisplayThreeSQLHandler {
 		    int i = 0;
 		    while (rs.next()) {
 		    	String data = rs.getString("ID");
-		    	result.add(data);i++;
+		    	result.add(data);
+		    	i++;
 		    }
+		    for (String s : result) {System.out.print(s + "  ");};
 				
 		    DisplayThree.setWhereItemsStartInAddBox(i);		
 				
@@ -203,6 +180,13 @@ public class DisplayThreeSQLHandler {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	    System.out.println();
+	    System.out.println("yeeee");
+	    System.out.println();
+
+
+	    for (String s : result) {System.out.print(s + "  ");};
+
 		 	
 		return result;
 	}
