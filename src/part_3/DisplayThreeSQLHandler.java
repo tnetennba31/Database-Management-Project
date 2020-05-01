@@ -162,7 +162,7 @@ public class DisplayThreeSQLHandler {
 		    	result.add(data);
 		    	i++;
 		    }
-		    for (String s : result) {System.out.print(s + "  ");};
+//		    for (String s : result) {System.out.print(s + "  ");};
 				
 		    DisplayThree.setWhereItemsStartInAddBox(i);		
 				
@@ -180,12 +180,12 @@ public class DisplayThreeSQLHandler {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	    System.out.println();
-	    System.out.println("yeeee");
-	    System.out.println();
+//	    System.out.println();
+//	    System.out.println("yeeee");
+//	    System.out.println();
 
 
-	    for (String s : result) {System.out.print(s + "  ");};
+//	    for (String s : result) {System.out.print(s + "  ");};
 
 		 	
 		return result;

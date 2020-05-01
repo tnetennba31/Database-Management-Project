@@ -68,23 +68,23 @@ public class AddBox extends Selector {
 	public void moveSelectedToRoom(int selectedRoomID) {
 		addSelectedToRoom(selectedRoomID);
 		removeAddedFromAddBox();
-		updateVisible();
+//		updateVisible();
 		
 	}
 	
 
 	private void addSelectedToRoom(int selectedRoomID) {
-		for (int i : itemsVisible) {System.out.println(i + " ");}
+//		for (int i : itemsVisible) {System.out.println(i + " ");}
 
 		if (selectedIndex >= itemsBegin) {
 			DisplayThree.getInstance().itemSelector
 				.addItemToRoom(thingsInColumn.get(selectedIndex));
-			System.out.println("added an item " + selectedIndex);
+//			System.out.println("added an item " + selectedIndex);
 
 		} else {			
 			DisplayThree.getInstance().creatureSelector
 				.addCreatureToRoom(thingsInColumn.get(selectedIndex));
-			System.out.println("added a creature " + selectedIndex);
+//			System.out.println("added a creature " + selectedIndex);
 
 		}
 				
