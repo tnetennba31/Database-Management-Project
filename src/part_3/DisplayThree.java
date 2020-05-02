@@ -113,7 +113,7 @@ public class DisplayThree extends JFrame implements ActionListener {
 		rooms = DisplayThreeSQLHandler.getRooms();
 		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
 		itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(selectedRoomID);
-		allThatCanBeAddedToRoom = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom();
+		allThatCanBeAddedToRoom = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom("CREATURE");
 //		for (String s : creaturesInRoom) {System.out.print(s + "  ");}
 
 		roomSelector = new Selector(this, rooms);
@@ -139,11 +139,17 @@ public class DisplayThree extends JFrame implements ActionListener {
 		deleteCreatureButton = new JButton(" X "); //TODO: make it an image instead
 		deleteCreatureButton.setBounds(C_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
 		deleteCreatureButton.addActionListener(this);
+		deleteCreatureButton.setBackground(Color.RED);
+		deleteCreatureButton.setContentAreaFilled(false);
+		deleteCreatureButton.setOpaque(true);
 		add(deleteCreatureButton);
 
 		deleteItemButton = new JButton(" X "); //TODO: make it an image instead
 		deleteItemButton.setBounds(I_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
 		deleteItemButton.addActionListener(this);
+		deleteItemButton.setBackground(Color.RED);
+		deleteItemButton.setContentAreaFilled(false);
+		deleteItemButton.setOpaque(true);
 		add(deleteItemButton);
 		
 		

@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 public class AddBox extends Selector {
 		
 
+	String itemOrCreature = "creature";
 	public static int itemsBegin;
 	public int selectedIndex = 0;
 	private Boolean[] buttonLastPressed = {false, false, false, false};
@@ -66,49 +67,81 @@ public class AddBox extends Selector {
 	
 	
 	public void moveSelectedToRoom(int selectedRoomID) {
+//		System.out.println(selectedIndex);
 		addSelectedToRoom(selectedRoomID);
-		removeAddedFromAddBox();
+		removeElement(selectedIndex);
+//		removeAddedFromAddBox();
 //		updateVisible();
 		
+	}
+	
+	public void changeContents(String iOrC, boolean checkIfUnchanged) {
+
+//		System.out.println(iOrC);
+		if (checkIfUnchanged && (itemOrCreature == iOrC)) {
+			return;
+		}
+		
+		selectedIndex = 0;
+		itemsVisible[0] = 0;
+		itemsVisible[1] = 1;
+		itemsVisible[2] = 2;
+		itemsVisible[3] = 3;
+		this.itemOrCreature = iOrC;
+		
+		if (iOrC == null) {
+			thingsInColumn = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom(this.itemOrCreature);
+		} else {
+			thingsInColumn = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom(iOrC);
+		}
+		
+
+//		if (iOrC == "creature") {
+//			thingsInColumn = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom("CREATURE");
+//			
+//		} else if (iOrC == "item") {
+//			thingsInColumn = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom("ITEM");
+//
+//		} else {System.out.println("this is wrong");}
+
+		updateButtons();		
 	}
 	
 
 	private void addSelectedToRoom(int selectedRoomID) {
 //		for (int i : itemsVisible) {System.out.println(i + " ");}
 
-		if (selectedIndex >= itemsBegin) {
-			DisplayThree.getInstance().itemSelector
-				.addItemToRoom(thingsInColumn.get(selectedIndex));
-//			System.out.println("added an item " + selectedIndex);
-
-		} else {			
+		if (itemOrCreature == "CREATURE") {
 			DisplayThree.getInstance().creatureSelector
-				.addCreatureToRoom(thingsInColumn.get(selectedIndex));
-//			System.out.println("added a creature " + selectedIndex);
-
-		}
-				
+				.addCreatureToRoom(thingsInColumn.get(selectedIndex));	
+			
+		} else if (itemOrCreature == "ITEM") {
+			DisplayThree.getInstance().itemSelector
+				.addItemToRoom(thingsInColumn.get(selectedIndex));	
+			
+		} else {System.out.println("this is wrong");}
+			
 	}
 	
-	private void removeAddedFromAddBox() {
-		
-		thingsInColumn.removeElementAt(selectedIndex);
-		updateButtons();
-
-	}
-	
-	private void updateVisible() {
-		if (buttonLastPressed[0] == true) {
-			itemsVisible[0]--;
-		} else if (buttonLastPressed[1] == true) {
-			itemsVisible[1]--;
-		} else if (buttonLastPressed[2] == true) {
-			itemsVisible[2]--;
-		} else if (buttonLastPressed[3] == true) {
-			itemsVisible[3]--;
-		}
-		
-	}
+//	private void removeAddedFromAddBox() {
+//		
+//		thingsInColumn.removeElementAt(selectedIndex);
+//		updateButtons();
+//
+//	}
+//	
+//	private void updateVisible() {
+//		if (buttonLastPressed[0] == true) {
+//			itemsVisible[0]--;
+//		} else if (buttonLastPressed[1] == true) {
+//			itemsVisible[1]--;
+//		} else if (buttonLastPressed[2] == true) {
+//			itemsVisible[2]--;
+//		} else if (buttonLastPressed[3] == true) {
+//			itemsVisible[3]--;
+//		}
+//		
+//	}
 	
 //	public void updateButtons() {
 //		for (int i = 0; i < middleButtons.length; i++) {

@@ -146,35 +146,35 @@ public class DisplayThreeSQLHandler {
 	}
 
 
-	public static Vector<String> getAllThatCanBeAddedToRoom() {
+	public static Vector<String> getAllThatCanBeAddedToRoom(String type) {
 		
 		Vector<String> result = new Vector<String>();
-        String selectData = "SELECT * FROM CREATURE WHERE L_ID = -1";
+        String selectData = "SELECT * FROM " + type + " WHERE L_ID = -1";
 		
 		try {
 			PreparedStatement stmt = connection.prepareStatement(selectData);
 		    stmt.execute();
 		     
 			ResultSet rs = stmt.getResultSet();
-		    int i = 0;
+//		    int i = 0;
 		    while (rs.next()) {
 		    	String data = rs.getString("ID");
 		    	result.add(data);
-		    	i++;
+//		    	i++;
 		    }
 //		    for (String s : result) {System.out.print(s + "  ");};
 				
-		    DisplayThree.setWhereItemsStartInAddBox(i);		
-				
-			selectData = "SELECT * FROM ITEM WHERE L_ID = -1";
-			stmt = connection.prepareStatement(selectData);
-		    stmt.execute();
-				
-		    rs = stmt.getResultSet();
-		    while (rs.next()) {
-		    	String data = rs.getString("ID");
-		    	result.add(data);
-		    }
+//		    DisplayThree.setWhereItemsStartInAddBox(i);		
+//				
+//			selectData = "SELECT * FROM ITEM WHERE L_ID = -1";
+//			stmt = connection.prepareStatement(selectData);
+//		    stmt.execute();
+//				
+//		    rs = stmt.getResultSet();
+//		    while (rs.next()) {
+//		    	String data = rs.getString("ID");
+//		    	result.add(data);
+//		    }
 			
 
 		} catch (SQLException e) {
@@ -192,11 +192,11 @@ public class DisplayThreeSQLHandler {
 	}
 
 
-	public static void changeRoomOfCreature(String creatureID) {
+	public static void changeRoom(String type, int creatureID, int selectedRoomID) {
 		
 		try {
 						
-	        String updateQuery = "UPDATE CREATURE SET L_ID = " + DisplayThree.getInstance().selectedRoomID + " WHERE ID = " + creatureID;
+	        String updateQuery = "UPDATE " + type + " SET L_ID = " + selectedRoomID + " WHERE ID = " + creatureID;
 	        PreparedStatement stmt = connection.prepareStatement(updateQuery);
 			stmt.execute();
 			

@@ -22,6 +22,7 @@ public class ItemSelector extends Selector {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		DisplayThree.getInstance().addBox.changeContents("ITEM", true);
 		
 		if (e.getSource() == upArrowButton) {
 			
@@ -57,11 +58,13 @@ public class ItemSelector extends Selector {
 
 	public void deleteSelectedAndRefresh() {
 		
-		//TODO: DisplayThreeSQLHandler.delete("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
-				
-		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}System.out.println();
-		thingsInColumn.removeElementAt(indexOfSelectedItem);
-		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}
+		//DisplayThreeSQLHandler.changeRoomOfCreature(creatureID);("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
+		DisplayThreeSQLHandler.changeRoom("ITEM", indexOfSelectedItem, -1);
+//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}System.out.println();
+
+		//		thingsInColumn.removeElementAt(indexOfSelectedItem);
+		removeElement(indexOfSelectedItem);
+//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}
 
 		this.updateButtons();
 	}
@@ -102,7 +105,8 @@ public class ItemSelector extends Selector {
 		updateButtons();
 
 		//DisplayThreeSQLHandler.changeRoomOfItem(item);
-		
+		DisplayThreeSQLHandler.changeRoom("ITEM", Integer.parseInt(item)
+				, DisplayThree.getInstance().selectedRoomID);
 	}
 
 }

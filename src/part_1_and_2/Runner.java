@@ -53,7 +53,7 @@ public class Runner
 	  DisplayThreeSQLHandler.setConnection(m_dbConn);
 	  DisplayThreeSQLHandler.setStoredProcedures();
 	  DisplayThree display3 = DisplayThree.getInstance();
-    new Display_4(m_dbConn);
+//    new Display_4(m_dbConn);
     
     
     /**

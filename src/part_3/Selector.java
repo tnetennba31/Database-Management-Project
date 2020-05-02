@@ -241,7 +241,6 @@ class Selector extends JPanel implements ActionListener {
 	protected void scrollDown() {
 		
 		if (itemsVisible[3] != thingsInColumn.size() - 1) {
-			
 			for (int i = 0; i < itemsVisible.length; i++) {
 				itemsVisible[i]++;
 			}
@@ -259,7 +258,10 @@ class Selector extends JPanel implements ActionListener {
 			middleButtons[i].setVisible(true);
 
 			if (i < thingsInColumn.size()) {
-				
+//			if (thingsInColumn.get(itemsVisible[i]) != thingsInColumn.lastElement()) {//i < thingsInColumn.size() - 1
+//				System.out.println(itemsVisible[i]);
+//
+//				System.out.println(thingsInColumn.get(itemsVisible[i]));
 				middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
 			} else {
 				
@@ -268,6 +270,14 @@ class Selector extends JPanel implements ActionListener {
 
 			}
 
+		}
+//		System.out.println();
+	}
+	
+	public void removeElement(int index) {
+		if (thingsInColumn.size() > index) {
+			thingsInColumn.removeElementAt(index);
+			updateButtons();			
 		}
 	}
 	

@@ -17,6 +17,7 @@ public class CreatureSelector extends Selector {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		DisplayThree.getInstance().addBox.changeContents("CREATURE", true);
 		
 		if (e.getSource() == upArrowButton) {
 			
@@ -40,9 +41,14 @@ public class CreatureSelector extends Selector {
 
 	public void deleteSelectedAndRefresh() {
 		
-		//TODO: FIX THIS DisplayThreeSQLHandler.deleteCreature(thingsInColumn.get(indexOfSelectedCreature), Selector.selectedRoom);
+		//DisplayThreeSQLHandler.changeRoomOfCreature(creatureID);("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
+		DisplayThreeSQLHandler.changeRoom("CREATURE", indexOfSelectedCreature, -1);
+//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}System.out.println();
 
-		thingsInColumn.removeElementAt(indexOfSelectedCreature);
+		//		thingsInColumn.removeElementAt(indexOfSelectedCreature);
+		removeElement(indexOfSelectedCreature);
+
+//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}
 
 		this.updateButtons();
 	}
@@ -83,7 +89,9 @@ public class CreatureSelector extends Selector {
 		thingsInColumn.add(creature);
 		updateButtons();
 
-		DisplayThreeSQLHandler.changeRoomOfCreature(creature);
+		//DisplayThreeSQLHandler.changeRoomOfCreature(creature);
+		DisplayThreeSQLHandler.changeRoom("CREATURE", Integer.parseInt(creature)
+				, DisplayThree.getInstance().selectedRoomID);
 
 	}
 
