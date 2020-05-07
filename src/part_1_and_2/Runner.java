@@ -2,6 +2,7 @@ package part_1_and_2;
 
 import part_3.DisplayThree;
 import part_3.DisplayThreeSQLHandler;
+import part_3.Display_1;
 import part_3.Display_4;
 
 import java.sql.*;
@@ -46,13 +47,15 @@ public class Runner
      * Create stored procedures
      */
 	  Runner.createStoredProcedures4();
+	  Runner.createStoredProcedures1();
     
     /**
      * Create instances of the UI displays
      */
-	  DisplayThreeSQLHandler.setConnection(m_dbConn);
-	  DisplayThreeSQLHandler.setStoredProcedures();
-	  DisplayThree display3 = DisplayThree.getInstance();
+//	  DisplayThreeSQLHandler.setConnection(m_dbConn);
+//	  DisplayThreeSQLHandler.setStoredProcedures();
+      Display_1 display1 = new Display_1(m_dbConn);
+//	  DisplayThree display3 = DisplayThree.getInstance();
 //    new Display_4(m_dbConn);
     
     
@@ -97,7 +100,88 @@ public class Runner
     stmt.executeUpdate(storedProcedure3);
     stmt.close();
   }
-  
+
+  public static void createStoredProcedures1() throws SQLException{
+    Statement st = m_dbConn.createStatement();
+    String dropProcedure1 = new String("DROP procedure IF EXISTS get_all_items");
+    st.executeUpdate(dropProcedure1);
+    String dropProcedure2 = new String("DROP procedure IF EXISTS get_container");
+    st.executeUpdate(dropProcedure2);
+    String dropProcedure3 = new String("DROP procedure IF EXISTS get_armor");
+    st.executeUpdate(dropProcedure3);
+    String dropProcedure4 = new String("DROP procedure IF EXISTS get_weapon");
+    st.executeUpdate(dropProcedure4);
+    String dropProcedure5 = new String("DROP procedure IF EXISTS add_item");
+    st.executeUpdate(dropProcedure5);
+    String dropProcedure6 = new String("DROP procedure IF EXISTS add_container");
+    st.executeUpdate(dropProcedure6);
+    String dropProcedure7 = new String("DROP procedure IF EXISTS add_armor");
+    st.executeUpdate(dropProcedure7);
+    String dropProcedure8 = new String("DROP procedure IF EXISTS add_weapon");
+    st.executeUpdate(dropProcedure8);
+    String dropProcedure9 = new String("DROP procedure IF EXISTS add_generic");
+    st.executeUpdate(dropProcedure9);
+    String dropProcedure10 = new String("DROP procedure IF EXISTS update_item");
+    st.executeUpdate(dropProcedure10);
+    String dropProcedure11 = new String("DROP procedure IF EXISTS update_container");
+    st.executeUpdate(dropProcedure11);
+    String dropProcedure12 = new String("DROP procedure IF EXISTS update_armor");
+    st.executeUpdate(dropProcedure12);
+    String dropProcedure13 = new String("DROP procedure IF EXISTS update_weapon");
+    st.executeUpdate(dropProcedure13);
+    String dropProcedure14 = new String("DROP procedure IF EXISTS update_generic");
+    st.executeUpdate(dropProcedure14);
+    String dropProcedure15 = new String("DROP procedure IF EXISTS delete_item");
+    st.executeUpdate(dropProcedure15);
+    String dropProcedure16 = new String("DROP procedure IF EXISTS delete_container");
+    st.executeUpdate(dropProcedure16);
+    String dropProcedure17 = new String("DROP procedure IF EXISTS delete_armor");
+    st.executeUpdate(dropProcedure17);
+    String dropProcedure18 = new String("DROP procedure IF EXISTS delete_weapon");
+    st.executeUpdate(dropProcedure18);
+    String dropProcedure19 = new String("DROP procedure IF EXISTS delete_generic");
+    st.executeUpdate(dropProcedure19);
+    String storedProcedure1 = new String("CREATE PROCEDURE get_all_items (IN type INT) BEGIN SELECT ID, Volume, Weight FROM ITEM; END");
+    st.executeUpdate(storedProcedure1);
+    String storedProcedure2 = new String("CREATE PROCEDURE get_container (IN id INT) BEGIN SELECT * FROM CONTAINER WHERE id = Con_ID; END");
+    st.executeUpdate(storedProcedure2);
+    String storedProcedure3 = new String("CREATE PROCEDURE get_armor (IN id INT) BEGIN SELECT * FROM ARMOR WHERE id = A_ID; END");
+    st.executeUpdate(storedProcedure3);
+    String storedProcedure4 = new String("CREATE PROCEDURE get_weapon (IN id INT) BEGIN SELECT * FROM WEAPON WHERE id = W_ID; END");
+    st.executeUpdate(storedProcedure4);
+    String storedProcedure5 = new String("CREATE PROCEDURE add_item (IN id INT, IN volume INT, IN weight INT) BEGIN INSERT INTO ITEM (ID, Volume, Weight, L_ID, O_Name, W_Name) VALUES (id, volume, weight, NULL, NULL, NULL); END");
+    st.executeUpdate(storedProcedure5);
+    String storedProcedure6 = new String("CREATE PROCEDURE add_container (IN id INT, IN volume INT, IN weight INT, IN i_id INT) BEGIN INSERT INTO CONTAINER (Con_ID, Volume_Limit, Weight_Limit, I_ID) VALUES (id, volume, weight, i_id); END");
+    st.executeUpdate(storedProcedure6);
+    String storedProcedure7 = new String("CREATE PROCEDURE add_armor (IN id INT, IN place INT, IN protection INT, in i_id INT) BEGIN INSERT INTO ARMOR (A_ID, Place, Protection_Amount, I_ID) VALUES (id, place, protection, i_id); END");
+    st.executeUpdate(storedProcedure7);
+    String storedProcedure8 = new String("CREATE PROCEDURE add_weapon (IN id INT, IN abil INT, IN i_id INT) BEGIN INSERT INTO WEAPON (W_ID, Ability_ID, I_ID) VALUES (id, abil, i_id); END");
+    st.executeUpdate(storedProcedure8);
+    String storedProcedure9 = new String("CREATE PROCEDURE add_generic (IN id INT, IN i_id INT) BEGIN INSERT INTO GENERIC_ITEM (GI_ID, I_ID) VALUES (id, i_id); END");
+    st.executeUpdate(storedProcedure9);
+    String storedProcedure10 = new String("CREATE PROCEDURE update_item (IN id INT, IN volume INT, IN weight INT) BEGIN UPDATE ITEM SET Volume = volume, Weight = weight WHERE ID = id; END");
+    st.executeUpdate(storedProcedure10);
+    String storedProcedure11 = new String("CREATE PROCEDURE update_container (IN id INT, IN volume INT, IN weight INT) BEGIN UPDATE CONTAINER SET Volume_Limit = volume, Weight_Limit = weight WHERE I_ID = id; END");
+    st.executeUpdate(storedProcedure11);
+    String storedProcedure12 = new String("CREATE PROCEDURE update_armor (IN id INT, IN place INT, IN protection INT, in i_id INT) BEGIN UPDATE ARMOR SET Place = place, Protection_Amount = protection WHERE ID = i_id; END");
+    st.executeUpdate(storedProcedure12);
+    String storedProcedure13 = new String("CREATE PROCEDURE update_weapon (IN id INT, IN abil INT, IN i_id INT) BEGIN UPDATE WEAPON SET Ability_ID = abil WHERE I_ID = i_id; END");
+    st.executeUpdate(storedProcedure13);
+    String storedProcedure14 = new String("CREATE PROCEDURE update_generic (IN id INT, IN i_id INT) BEGIN UPDATE GENERIC_ITEM SET GI_ID = id WHERE I_ID = i_id; END");
+    st.executeUpdate(storedProcedure14);
+    String storedProcedure15 = new String("CREATE PROCEDURE delete_item (IN id INT) BEGIN DELETE FROM ITEM WHERE ID = id; END");
+    st.executeUpdate(storedProcedure15);
+    String storedProcedure16 = new String("CREATE PROCEDURE delete_container (IN id INT) BEGIN DELETE FROM CONTAINER WHERE I_ID = id; END");
+    st.executeUpdate(storedProcedure16);
+    String storedProcedure17 = new String("CREATE PROCEDURE delete_armor (IN id INT) BEGIN DELETE FROM ARMOR WHERE I_ID = id; END");
+    st.executeUpdate(storedProcedure17);
+    String storedProcedure18 = new String("CREATE PROCEDURE delete_weapon (IN id INT) BEGIN DELETE FROM WEAPON WHERE I_ID = id; END");
+    st.executeUpdate(storedProcedure18);
+    String storedProcedure19 = new String("CREATE PROCEDURE delete_generic (IN id INT) BEGIN DELETE FROM GENERIC_ITEM WHERE I_ID = id; END");
+    st.executeUpdate(storedProcedure19);
+    st.close();
+  }
+
   /**
    * @return True if it successfully sets up the driver
    */

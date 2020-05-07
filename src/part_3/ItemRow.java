@@ -23,7 +23,7 @@ public class ItemRow {
     int index;
 
     boolean no_display;
-
+    boolean editing;
 
     public ItemRow(JCheckBox ck, JLabel tp, JLabel i_d, JLabel vl, JLabel wt, JButton mb) {
         check_box = ck;
@@ -33,5 +33,6 @@ public class ItemRow {
         weight = wt;
         more = mb;
         no_display = false;
+        editing = false;
     }
 }
