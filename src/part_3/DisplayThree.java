@@ -24,19 +24,31 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
-
-public class DisplayThree extends JFrame implements ActionListener {
-	
+/**
+ * The main UI window that contains all of the buttons and 
+ *  selectors. It is a singleton.
+ * 
+ * @author Joshua Burdette
+ */
+public class DisplayThree extends JFrame implements ActionListener 
+{
+	/**
+	 * The singleton instance of DisplayThree.
+	 */
 	private static DisplayThree display = null;
 	
+	/**
+	 * Constants that are used to determine the various sizes and 
+	 *  coordinates of components.
+	 */
 	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int 
 	WINDOW_WIDTH = screenSize.width / 2,			                
-	//WINDOW_HEIGHT = screenSize.height / 2,	
-	WINDOW_HEIGHT = (int) (WINDOW_WIDTH / 1.8),	
+	WINDOW_HEIGHT = (int) (WINDOW_WIDTH / 1.4),	
 	OFFSET = WINDOW_WIDTH / 20,
 	SELECTOR_WIDTH = OFFSET * 3,			               
 	SELECTOR_HEIGHT = OFFSET * 5,	
@@ -44,17 +56,20 @@ public class DisplayThree extends JFrame implements ActionListener {
 	ROOM_SELECTOR_X = SELECTOR_Y,			                
 	C_SELECTOR_X = OFFSET * 5,			                	                
 	I_SELECTOR_X = OFFSET * 9,			                
-	ADDING_BOX_WIDTH = OFFSET * 4,			                
+	ADDING_BOX_WIDTH = OFFSET * 5,			                
 	ADDING_BOX_HEIGHT = OFFSET * 6,			                
-	ADDING_BOX_X = OFFSET * 13,	// - (OFFSET / 4)		                
-	ADDING_BOX_Y = OFFSET,		
+	ADDING_BOX_X = OFFSET * 13,		                
+	ADDING_BOX_Y = OFFSET,	
+	ADDING_LABEL_WIDTH = ADDING_BOX_WIDTH,
 	INSTRUCTIONS_WIDTH = OFFSET * 11,
-	INSTRUCTIONS_HEIGHT = OFFSET * 2,
+	INSTRUCTIONS_HEIGHT = OFFSET * 5,
 	INSTRUCTIONS_X = OFFSET,
 	INSTRUCTIONS_Y = OFFSET * 7,
+    INSTRUCTIONS_LABEL_X = OFFSET,
+	INSTRUCTIONS_LABEL_Y = INSTRUCTIONS_Y - OFFSET + 8,
 	LABEL_WIDTH = OFFSET * 3,			               
 	LABEL_HEIGHT = OFFSET,			                
-	LABEL_Y = OFFSET,			                
+	LABEL_Y = OFFSET / 4,			                
 	R_LABEL_X = ROOM_SELECTOR_X,			                
 	C_LABEL_X = C_SELECTOR_X,	
 	I_LABEL_X = I_SELECTOR_X,
@@ -67,67 +82,105 @@ public class DisplayThree extends JFrame implements ActionListener {
 	ADD_BUTTON_DIAMETER = OFFSET * 2,
 	ADD_BUTTON_X = ADDING_BOX_X + ((ADDING_BOX_WIDTH / 2) - (ADD_BUTTON_DIAMETER / 2)),
 	ADD_BUTTON_Y = OFFSET * 7 + (OFFSET / 2);		                			                
-			                			              			              
+			
+	/**
+	 * JComponents used in this class.
+	 */
 	JTextPane usageInstructions;
-	
 	JButton deleteCreatureButton;
 	JButton deleteItemButton;
 	JButton addItemButton;
-	
+	JLabel roomSelectorLabel;
+	JLabel creatureSelectorLabel;
+	JLabel itemSelectorLabel;
+	JLabel addBoxLabel;
+	JLabel instructionBoxLabel;
+	 
+	/**
+	 * My JPanel subclasses used in this class.
+	 */
 	Selector roomSelector;
 	CreatureSelector creatureSelector;
 	ItemSelector itemSelector;
 	AddBox addBox;
 	
+	/**
+	 * Integer that holds the currently-selected room ID.
+	 */
 	public int selectedRoomID = 1;
+	
+	/**
+	 * Vectors used to populate the selectors.
+	 */
 	Vector<String> rooms = new Vector<String>();
 	Vector<String> creaturesInRoom = new Vector<String>();
 	Vector<String> itemsInRoom = new Vector<String>();
 	Vector<String> allThatCanBeAddedToRoom = new Vector<String>();
-
-//	static int armorsBegin = 0;
-//	static int weaponsBegin = 0;
-//	static int containersBegin = 0;
 	
-//	static int itemsBegin = 0;
-	
-	public static DisplayThree getInstance() { 
+	/**
+	 * Singleton method that returns the instance of this class.
+	 */
+	public static DisplayThree getInstance() 
+	{ 
         if (display == null) 
             display = new DisplayThree(); 
         return display; 
     } 
 	
-	private DisplayThree() {//FORMAT EVERYTHING CORRECTLY
-		
+	/**
+	 * Constructor that sets layout and color settings and creates 
+	 *  the objects that will appear in the UI.
+	 */
+	private DisplayThree() 
+	{		
 		setLayout(null); 
-
-		getContentPane().setBackground(new Color(230, 230, 230));;
+		getContentPane().setBackground(new Color(230, 230, 230));
 		
-		usageInstructions = new JTextPane();
-		usageInstructions.setText(getInstructionString());
-		usageInstructions.setBounds(INSTRUCTIONS_X, INSTRUCTIONS_Y, INSTRUCTIONS_WIDTH, INSTRUCTIONS_HEIGHT);
-		usageInstructions.setBorder(new LineBorder(Color.BLACK));
-		add(usageInstructions);
-
-
+		
+		//FILL VECTORS
 		rooms = DisplayThreeSQLHandler.getRooms();
 		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
 		itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(selectedRoomID);
 		allThatCanBeAddedToRoom = DisplayThreeSQLHandler.getAllThatCanBeAddedToRoom("CREATURE");
-//		for (String s : creaturesInRoom) {System.out.print(s + "  ");}
 
+		
+		//SET ALL LABELS
+		roomSelectorLabel = new JLabel("Rooms", SwingConstants.CENTER);
+		roomSelectorLabel.setBounds(R_LABEL_X, LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
+		creatureSelectorLabel = new JLabel("Creatures", SwingConstants.CENTER);
+		creatureSelectorLabel.setBounds(C_LABEL_X, LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
+		itemSelectorLabel = new JLabel("Items", SwingConstants.CENTER);
+		itemSelectorLabel.setBounds(I_LABEL_X, LABEL_Y, LABEL_WIDTH, LABEL_HEIGHT);
+		addBoxLabel = new JLabel("Add Creatures", SwingConstants.CENTER);
+		addBoxLabel.setBounds(ADD_LABEL_X, LABEL_Y, ADDING_LABEL_WIDTH, LABEL_HEIGHT);
+		instructionBoxLabel = new JLabel("Instructions");
+		instructionBoxLabel.setBounds(INSTRUCTIONS_LABEL_X, INSTRUCTIONS_LABEL_Y, ADDING_LABEL_WIDTH, LABEL_HEIGHT);
+		add(roomSelectorLabel);
+		add(creatureSelectorLabel);
+		add(itemSelectorLabel);
+		add(addBoxLabel);
+		add(instructionBoxLabel);
+
+		
+		//SET INSTRUCTIONS
+		usageInstructions = new JTextPane();
+		usageInstructions.setText(getInstructionString());
+		usageInstructions.setEditable(false);
+		usageInstructions.setBounds(INSTRUCTIONS_X, INSTRUCTIONS_Y, INSTRUCTIONS_WIDTH, INSTRUCTIONS_HEIGHT);
+		usageInstructions.setBorder(new LineBorder(Color.BLACK));
+		add(usageInstructions);
+
+		
+		//INITIALIZE ALL SELECTORS AND THE ADD BOX
 		roomSelector = new Selector(this, rooms);
 		roomSelector.setBounds(ROOM_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(roomSelector);
-
 
 		creatureSelector = new CreatureSelector(this, creaturesInRoom);
 		creatureSelector.setBounds(C_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(creatureSelector);
 		
-		
 		itemSelector = new ItemSelector(this, itemsInRoom);
-		//itemSelector.setWhereNewItemTypesBegin(armorsBegin, weaponsBegin, containersBegin);
 		itemSelector.setBounds(I_SELECTOR_X, SELECTOR_Y, SELECTOR_WIDTH, SELECTOR_HEIGHT);
 		add(itemSelector);
 		
@@ -136,7 +189,8 @@ public class DisplayThree extends JFrame implements ActionListener {
 		add(addBox);
 		
 		
-		deleteCreatureButton = new JButton(" X "); //TODO: make it an image instead
+		//INITIALIZE THE THREE BUTTONS
+		deleteCreatureButton = new JButton(" X ");
 		deleteCreatureButton.setBounds(C_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
 		deleteCreatureButton.addActionListener(this);
 		deleteCreatureButton.setBackground(Color.RED);
@@ -144,7 +198,7 @@ public class DisplayThree extends JFrame implements ActionListener {
 		deleteCreatureButton.setOpaque(true);
 		add(deleteCreatureButton);
 
-		deleteItemButton = new JButton(" X "); //TODO: make it an image instead
+		deleteItemButton = new JButton(" X ");
 		deleteItemButton.setBounds(I_DELETE_BUTTON_X, DELETE_BUTTON_Y, DELETE_BUTTON_WIDTH, DELETE_BUTTON_HEIGHT);
 		deleteItemButton.addActionListener(this);
 		deleteItemButton.setBackground(Color.RED);
@@ -152,8 +206,7 @@ public class DisplayThree extends JFrame implements ActionListener {
 		deleteItemButton.setOpaque(true);
 		add(deleteItemButton);
 		
-		
-		addItemButton = new AddButton("Add"); //TODO: make it an image instead
+		addItemButton = new AddButton("Add");
 		addItemButton.setBounds(ADD_BUTTON_X, ADD_BUTTON_Y, ADD_BUTTON_DIAMETER, ADD_BUTTON_DIAMETER);
 		addItemButton.addActionListener(this);
 		add(addItemButton);
@@ -165,26 +218,37 @@ public class DisplayThree extends JFrame implements ActionListener {
 	}
 	
 	
-
+	/**
+	 * Method runs if any of the action listeners detect an event. Calls 
+	 *  appropriate methods for deleting and adding entities.
+	 */
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		if (event.getSource() == deleteCreatureButton) {
-
+	public void actionPerformed(ActionEvent event) 
+	{
+		if (event.getSource() == deleteCreatureButton) 
+		{
 			creatureSelector.deleteSelectedAndRefresh();
 									
-		} else if (event.getSource() == deleteItemButton) {
-
+		} else if (event.getSource() == deleteItemButton) 
+		{
 			itemSelector.deleteSelectedAndRefresh();
 									
-		} else if (event.getSource() == addItemButton) {
-			
-			addBox.moveSelectedToRoom(selectedRoomID);
+		} else if (event.getSource() == addItemButton) 
+		{			
+			addBox.moveSelectedToRoom();
 		}
-
 	}
 	
-	public void changeSelectedRoom(int selectedRoom) {
-
+	
+	/**
+	 * Changes the selected room and changes what is displayed by the 
+	 *  creature selector and room selector to match what is in the 
+	 *  new room. Called by the room selector when its buttons are pressed.
+	 *  
+	 * @param selectedRoom is the ID of the currently-selected room.
+	 */
+	public void changeSelectedRoom(int selectedRoom) 
+	{
 		this.selectedRoomID = selectedRoom;
 		
 		creaturesInRoom = DisplayThreeSQLHandler.getCreaturesInRoom(selectedRoomID);
@@ -192,76 +256,20 @@ public class DisplayThree extends JFrame implements ActionListener {
 		
 		itemsInRoom = DisplayThreeSQLHandler.getItemsInRoom(selectedRoomID);
 		itemSelector.changeContentsToNewRoom(itemsInRoom);
-
-	}
-	
-//	public void setAddBox(String type) {
-//		addBox = null;
-//
-//		if (type == "generic") {
-//			addBox = new AddBox("generic");
-//		} else if (type == "armor") {
-//			
-//		} else if (type == "weapon") {
-//			
-//		} else if (type == "container") {
-//			
-//		} else {
-//			System.out.println("delete this");
-//		}
-//	}
-	
-	public static void setWhereItemsStartInAddBox(int lineNum) {
-		AddBox.itemsBegin = lineNum;
-	}
-	
-	
-	private String getInstructionString() {
-		return "[instructions]";
 	}
 
-//	public static void setWhereNewItemTypesBegin(int itemType, int lineNum) {
-//
-//		if (itemType == 1) {
-//			armorsBegin = lineNum;
-//		} else if (itemType == 2) {
-//			weaponsBegin = lineNum;
-//		} else if (itemType == 3) {
-//			containersBegin = lineNum;
-//		}
-//	}
-
+	/**
+	 * Returns the usage instructions. Located down here to 
+	 *  keep things cleaner.
+	 */
+	private String getInstructionString() 
+	{
+		return "Click on a room ID. The boxes to the right will fill with "
+				+ "all of the creatures and items that are in that room.\n\nSelect "
+				+ "one and click the red button below it to remove it from the "
+				+ "room.\n\nThe final box contains all of the entities of the type "
+				+ "that you last clicked on that are not currently in a room. "
+				+ "Select one and click the 'Add' button to add them to the room.";
+	}
 }
 
-//static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//public static final double WINDOW_HEIGHT = screenSize.getHeight() / 10;
-//public static final double WINDOW_WIDTH = screenSize.getWidth() / 8;
-
-
-
-/*
-//JTextField f = new JTextField("You can select me");
-////f.setEditable(false);
-////f.setBorder(null);
-//f.setForeground(UIManager.getColor("Label.foreground"));
-//f.setFont(UIManager.getFont("Label.font"));
-//JPanel j = new JPanel();
-//
-//j.setBounds(300, 50, 100, 200);
-//
-//j.setBackground(new Color(180,200,200));
-//
-//imageLabel = new JLabel("North");
-//j.add(imageLabel);
-//
-//j.setLayout(new BoxLayout(j, BoxLayout.Y_AXIS));
-//
-//add(j);
-
-
-JPanel p = new Selector();
-
-add(p);
-
-
-*/

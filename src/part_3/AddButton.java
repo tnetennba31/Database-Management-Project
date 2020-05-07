@@ -8,21 +8,35 @@ import java.awt.geom.Point2D;
 import java.awt.FontMetrics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-//credit for design to: https://happycoding.io/examples/java/swing/circle-button
-public class AddButton extends JButton{
+/**
+ * Customized JButton to change shape and color.
+ *  credit for design to: https://happycoding.io/examples/java/swing/circle-button
+ *  
+ * @author Joshua Burdette
+ */
+public class AddButton extends JButton
+{
 	
-	private boolean mouseOver = false;
+	/**
+	 * Boolean for if mouse is pressed.
+	 */
 	private boolean mousePressed = false;
 
-	public AddButton(String text){
+	/**
+	 * Constructor that sets up appearance of 
+	 *  button and mouse listeners.
+	 *  
+	 * @param text is the text on the button.
+	 */
+	public AddButton(String text)
+	{
 		super(text);
 		setOpaque(false);
 		setFocusPainted(false);
 		setBorderPainted(false);
 		
-		MouseAdapter mouseListener = new MouseAdapter(){
-			
+		MouseAdapter mouseListener = new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent me){
 				if(contains(me.getX(), me.getY())){
@@ -36,30 +50,23 @@ public class AddButton extends JButton{
 				mousePressed = false;
 				repaint();
 			}
-			
-			@Override
-			public void mouseExited(MouseEvent me){
-				mouseOver = false;
-				mousePressed = false;
-				repaint();
-			}
-			
-			@Override
-			public void mouseMoved(MouseEvent me){
-				mouseOver = contains(me.getX(), me.getY());
-				repaint();
-			}	
 		};
-		
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);		
 	}
 	
-	private int getDiameter(){
+	/**
+	 * @return the diameter of the button.
+	 */
+	private int getDiameter()
+	{
 		int diameter = Math.min(getWidth(), getHeight());
 		return diameter;
 	}
 	
+	/**
+	 * @return the dimensions that the button prefers.
+	 */
 	@Override
 	public Dimension getPreferredSize(){
 		FontMetrics metrics = getGraphics().getFontMetrics(getFont());
@@ -67,32 +74,35 @@ public class AddButton extends JButton{
 		return new Dimension(minDiameter, minDiameter);
 	}
 	
+	/**
+	 * Define shape of button for mouse processing.
+	 */
 	@Override
 	public boolean contains(int x, int y){
 		int radius = getDiameter()/2;
 		return Point2D.distance(x, y, getWidth()/2, getHeight()/2) < radius;
 	}
 	
+	/**
+	 * Sets the appearance of the button.
+	 */
 	@Override
-	public void paintComponent(Graphics g){
-		
+	public void paintComponent(Graphics g)
+	{
 		int diameter = getDiameter();
 		int radius = diameter/2;
 		
-		if(mousePressed){
+		if(mousePressed)
+		{
 			g.setColor(Color.GREEN);
 		}
-		else{
+		
+		else
+		{
 			g.setColor(new Color(78, 255, 115));
 		}
 		g.fillOval(getWidth()/2 - radius, getHeight()/2 - radius, diameter, diameter);
-		
-//		if(mouseOver){
-//			g.setColor(Color.BLUE);
-//		}
-//		else{
-//			g.setColor(Color.BLACK);
-//		}
+
 		g.setColor(Color.BLACK);
 
 		g.drawOval(getWidth()/2 - radius, getHeight()/2 - radius, diameter, diameter);

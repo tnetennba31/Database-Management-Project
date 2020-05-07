@@ -7,71 +7,97 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class CreatureSelector extends Selector {
+/**
+ * Select box that fills with the creatures that are
+ *  in the selected room.
+ */
+public class CreatureSelector extends Selector 
+{
 
-	protected int indexOfSelectedCreature = 0;
+	/**
+	 * String holds the ID of the currently selected creature.
+	 */
+	protected String selectedCreature = "";
 	
-	public CreatureSelector(JFrame frame, Vector<String> thingsInColumn) {
+	/**
+	 * Constructor calls superclass constructor.
+	 * 
+	 * @param frame sets the frame that this JPanel will be part.
+	 * @param thingsInColumn is the vector of creatures or items
+	 *  that will populate the buttons.
+	 */
+	public CreatureSelector(JFrame frame, Vector<String> thingsInColumn) 
+	{
 		super(frame, thingsInColumn);
 	}
 	
+	/**
+	 * Overridden functionality includes removing the changing of
+	 *  selected room on button click and adding the ability to 
+	 *  change the selected creature ID.
+	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) 
+	{
 		DisplayThree.getInstance().addBox.changeContents("CREATURE", true);
 		
-		if (e.getSource() == upArrowButton) {
-			
+		if (e.getSource() == upArrowButton) 
+		{	
 			scrollUp();
 						
-		} else if (e.getSource() == downArrowButton) {
-			
+		} else if (e.getSource() == downArrowButton) 
+		{	
 			scrollDown();
 			
-		} else if (e.getSource() == middleButtons[0]) {
-			indexOfSelectedCreature = itemsVisible[0];
-		} else if (e.getSource() == middleButtons[1]) {
-			indexOfSelectedCreature = itemsVisible[1];
-		} else if (e.getSource() == middleButtons[2]) {
-			indexOfSelectedCreature = itemsVisible[2];
-		} else if (e.getSource() == middleButtons[3]) {
-			indexOfSelectedCreature = itemsVisible[3];
+		} else if (e.getSource() == middleButtons[0]) 
+		{
+			selectedCreature = thingsInColumn.get(itemsVisible[0]);
+			
+		} else if (e.getSource() == middleButtons[1]) 
+		{
+			selectedCreature = thingsInColumn.get(itemsVisible[1]);
+			
+		} else if (e.getSource() == middleButtons[2]) 
+		{
+			selectedCreature = thingsInColumn.get(itemsVisible[2]);
+			
+		} else if (e.getSource() == middleButtons[3]) 
+		{
+			selectedCreature = thingsInColumn.get(itemsVisible[3]);
 		}
-		
 	}
 
-	public void deleteSelectedAndRefresh() {
+	/**
+	 * Called when the corresponding delete button is pressed. Removes
+	 *  the selected creature from the list removes it from the room 
+	 *  in the database. Also changes selectedCreature and updates the 
+	 *  buttons.
+	 */
+	public void deleteSelectedAndRefresh() 
+	{		
+		DisplayThreeSQLHandler.changeRoom("CREATURE", selectedCreature, -1);
+
+		removeElement(thingsInColumn.indexOf(selectedCreature));
 		
-		//DisplayThreeSQLHandler.changeRoomOfCreature(creatureID);("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
-		DisplayThreeSQLHandler.changeRoom("CREATURE", indexOfSelectedCreature, -1);
-//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}System.out.println();
+		selectedCreature = thingsInColumn.get(itemsVisible[buttonLastPressed]);
 
-		//		thingsInColumn.removeElementAt(indexOfSelectedCreature);
-		removeElement(indexOfSelectedCreature);
-
-//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}
+		DisplayThree.getInstance().addBox.changeContents("CREATURE", false);;
 
 		this.updateButtons();
 	}
-	
-//	public void updateButtons() {
-//		for (int i = 0; i < middleButtons.length; i++) {
-//
-//			if (i < thingsInColumn.size()) {
-//				
-//				middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
-//			} else {
-//				
-//				middleButtons[i].setText("");
-//				middleButtons[i].setVisible(false);
-//
-//			}
-//
-//		}
-//	}
 
-	public void changeContentsToNewRoom(Vector<String> creaturesInRoom) {
-
-		indexOfSelectedCreature = 0;
+	/**
+	 * Called when a new room is selected in roomSelector. Changes
+	 *  creaturesInRoom to what is in the newly-selected room and 
+	 *  resets selectedCreature and itemsVisible so that what is 
+	 *  shown starts from the beginning.
+	 *  
+	 * @param creaturesInRoom is the new vector of creatures in the
+	 *  newly-selected room.
+	 */
+	public void changeContentsToNewRoom(Vector<String> creaturesInRoom) 
+	{
+		selectedCreature = creaturesInRoom.get(0);
 		
 		itemsVisible[0] = 0;
 		itemsVisible[1] = 1;
@@ -81,18 +107,21 @@ public class CreatureSelector extends Selector {
 		thingsInColumn = creaturesInRoom;
 		
 		updateButtons();
-		
 	}
 
-	public void addCreatureToRoom(String creature) {
-		
+	/**
+	 * Adds a new creature to the room and adjusts everything 
+	 *  according. Calls method to add the creature to the 
+	 *  database as well.
+	 *  
+	 * @param creature
+	 */
+	public void addCreatureToRoom(String creature) 
+	{	
 		thingsInColumn.add(creature);
 		updateButtons();
 
-		//DisplayThreeSQLHandler.changeRoomOfCreature(creature);
-		DisplayThreeSQLHandler.changeRoom("CREATURE", Integer.parseInt(creature)
+		DisplayThreeSQLHandler.changeRoom("CREATURE", creature
 				, DisplayThree.getInstance().selectedRoomID);
-
 	}
-
 }

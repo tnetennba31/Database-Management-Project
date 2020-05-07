@@ -4,89 +4,97 @@ import java.awt.event.ActionEvent;
 import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-public class ItemSelector extends Selector {
-	
-//	int armorsBegin = 0;
-//	int weaponsBegin = 0;
-//	int containersBegin = 0;
+/**
+ * Select box that fills with the items that are
+ *  in the selected room.
+ *  
+ *  @author Joshua Burdette
+ */
+public class ItemSelector extends Selector 
+{
+	/**
+	 * String holds the ID of the currently selected item.
+	 */
+	protected String selectedItem = "";
 
-
-
-	protected int indexOfSelectedItem = 0;
-
-	public ItemSelector(JFrame frame, Vector<String> thingsInColumn) {
+	/**
+	 * Constructor calls superclass constructor.
+	 * 
+	 * @param frame sets the frame that this JPanel will be part.
+	 * @param thingsInColumn is the vector of creatures or items
+	 *  that will populate the buttons.
+	 */
+	public ItemSelector(JFrame frame, Vector<String> thingsInColumn) 
+	{
 		super(frame, thingsInColumn);
 	}
 	
+	/**
+	 * Overridden functionality includes removing the changing of
+	 *  selected room on button click and adding the ability to 
+	 *  change the selected item ID.
+	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) 
+	{
 		DisplayThree.getInstance().addBox.changeContents("ITEM", true);
 		
-		if (e.getSource() == upArrowButton) {
-			
+		if (e.getSource() == upArrowButton) 
+		{			
 			scrollUp();
 						
-		} else if (e.getSource() == downArrowButton) {
-			
+		} else if (e.getSource() == downArrowButton) 
+		{			
 			scrollDown();
 			
-		} else if (e.getSource() == middleButtons[0]) {
-			indexOfSelectedItem = itemsVisible[0];
-		} else if (e.getSource() == middleButtons[1]) {
-			indexOfSelectedItem = itemsVisible[1];
-		} else if (e.getSource() == middleButtons[2]) {
-			indexOfSelectedItem = itemsVisible[2];
-		} else if (e.getSource() == middleButtons[3]) {
-			indexOfSelectedItem = itemsVisible[3];
+		} else if (e.getSource() == middleButtons[0]) 
+		{
+			selectedItem = thingsInColumn.get(itemsVisible[0]);
+
+		} else if (e.getSource() == middleButtons[1]) 
+		{
+			selectedItem = thingsInColumn.get(itemsVisible[1]);
+
+		} else if (e.getSource() == middleButtons[2]) 
+		{
+			selectedItem = thingsInColumn.get(itemsVisible[2]);
+
+		} else if (e.getSource() == middleButtons[3]) 
+		{
+			selectedItem = thingsInColumn.get(itemsVisible[3]);
 		}
 	}
-	
-//	private void signalCorrectAddBoxToDisplay() {
-//		
-//		if (indexOfSelectedItem < armorsBegin) {
-//			DisplayThree.getInstance().setAddBox("generic");
-//		} else if (indexOfSelectedItem < weaponsBegin) {
-//			DisplayThree.getInstance().setAddBox("armor");
-//		} else if (indexOfSelectedItem < containersBegin) {
-//			DisplayThree.getInstance().setAddBox("weapon");
-//		} else if (indexOfSelectedItem >= containersBegin) {
-//			DisplayThree.getInstance().setAddBox("container");
-//		}
-//	}
 
-	public void deleteSelectedAndRefresh() {
-		
-		//DisplayThreeSQLHandler.changeRoomOfCreature(creatureID);("Creatures", super.getFocusedRoom(), this.getFocusedCreatureID());
-		DisplayThreeSQLHandler.changeRoom("ITEM", indexOfSelectedItem, -1);
-//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}System.out.println();
+	/**
+	 * Called when the corresponding delete button is pressed. Removes
+	 *  the selected item from the list removes it from the room 
+	 *  in the database. Also changes selectedItem and updates the 
+	 *  buttons.
+	 */
+	public void deleteSelectedAndRefresh() 
+	{		
+		DisplayThreeSQLHandler.changeRoom("ITEM", selectedItem, -1);
 
-		//		thingsInColumn.removeElementAt(indexOfSelectedItem);
-		removeElement(indexOfSelectedItem);
-//		for (String s : this.thingsInColumn) {System.out.print(s + "  ");}
+		removeElement(thingsInColumn.indexOf(selectedItem));
+
+		DisplayThree.getInstance().addBox.changeContents("ITEM", false);
 
 		this.updateButtons();
 	}
 
-//	public void updateButtons() {
-//		for (int i = 0; i < middleButtons.length; i++) {
-//			middleButtons[i].setText(thingsInColumn.get(itemsVisible[i]));
-//
-//		}
-//		
-//	}
-
-//	public void setWhereNewItemTypesBegin(int a, int w, int c) {
-//		
-//		armorsBegin = a;
-//		weaponsBegin = w;
-//		containersBegin = c;
-//	}
-	
-	public void changeContentsToNewRoom(Vector<String> itemsInRoom) {
-
-		indexOfSelectedItem = 0;
+	/**
+	 * Called when a new room is selected in roomSelector. Changes
+	 *  itemsInRoom to what is in the newly-selected room and 
+	 *  resets selectedItem and itemsVisible so that what is 
+	 *  shown starts from the beginning.
+	 *  
+	 * @param itemsInRoom is the new vector of items in the
+	 *  newly-selected room.
+	 */
+	public void changeContentsToNewRoom(Vector<String> itemsInRoom) 
+	{
+		selectedItem = itemsInRoom.get(0);
 		
 		itemsVisible[0] = 0;
 		itemsVisible[1] = 1;
@@ -96,18 +104,21 @@ public class ItemSelector extends Selector {
 		thingsInColumn = itemsInRoom;
 		
 		updateButtons();
-		
 	}
 
-	public void addItemToRoom(String item) {
-		
+	/**
+	 * Adds a new item to the room and adjusts everything 
+	 *  according. Calls method to add the item to the 
+	 *  database as well.
+	 *  
+	 * @param item
+	 */
+	public void addItemToRoom(String item) 
+	{		
 		thingsInColumn.add(item);
 		updateButtons();
-
-		//DisplayThreeSQLHandler.changeRoomOfItem(item);
-		DisplayThreeSQLHandler.changeRoom("ITEM", Integer.parseInt(item)
+		
+		DisplayThreeSQLHandler.changeRoom("ITEM", item
 				, DisplayThree.getInstance().selectedRoomID);
 	}
-
 }
-

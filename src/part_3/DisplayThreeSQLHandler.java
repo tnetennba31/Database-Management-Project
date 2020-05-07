@@ -7,22 +7,36 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-public class DisplayThreeSQLHandler {
-	
+/**
+ * Static class that handles all of the SQL for Display 3.
+ * 
+ * @author Joshua Burdette
+ */
+public class DisplayThreeSQLHandler 
+{	
+	/**
+	 * Variable holds the database connection.
+	 */
 	private static Connection connection;
-	
-//	public DisplayThreeSQLHandler() {}
-	
-	public static void setConnection(Connection c) {
+		
+	/**
+	 * Sets the database connection.
+	 */
+	public static void setConnection(Connection c) 
+	{
 		connection = c;
 	}
 	
-
-	public static Vector<String> getRooms() {
+	/**
+	 * Gets all of the rooms from the database (except -1) from the 
+	 *  database and returns a vector of them.
+	 */
+	public static Vector<String> getRooms() 
+	{
 		Vector<String> result = new Vector<String>();
 			
-        try {
-        	
+        try 
+        {        	
             String selectData = "SELECT * FROM LOCATION WHERE L_ID != -1";
 
             PreparedStatement stmt = connection.prepareStatement(selectData);
@@ -30,26 +44,32 @@ public class DisplayThreeSQLHandler {
 			
 			ResultSet rs = stmt.getResultSet();
 			
-			while (rs.next()) {
-				
+			while (rs.next()) 
+			{	
 				String data = rs.getString("L_ID");//getNString(1);
 				result.add(data);
 			}
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
         	e.printStackTrace();
         }
  
         return result;    
-		
-
 	}
 
-	public static Vector<String> getCreaturesInRoom(int roomID) {
+	/**
+	 * Gets all creatures in the current room from the database and 
+	 *  returns them as a vector.
+	 *  
+	 * @param roomID
+	 */
+	public static Vector<String> getCreaturesInRoom(int roomID) 
+	{
 		Vector<String> result = new Vector<String>();
 
-		
-        try {
+        try 
+        {
             String selectData = "CALL get_creatures(?)";
 
             PreparedStatement stmt = connection.prepareCall(selectData);
@@ -58,153 +78,130 @@ public class DisplayThreeSQLHandler {
 
 			ResultSet rs = stmt.getResultSet();
 
-			while (rs.next()) {
-
+			while (rs.next()) 
+			{
 				String data = rs.getString("ID");
 				result.add(data);
-
 			}
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
         	e.printStackTrace();
         }
- 
-
         return result;        
-		
 	}
-	
 
-	public static Vector<String> getItemsInRoom(int roomID) {
-		
+	/**
+	 * Gets all creatures in the current room from the database and 
+	 *  returns them as a vector.
+	 */
+	public static Vector<String> getItemsInRoom(int roomID) 
+	{		
 		Vector<String> result = new Vector<String>();
 		
-        try {
+        try 
+        {
 	        String selectData = "SELECT * FROM ITEM WHERE L_ID = " + roomID;
 	        PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			ResultSet rs = stmt.getResultSet();
-			while (rs.next()) {
+			while (rs.next()) 
+			{
 				String data = rs.getString("ID");
 				result.add(data);
 			}
-			
-		
-//			DisplayThree.setWhereNewItemTypesBegin(1, i);
-//	        selectData = "SELECT a.A_ID FROM ARMOR as a, ITEM as i WHERE a.I_ID = i.ID and i.L_ID = " + roomID;
-//	        stmt = connection.prepareStatement(selectData);
-//			stmt.execute();
-//			rs = stmt.getResultSet();
-//			while (rs.next()) {
-//				String data = rs.getString("A_ID");
-//				result.add(data);
-//				i++;
-//			}
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
         	e.printStackTrace();
         }
- 
-
         return result; 
-		
 	}
 
-	public static void setStoredProcedures() {
-		
-		try {
-			
+	/**
+	 * Creates a stored procedure to get all creatures 
+	 *  in a specified room.
+	 */
+	public static void setStoredProcedures() 
+	{		
+		try 
+		{			
             String selectData = "DROP PROCEDURE IF EXISTS get_creatures";
             PreparedStatement stmt = connection.prepareStatement(selectData);
 			stmt.execute();
-			
 		
             selectData = "CREATE PROCEDURE get_creatures(IN n INT) BEGIN SELECT * FROM CREATURE WHERE L_ID = n; END";
             stmt = connection.prepareStatement(selectData);
 			stmt.execute();
 			
-		    
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}	
 	}
 	
-	public static void deleteCreature(String ID, int L_ID) {
 
-		try {
-			
+//	public static void deleteCreature(String ID, int L_ID)     UNUSED
+//	{
+//		try 
+//		{	
+//	        String selectData = "DELETE FROM CREATURE WHERE ID = " + ID + " AND L_ID = " + L_ID;
+//	        PreparedStatement stmt = connection.prepareStatement(selectData);
+//			stmt.execute();
+//
+//		} catch (SQLException e) 
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 
-			
-	        String selectData = "DELETE FROM CREATURE WHERE ID = " + ID + " AND L_ID = " + L_ID;
-	        PreparedStatement stmt = connection.prepareStatement(selectData);
-			stmt.execute();
-			
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	public static Vector<String> getAllThatCanBeAddedToRoom(String type) {
-		
+	/**
+	 * Selects all creatures or items (depending on what is 
+	 *  passed in) that are not in any room (L_ID = -1).
+	 */
+	public static Vector<String> getAllThatCanBeAddedToRoom(String type) 
+	{
 		Vector<String> result = new Vector<String>();
         String selectData = "SELECT * FROM " + type + " WHERE L_ID = -1";
 		
-		try {
+		try 
+		{
 			PreparedStatement stmt = connection.prepareStatement(selectData);
 		    stmt.execute();
-		     
 			ResultSet rs = stmt.getResultSet();
-//		    int i = 0;
-		    while (rs.next()) {
+		    
+			while (rs.next()) 
+			{
 		    	String data = rs.getString("ID");
 		    	result.add(data);
-//		    	i++;
 		    }
-//		    for (String s : result) {System.out.print(s + "  ");};
-				
-//		    DisplayThree.setWhereItemsStartInAddBox(i);		
-//				
-//			selectData = "SELECT * FROM ITEM WHERE L_ID = -1";
-//			stmt = connection.prepareStatement(selectData);
-//		    stmt.execute();
-//				
-//		    rs = stmt.getResultSet();
-//		    while (rs.next()) {
-//		    	String data = rs.getString("ID");
-//		    	result.add(data);
-//		    }
-			
 
-		} catch (SQLException e) {
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
-//	    System.out.println();
-//	    System.out.println("yeeee");
-//	    System.out.println();
-
-
-//	    for (String s : result) {System.out.print(s + "  ");};
-
-		 	
 		return result;
 	}
 
-
-	public static void changeRoom(String type, int creatureID, int selectedRoomID) {
-		
-		try {
-						
-	        String updateQuery = "UPDATE " + type + " SET L_ID = " + selectedRoomID + " WHERE ID = " + creatureID;
+	/**
+	 * Changes the L_ID of a creature or item.
+	 * 
+	 * @param type is CREATURE or ITEM.
+	 * @param selectedCreatureOrItem is the ID of the entity to move.
+	 * @param selectedRoomID is the room that is currently selected 
+	 *  in the room selector. 
+	 */
+	public static void changeRoom(String type, String selectedCreatureOrItem, int selectedRoomID) 
+	{
+		try 
+		{						
+	        String updateQuery = "UPDATE " + type + " SET L_ID = " + selectedRoomID + " WHERE ID = " + selectedCreatureOrItem;
+	        System.out.println(updateQuery);
 	        PreparedStatement stmt = connection.prepareStatement(updateQuery);
 			stmt.execute();
 			
-
-		} catch (SQLException e) {
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
-		
 	}
-
 }
