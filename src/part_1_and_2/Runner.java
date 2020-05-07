@@ -126,6 +126,10 @@ public class Runner
     st.executeUpdate(dropProcedure18);
     String dropProcedure19 = new String("DROP procedure IF EXISTS delete_generic");
     st.executeUpdate(dropProcedure19);
+    String dropProcedure20 = new String("DROP procedure IF EXISTS remove_fkey");
+    st.executeUpdate(dropProcedure20);
+    String dropProcedure21 = new String("DROP procedure IF EXISTS add_fkey");
+    st.executeUpdate(dropProcedure21);
     String storedProcedure1 = new String("CREATE PROCEDURE get_all_items (IN type INT) BEGIN SELECT ID, Volume, Weight FROM ITEM; END");
     st.executeUpdate(storedProcedure1);
     String storedProcedure2 = new String("CREATE PROCEDURE get_container (IN id INT) BEGIN SELECT * FROM CONTAINER WHERE id = Con_ID; END");
@@ -234,7 +238,7 @@ public class Runner
                     "DROP TABLE IF EXISTS CREATURE_LIKES_HATES_CREATURE",
                     "DROP TABLE IF EXISTS ITEM",
                     "DROP TABLE IF EXISTS CONTAINER",
-                    "ALTER TABLE ITEM DROP FOREIGN KEY ITEM_ibfk_4",
+              //      "ALTER TABLE ITEM DROP FOREIGN KEY ITEM_ibfk_4",
                     "DROP TABLE IF EXISTS ARMOR",
                     "DROP TABLE IF EXISTS WEAPON",
                     "DROP TABLE IF EXISTS GENERIC_ITEM"
