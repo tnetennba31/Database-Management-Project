@@ -15,6 +15,8 @@ import java.util.Arrays;
 /**
  * Class to create the fourth display for the UI, which allows players to login and switch items
  * from being worn to being in storage and vice versa on their different characters.
+ *
+ * @author Madeline Cardinale
  */
 public class Display_4 extends JFrame implements ActionListener, ListSelectionListener
 {
