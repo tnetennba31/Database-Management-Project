@@ -56,10 +56,9 @@ public class Runner
      */
     DisplayThreeSQLHandler.setConnection(m_dbConn);
     DisplayThreeSQLHandler.setStoredProcedures();
-    Display_1 display1 = new Display_1(m_dbConn);
-    DisplayThree display3 = DisplayThree.getInstance();
     new Display_4(m_dbConn);
-    
+    DisplayThree display3 = DisplayThree.getInstance();
+    Display_1 display1 = new Display_1(m_dbConn);
     
     /**
      * Testing methods
@@ -238,7 +237,7 @@ public class Runner
                     "DROP TABLE IF EXISTS CREATURE_LIKES_HATES_CREATURE",
                     "DROP TABLE IF EXISTS ITEM",
                     "DROP TABLE IF EXISTS CONTAINER",
-              //      "ALTER TABLE ITEM DROP FOREIGN KEY ITEM_ibfk_4",
+                    "ALTER TABLE ITEM DROP FOREIGN KEY ITEM_ibfk_4",
                     "DROP TABLE IF EXISTS ARMOR",
                     "DROP TABLE IF EXISTS WEAPON",
                     "DROP TABLE IF EXISTS GENERIC_ITEM"
